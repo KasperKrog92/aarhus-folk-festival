@@ -16,7 +16,7 @@ export type FestivalEvent = {
 
 export const programDay = {
   weekday: "Torsdag",
-  date: "25. september",
+  date: "24. september",
 };
 
 export const todaysEvents: FestivalEvent[] = [
