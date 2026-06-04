@@ -1,0 +1,17 @@
+# Normalize line endings across platforms.
+# Store text files with LF in the repo and check them out with LF,
+# overriding Git for Windows' core.autocrlf=true (which otherwise prints
+# "LF will be replaced by CRLF" warnings and rewrites endings on checkout).
+* text=auto eol=lf
+
+# Treat these as binary so Git never touches their bytes.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.eot   binary
