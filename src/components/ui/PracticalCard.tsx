@@ -1,0 +1,38 @@
+import Link from "next/link";
+import {
+  IconPin,
+  IconBed,
+  IconBus,
+  IconCup,
+  IconAccessibility,
+  IconArrowRight,
+} from "@/components/icons";
+import type { PracticalIcon, PracticalItem } from "@/data/practical";
+
+const icons: Record<PracticalIcon, React.ComponentType<{ className?: string }>> = {
+  pin: IconPin,
+  bed: IconBed,
+  bus: IconBus,
+  cup: IconCup,
+  accessibility: IconAccessibility,
+};
+
+export function PracticalCard({ item }: { item: PracticalItem }) {
+  const Icon = icons[item.icon];
+
+  return (
+    <Link
+      href={item.href}
+      className="group flex h-full flex-col gap-3 rounded-2xl border border-petroleum/15 bg-cream-50 p-5 transition-all duration-200 hover:-translate-y-1 hover:border-petroleum/30 hover:shadow-md"
+    >
+      <span className="grid size-12 place-items-center rounded-xl bg-petroleum/10 text-petroleum transition-colors group-hover:bg-petroleum group-hover:text-cream-50">
+        <Icon className="size-6" />
+      </span>
+      <h3 className="font-display text-lg font-semibold text-ink">
+        {item.title}
+      </h3>
+      <p className="text-sm leading-relaxed text-ink-soft">{item.description}</p>
+      <IconArrowRight className="mt-auto size-5 text-teal transition-transform group-hover:translate-x-1" />
+    </Link>
+  );
+}
