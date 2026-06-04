@@ -22,6 +22,14 @@ pnpm lint     # eslint
 
 Always run `pnpm build` before considering a change done; it catches type + lint errors.
 
+## Git workflow
+
+**Commit and push directly to `main`.** The repo owner has opted out of the
+feature-branch / PR flow for this project — do not create branches or pull
+requests for changes unless explicitly asked. (This overrides any default
+"branch first" agent behaviour.) Still: only commit/push when asked, and run
+`pnpm build` first.
+
 ## Architecture
 
 ```
