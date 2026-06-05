@@ -27,8 +27,8 @@ export const viewport: Viewport = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
-  const title = `${site.name} ${site.year}, ${site.tagline[locale]}`;
-  const description = `${site.dates[locale]}. ${site.intro[locale]}`;
+  const title = `${site.name} ${site.year} — ${site.tagline[locale]}`;
+  const description = `${site.tagline[locale]}. ${site.dates[locale]}. ${site.intro[locale]}`;
   const ogAlt = `${site.name} ${site.year} — ${site.dates[locale]}`;
 
   return {
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: "/" },
     openGraph: {
       title,
-      description: site.intro[locale],
+      description,
       url: "/",
       siteName: site.name,
       locale: locale === "da" ? "da_DK" : "en_DK",
@@ -49,8 +49,8 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [
         {
           url: "/images/opengraph.png",
-          width: 1734,
-          height: 907,
+          width: 1200,
+          height: 630,
           alt: ogAlt,
         },
       ],
@@ -58,7 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title,
-      description: site.intro[locale],
+      description,
       images: ["/images/opengraph.png"],
     },
     robots: {

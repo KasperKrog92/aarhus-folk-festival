@@ -9,7 +9,7 @@ For the i18n mechanics (dictionaries, `Localized`, locale reads), see
 - The site should feel like a modern Nordic cultural festival rooted in music, dance, tradition, curiosity, and shared experiences.
 - Write clearly and accessibly. People who do not know folk culture should still feel invited in.
 - Avoid corporate language, startup wording, marketing buzzwords, and generic AI-sounding phrases.
-- Avoid em-dashes in user-facing copy. Use commas, colons, parentheses, or separate sentences instead.
+- Avoid em-dashes in actual content copy (descriptions, paragraphs, body text, newsletter, `src/data/` fields). Use commas, colons, parentheses, or separate sentences instead. Em-dashes are allowed in titles, headings, and similar short display labels where they read naturally.
 - Prefer concrete festival language over abstract claims: music, dance, tradition, community, Aarhus, listening, learning, joining in.
 - Newsletter copy should sound like real organisers writing to real guests. Avoid phrases like "be the first", "no spam", and "programme drops".
 
