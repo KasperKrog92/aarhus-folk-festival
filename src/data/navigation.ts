@@ -7,16 +7,16 @@ export type NavItem = {
 };
 
 export const mainNav: NavItem[] = [
-  { label: { da: "Program", en: "Programme" }, href: "#program" },
-  { label: { da: "Kunstnere", en: "Artists" }, href: "#kunstnere" },
-  { label: { da: "Workshops", en: "Workshops" }, href: "#oplev" },
-  { label: { da: "Praktisk info", en: "Practical info" }, href: "#praktisk" },
-  { label: { da: "Om festivalen", en: "About" }, href: "#om" },
+  { label: { da: "Program", en: "Programme" }, href: "/#program" },
+  { label: { da: "Kunstnere", en: "Artists" }, href: "/#kunstnere" },
+  { label: { da: "Workshops", en: "Workshops" }, href: "/#oplev" },
+  { label: { da: "Praktisk info", en: "Practical info" }, href: "/#praktisk" },
+  { label: { da: "Om festivalen", en: "About" }, href: "/#om" },
 ];
 
 export const footerNav: NavItem[] = [
-  { label: { da: "Kontakt", en: "Contact" }, href: "#kontakt" },
-  { label: { da: "Presse", en: "Press" }, href: "#presse" },
-  { label: { da: "Sponsorer", en: "Sponsors" }, href: "#sponsorer" },
-  { label: { da: "Arkiv", en: "Archive" }, href: "#arkiv" },
+  { label: { da: "Kontakt", en: "Contact" }, href: "/#kontakt" },
+  { label: { da: "Presse", en: "Press" }, href: "/#presse" },
+  { label: { da: "Sponsorer", en: "Sponsors" }, href: "/#sponsorer" },
+  { label: { da: "Arkiv", en: "Archive" }, href: "/#arkiv" },
 ];

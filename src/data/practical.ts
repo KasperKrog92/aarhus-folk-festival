@@ -1,7 +1,12 @@
 /** Practical info teaser cards. `icon` resolves to an SVG in the view layer. */
 import type { Localized } from "@/i18n/config";
 
-export type PracticalIcon = "pin" | "bed" | "bus" | "cup" | "accessibility";
+export type PracticalIcon =
+  | "pin"
+  | "bed"
+  | "bus"
+  | "cup"
+  | "accessibility";
 
 export type PracticalItem = {
   id: string;

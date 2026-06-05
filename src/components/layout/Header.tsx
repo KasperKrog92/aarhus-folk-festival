@@ -47,7 +47,7 @@ export function Header() {
         <Container className="flex h-20 items-center justify-between gap-4">
           {/* Logo */}
           <Link
-            href="#top"
+            href="/"
             className="flex shrink-0 items-center"
             aria-label={`${site.name}, ${t.header.home}`}
           >
