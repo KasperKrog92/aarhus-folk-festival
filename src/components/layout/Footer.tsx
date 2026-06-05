@@ -4,6 +4,8 @@ import { FolkBorder } from "@/components/decorative/FolkBorder";
 import { IconFacebook, IconInstagram } from "@/components/icons";
 import { footerNav, mainNav } from "@/data/navigation";
 import { site } from "@/data/site";
+import { getDictionary } from "@/i18n/dictionaries";
+import { getLocale } from "@/i18n/server";
 
 const socials = [
   {
@@ -18,7 +20,10 @@ const socials = [
   },
 ];
 
-export function Footer() {
+export async function Footer() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
   return (
     <footer id="kontakt" className="bg-petroleum text-cream-100">
       <FolkBorder flip className="bg-cream text-petroleum" />
@@ -28,11 +33,10 @@ export function Footer() {
           {/* Brand */}
           <div className="max-w-sm">
             <p className="font-display text-2xl font-semibold text-cream-50">
-              Aarhus Folk Festival
+              {site.name}
             </p>
             <p className="mt-3 text-sm leading-relaxed text-cream-100/80">
-              {site.dates}. Fire dage med folkemusik, dans og fællesskab
-              midt i Aarhus — for nysgerrige sjæle i alle aldre.
+              {site.dates[locale]}. {t.footer.blurb}
             </p>
 
             <div className="mt-6 flex gap-2">
@@ -50,9 +54,9 @@ export function Footer() {
           </div>
 
           {/* Explore */}
-          <nav aria-label="Sektioner">
+          <nav aria-label={t.footer.exploreAria}>
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-pink-200">
-              Udforsk
+              {t.footer.exploreHeading}
             </h2>
             <ul className="mt-4 space-y-2.5">
               {mainNav.map((item) => (
@@ -61,7 +65,7 @@ export function Footer() {
                     href={item.href}
                     className="text-sm text-cream-100/85 transition-colors hover:text-cream-50"
                   >
-                    {item.label}
+                    {item.label[locale]}
                   </Link>
                 </li>
               ))}
@@ -69,9 +73,9 @@ export function Footer() {
           </nav>
 
           {/* Festival info */}
-          <nav aria-label="Festival">
+          <nav aria-label={t.footer.festivalAria}>
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-pink-200">
-              Festival
+              {t.footer.festivalHeading}
             </h2>
             <ul className="mt-4 space-y-2.5">
               {footerNav.map((item) => (
@@ -80,7 +84,7 @@ export function Footer() {
                     href={item.href}
                     className="text-sm text-cream-100/85 transition-colors hover:text-cream-50"
                   >
-                    {item.label}
+                    {item.label[locale]}
                   </Link>
                 </li>
               ))}
@@ -90,9 +94,11 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-cream-100/15 pt-6 text-xs text-cream-100/65 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {site.year} {site.name}. Et frivilligdrevet kulturmøde i Aarhus.
+            © {site.year} {site.name}. {t.footer.copyright}
           </p>
-          <p>{site.edition} · {site.dates}</p>
+          <p>
+            {site.edition[locale]} · {site.dates[locale]}
+          </p>
         </div>
       </Container>
     </footer>

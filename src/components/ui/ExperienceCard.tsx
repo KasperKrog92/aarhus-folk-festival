@@ -9,6 +9,8 @@ import {
   IconArrowRight,
 } from "@/components/icons";
 import type { Experience, ExperienceIcon } from "@/data/experiences";
+import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 
 const icons: Record<ExperienceIcon, React.ComponentType<{ className?: string }>> = {
   concert: IconConcert,
@@ -27,8 +29,15 @@ const accents: Record<Experience["accent"], string> = {
   rust: "bg-rust/10 text-rust",
 };
 
-export function ExperienceCard({ experience }: { experience: Experience }) {
+export function ExperienceCard({
+  experience,
+  locale,
+}: {
+  experience: Experience;
+  locale: Locale;
+}) {
   const Icon = icons[experience.icon];
+  const t = getDictionary(locale);
 
   return (
     <Link
@@ -43,15 +52,15 @@ export function ExperienceCard({ experience }: { experience: Experience }) {
 
       <div className="flex flex-col gap-1.5">
         <h3 className="font-display text-xl font-semibold text-ink">
-          {experience.title}
+          {experience.title[locale]}
         </h3>
         <p className="text-sm leading-relaxed text-ink-soft">
-          {experience.description}
+          {experience.description[locale]}
         </p>
       </div>
 
       <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-petroleum transition-colors group-hover:text-rust">
-        Læs mere
+        {t.common.readMore}
         <IconArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
       </span>
     </Link>

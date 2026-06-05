@@ -42,11 +42,11 @@ requests for changes unless explicitly asked. (This overrides any default
 ```
 src/
   app/
-    layout.tsx            # fonts, metadata (lang="da"), renders Header + Footer + skip link
+    layout.tsx            # fonts, locale-aware metadata + <html lang>, LocaleProvider, Header/Footer/skip link
     page.tsx              # homepage: composes the section components in order
     globals.css           # design tokens (@theme) + base styles
   components/
-    layout/               # Header (client, mobile menu), Footer
+    layout/               # Header (client, mobile menu + language toggle), Footer
     sections/             # one component per homepage section
     ui/                   # reusable primitives: Container, Button, SectionHeading,
                           #   EventCard, ExperienceCard, PracticalCard
@@ -55,10 +55,35 @@ src/
     icons.tsx             # all inline SVG icons (24×24, stroke=currentColor)
   data/                   # static content arrays (site, navigation, events,
                           #   experiences, practical) — the only "content source" for now
+  i18n/                   # cookie-based DA/EN: config (Locale, Localized), dictionaries
+                          #   (UI chrome), server.ts (getLocale), LocaleProvider (client)
   lib/cn.ts               # tiny className joiner (no clsx dependency)
 ```
 
 **Content lives in `src/data/`**, not hardcoded in components. Edit data there; sections map over it.
+
+## Internationalisation (i18n)
+
+The site is bilingual **Danish (default) / English**, switched by the header
+toggle. There is **no locale routing** — the choice is stored in a cookie
+(`aff_locale`) and read server-side, so the URL never changes.
+
+- **UI-chrome strings** (buttons, headings, aria-labels, alt text) live in
+  `src/i18n/dictionaries.ts` as `{ da, en }`. The Danish object defines the
+  `Dictionary` shape; English must match it (missing keys = type error).
+  Interpolated values (titles, dates) are composed at the call site.
+- **Content data** in `src/data/` stores each translatable field as
+  `Localized<string>` (`= { da, en }`); structural fields (`id`, `href`, `time`,
+  `tone`, `icon`) stay plain.
+- **Server components** read the locale with `await getLocale()` from
+  `@/i18n/server` and `getDictionary(locale)`, then index `field[locale]`. Cards
+  receive `locale` as a prop.
+- **Client components** use `useLocale()` / `useTranslations()` from
+  `@/i18n/LocaleProvider`. Setting a locale writes the cookie and calls
+  `router.refresh()` so the server tree re-renders.
+
+When adding copy: add the key to **both** `da` and `en` (or a `Localized` field
+to the data), never hardcode a user-facing string in a component.
 
 ## Design system
 
@@ -85,8 +110,10 @@ in `components/decorative/` rather than re-rolling patterns.
 - `public/logos/logo_text.png` — full wordmark, **transparent** bg → used in the header.
 - `public/logos/logo.png` — accordion mark only, baked cream bg (avoid on non-cream surfaces).
 - `public/images/mockup_*.png` — design reference mockups (not used in the build).
-- No real photography yet → `ImagePlaceholder` renders on-brand gradient stand-ins. When real
-  photos arrive, swap `ImagePlaceholder` for `next/image` (keep the descriptive `alt`).
+- Real photography is arriving incrementally. `EventCard` already renders a real photo via
+  `next/image` when an event has an `image` (e.g. `public/events/detlysebal.jpg`), and falls
+  back to `ImagePlaceholder` otherwise. Elsewhere, `ImagePlaceholder` still renders on-brand
+  gradient stand-ins; swap it for `next/image` as photos arrive (keep the descriptive `alt`).
 
 ## Important constraints (do not violate)
 
@@ -97,12 +124,16 @@ in `components/decorative/` rather than re-rolling patterns.
 - **No CMS / backend.** Content is static arrays in `src/data/`. The newsletter form is a
   visual demo only (`preventDefault`, no network).
 - **Mobile-first, accessible, semantic.** Keep landmark elements, real heading order, focus
-  styles, descriptive `alt`/`aria-label`, and `lang="da"`. UI copy is **Danish**.
+  styles, and descriptive `alt`/`aria-label`. `<html lang>` follows the active locale.
+- **Bilingual UI copy (DA default / EN).** Danish is the default and source of truth; every
+  user-facing string is also authored in English via the i18n system above — don't hardcode
+  copy in components. (This supersedes the earlier "UI copy is Danish only" rule.)
 
 ## Conventions
 
 - Server components by default; add `"use client"` only when interactivity is needed
-  (currently `Header` and `Newsletter`).
+  (currently `Header`, `Newsletter`, and the i18n `LocaleProvider`). Section components are
+  `async` server components that read the locale via `getLocale()`.
 - Keep components small and composable; share spacing via `Container` and headings via
   `SectionHeading`. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
 - Section `id`s double as in-page nav anchors (`#program`, `#oplev`, `#om`, `#praktisk`).

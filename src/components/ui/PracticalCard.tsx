@@ -8,6 +8,7 @@ import {
   IconArrowRight,
 } from "@/components/icons";
 import type { PracticalIcon, PracticalItem } from "@/data/practical";
+import type { Locale } from "@/i18n/config";
 
 const icons: Record<PracticalIcon, React.ComponentType<{ className?: string }>> = {
   pin: IconPin,
@@ -17,7 +18,13 @@ const icons: Record<PracticalIcon, React.ComponentType<{ className?: string }>> 
   accessibility: IconAccessibility,
 };
 
-export function PracticalCard({ item }: { item: PracticalItem }) {
+export function PracticalCard({
+  item,
+  locale,
+}: {
+  item: PracticalItem;
+  locale: Locale;
+}) {
   const Icon = icons[item.icon];
 
   return (
@@ -29,9 +36,11 @@ export function PracticalCard({ item }: { item: PracticalItem }) {
         <Icon className="size-6" />
       </span>
       <h3 className="font-display text-lg font-semibold text-ink">
-        {item.title}
+        {item.title[locale]}
       </h3>
-      <p className="text-sm leading-relaxed text-ink-soft">{item.description}</p>
+      <p className="text-sm leading-relaxed text-ink-soft">
+        {item.description[locale]}
+      </p>
       <IconArrowRight className="mt-auto size-5 text-teal transition-transform group-hover:translate-x-1" />
     </Link>
   );

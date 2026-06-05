@@ -2,19 +2,24 @@ import { cn } from "@/lib/cn";
 
 type JubilaeumBadgeProps = {
   className?: string;
+  /** Accessible label; localised by the caller. The visual lettering stays as the stamp's design. */
+  label?: string;
 };
 
 /**
  * Round "10 års jubilæum" stamp with circular lettering — a nod to the
  * festival's anniversary, styled like a hand-stamped seal.
  */
-export function JubilaeumBadge({ className }: JubilaeumBadgeProps) {
+export function JubilaeumBadge({
+  className,
+  label = "10 års jubilæum — Aarhus Folk Festival",
+}: JubilaeumBadgeProps) {
   return (
     <svg
       viewBox="0 0 200 200"
       className={cn("size-32 text-cream-50", className)}
       role="img"
-      aria-label="10 års jubilæum — Aarhus Folk Festival"
+      aria-label={label}
     >
       <defs>
         <path

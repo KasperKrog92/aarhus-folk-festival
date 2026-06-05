@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { IconMail, IconArrowRight } from "@/components/icons";
+import { useTranslations } from "@/i18n/LocaleProvider";
 
 export function Newsletter() {
+  const t = useTranslations();
   const [submitted, setSubmitted] = useState(false);
 
   // No backend yet — just acknowledge the sign-up locally for this concept.
@@ -43,17 +45,16 @@ export function Newsletter() {
             <div>
               <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-pink-600">
                 <IconMail className="size-4" />
-                Nyhedsbrev 2026
+                {t.newsletter.eyebrow}
               </span>
               <h2
                 id="nyhedsbrev-overskrift"
                 className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
               >
-                Vær først med det hele
+                {t.newsletter.title}
               </h2>
               <p className="mt-3 max-w-md text-base leading-relaxed text-ink-soft">
-                Få besked, når programmet løftes, billetterne åbner, og de
-                første kunstnere offentliggøres. Ingen spam — kun folkemusik.
+                {t.newsletter.body}
               </p>
             </div>
 
@@ -63,7 +64,7 @@ export function Newsletter() {
                   role="status"
                   className="rounded-2xl bg-petroleum px-5 py-4 text-center font-semibold text-cream-50"
                 >
-                  Tak! Vi skriver til dig, så snart der er nyt. 🎶
+                  {t.newsletter.success}
                 </p>
               ) : (
                 <form
@@ -73,14 +74,14 @@ export function Newsletter() {
                 >
                   <div className="flex-1">
                     <label htmlFor="nyhedsbrev-email" className="sr-only">
-                      Din e-mailadresse
+                      {t.newsletter.emailLabel}
                     </label>
                     <input
                       id="nyhedsbrev-email"
                       type="email"
                       required
                       autoComplete="email"
-                      placeholder="din@email.dk"
+                      placeholder={t.newsletter.placeholder}
                       className="w-full rounded-full border border-ink/15 bg-white px-5 py-3.5 text-base text-ink placeholder:text-ink-muted focus:border-petroleum focus:outline-none focus:ring-2 focus:ring-petroleum/30"
                     />
                   </div>
@@ -88,13 +89,13 @@ export function Newsletter() {
                     type="submit"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-pink px-6 py-3.5 font-semibold text-white shadow-sm shadow-pink/30 transition-all duration-200 hover:-translate-y-0.5 hover:bg-pink-600"
                   >
-                    Tilmeld
+                    {t.newsletter.submit}
                     <IconArrowRight className="size-5" />
                   </button>
                 </form>
               )}
               <p className="mt-3 text-xs text-ink-muted">
-                Demo — formularen sender ikke noget endnu.
+                {t.newsletter.demoNote}
               </p>
             </div>
           </div>

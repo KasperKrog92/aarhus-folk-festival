@@ -3,8 +3,13 @@ import { ExperienceCard } from "@/components/ui/ExperienceCard";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { IconHeart } from "@/components/icons";
 import { experiences } from "@/data/experiences";
+import { getDictionary } from "@/i18n/dictionaries";
+import { getLocale } from "@/i18n/server";
 
-export function ExperienceSection() {
+export async function ExperienceSection() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
   return (
     <section
       id="oplev"
@@ -14,13 +19,13 @@ export function ExperienceSection() {
       <Container>
         <div className="flex flex-col items-center gap-3 text-center">
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-pink-600">
-            Oplev festivalen
+            {t.experiences.eyebrow}
           </span>
           <h2
             id="oplev-overskrift"
             className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
           >
-            Musik. Mennesker. Minder.
+            {t.experiences.title}
           </h2>
 
           {/* little folk heart divider */}
@@ -34,15 +39,14 @@ export function ExperienceSection() {
           </div>
 
           <p className="mt-1 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
-            Fra stille kirkekoncerter til svedige sessioner — der er en plads
-            til dig, uanset om du lytter, danser eller spiller med.
+            {t.experiences.intro}
           </p>
         </div>
 
         <ul className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {experiences.map((experience) => (
             <li key={experience.id}>
-              <ExperienceCard experience={experience} />
+              <ExperienceCard experience={experience} locale={locale} />
             </li>
           ))}
         </ul>

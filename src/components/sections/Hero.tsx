@@ -5,8 +5,13 @@ import { ScallopEdge } from "@/components/decorative/ScallopEdge";
 import { JubilaeumBadge } from "@/components/decorative/JubilaeumBadge";
 import { IconArrowRight } from "@/components/icons";
 import { site } from "@/data/site";
+import { getDictionary } from "@/i18n/dictionaries";
+import { getLocale } from "@/i18n/server";
 
-export function Hero() {
+export async function Hero() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
   return (
     <section
       id="top"
@@ -17,7 +22,7 @@ export function Hero() {
       <div className="absolute inset-0 -z-10">
         <Image
           src="/images/hero_dancing.png"
-          alt="Festivalgæster danser til levende folkemusik i en stemningsfyldt lade med lyskæder, mens en violinist og en harmonikaspiller spiller"
+          alt={t.hero_alt.background}
           fill
           priority
           sizes="100vw"
@@ -32,28 +37,33 @@ export function Hero() {
       <Container className="relative grid items-center gap-10 py-20 sm:py-28 lg:grid-cols-[1.5fr_1fr] lg:py-36">
         <div className="max-w-2xl">
           <p className="inline-flex items-center gap-2 rounded-full border border-pink-200/40 bg-white/[0.08] px-4 py-1.5 text-sm font-semibold tracking-wide text-pink-200 backdrop-blur">
-            {site.dates}
+            {site.dates[locale]}
           </p>
 
           <h1
             id="hero-overskrift"
             className="mt-6 font-display text-5xl font-semibold leading-[1.04] tracking-tight text-cream-50 drop-shadow-sm sm:text-6xl lg:text-7xl"
           >
-            Folkemusikken
+            {t.hero.headlineLine1}
             <br />
-            indtager Aarhus
+            {t.hero.headlineLine2}
           </h1>
 
           <p className="mt-6 max-w-md text-lg leading-relaxed text-cream-100/90 sm:text-xl">
-            {site.intro}
+            {site.intro[locale]}
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button href={site.ticketUrl} size="lg">
-              Køb billet
+            <Button
+              href={site.ticketUrl[locale]}
+              size="lg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.common.buyTicket}
             </Button>
             <Button href={site.programUrl} variant="outlineLight" size="lg">
-              Se program
+              {t.hero.seeProgram}
               <IconArrowRight className="size-5" />
             </Button>
           </div>
@@ -61,7 +71,10 @@ export function Hero() {
 
         {/* Anniversary stamp */}
         <div className="hidden justify-self-center lg:flex lg:justify-self-end">
-          <JubilaeumBadge className="size-44 animate-float-slow drop-shadow-xl" />
+          <JubilaeumBadge
+            label={t.hero.badgeLabel}
+            className="size-44 animate-float-slow drop-shadow-xl"
+          />
         </div>
       </Container>
 

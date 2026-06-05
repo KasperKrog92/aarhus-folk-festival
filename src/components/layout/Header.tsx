@@ -9,9 +9,14 @@ import { FolkBorder } from "@/components/decorative/FolkBorder";
 import { IconMenu, IconClose, IconHeart } from "@/components/icons";
 import { mainNav } from "@/data/navigation";
 import { site } from "@/data/site";
+import { locales } from "@/i18n/config";
+import { useLocale, useTranslations } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/cn";
 
 export function Header() {
+  const { locale } = useLocale();
+  const t = useTranslations();
+  const ticketHref = site.ticketUrl[locale];
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -44,7 +49,7 @@ export function Header() {
           <Link
             href="#top"
             className="flex shrink-0 items-center"
-            aria-label={`${site.name} — til forsiden`}
+            aria-label={`${site.name} — ${t.header.home}`}
           >
             <Image
               src="/logos/logo_text.png"
@@ -58,7 +63,7 @@ export function Header() {
 
           {/* Desktop navigation */}
           <nav
-            aria-label="Hovedmenu"
+            aria-label={t.header.mainMenu}
             className="hidden items-center gap-7 lg:flex"
           >
             {mainNav.map((item) => (
@@ -67,7 +72,7 @@ export function Header() {
                 href={item.href}
                 className="text-sm font-semibold text-ink/80 transition-colors hover:text-rust"
               >
-                {item.label}
+                {item.label[locale]}
               </Link>
             ))}
           </nav>
@@ -77,25 +82,37 @@ export function Header() {
             <LanguageToggle />
             <button
               type="button"
-              aria-label="Gem festivalen"
+              aria-label={t.header.save}
               className="grid size-10 place-items-center rounded-full text-ink/70 transition-colors hover:bg-ink/[0.05] hover:text-pink-600"
             >
               <IconHeart className="size-5" />
             </button>
-            <Button href={site.ticketUrl}>Køb billet</Button>
+            <Button
+              href={ticketHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.common.buyTicket}
+            </Button>
           </div>
 
           {/* Mobile controls */}
           <div className="flex items-center gap-2 lg:hidden">
-            <Button href={site.ticketUrl} size="md" className="px-4">
-              Køb billet
+            <Button
+              href={ticketHref}
+              size="md"
+              className="px-4"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.common.buyTicket}
             </Button>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="mobil-menu"
-              aria-label={open ? "Luk menu" : "Åbn menu"}
+              aria-label={open ? t.header.closeMenu : t.header.openMenu}
               className="grid size-11 place-items-center rounded-full border border-ink/15 text-ink transition-colors hover:bg-ink/[0.05]"
             >
               {open ? (
@@ -118,7 +135,7 @@ export function Header() {
           className="lg:hidden"
           role="dialog"
           aria-modal="true"
-          aria-label="Menu"
+          aria-label={t.header.menu}
         >
           <div className="border-b border-ink/10 bg-cream shadow-lg">
             <Container className="flex flex-col gap-1 py-4">
@@ -129,17 +146,19 @@ export function Header() {
                   onClick={() => setOpen(false)}
                   className="rounded-xl px-3 py-3 text-lg font-semibold text-ink transition-colors hover:bg-ink/[0.05]"
                 >
-                  {item.label}
+                  {item.label[locale]}
                 </Link>
               ))}
               <div className="mt-3 flex items-center justify-between px-1">
                 <LanguageToggle />
                 <Button
-                  href={site.ticketUrl}
+                  href={ticketHref}
                   size="lg"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
                 >
-                  Køb billet
+                  {t.common.buyTicket}
                 </Button>
               </div>
             </Container>
@@ -150,23 +169,36 @@ export function Header() {
   );
 }
 
-/** Static DA / EN toggle — visual only for this concept. */
+/** DA / EN toggle — persists the choice in a cookie and refreshes the tree. */
 function LanguageToggle() {
+  const { locale, setLocale } = useLocale();
+  const t = useTranslations();
+
   return (
     <div
       className="flex items-center rounded-full border border-ink/15 p-0.5 text-xs font-semibold"
       role="group"
-      aria-label="Vælg sprog"
+      aria-label={t.header.chooseLanguage}
     >
-      <span className="rounded-full bg-petroleum px-2.5 py-1 text-cream-50">
-        DA
-      </span>
-      <button
-        type="button"
-        className="px-2.5 py-1 text-ink/60 transition-colors hover:text-ink"
-      >
-        EN
-      </button>
+      {locales.map((code) => {
+        const active = code === locale;
+        return (
+          <button
+            key={code}
+            type="button"
+            onClick={() => setLocale(code)}
+            aria-pressed={active}
+            className={cn(
+              "rounded-full px-2.5 py-1 transition-colors",
+              active
+                ? "bg-petroleum text-cream-50"
+                : "text-ink/60 hover:text-ink",
+            )}
+          >
+            {code.toUpperCase()}
+          </button>
+        );
+      })}
     </div>
   );
 }
