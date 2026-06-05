@@ -47,7 +47,6 @@ const da = {
     paragraph2:
       "Festivalen bygger på tradition, nysgerrighed og lysten til at være sammen. Kom som du er. Lyt med, syng med, dans med, eller tag instrumentet under armen. Du behøver ikke kende folkemusikken på forhånd for at finde en plads her.",
     cta: "Læs om festivalen",
-    tags: "Musik · dans · tradition · fællesskab",
     photoCaption: "Sammen om musikken",
     photoAlt: "Festivalgæster danser sammen i en sal",
   },
@@ -129,7 +128,6 @@ const en: Dictionary = {
     paragraph2:
       "The festival is built on tradition, curiosity and the pleasure of being together. Come as you are. Listen, sing, dance, or bring your instrument. You do not need to know folk music already to feel at home here.",
     cta: "Read about the festival",
-    tags: "Music · dance · tradition · togetherness",
     photoCaption: "Together around the music",
     photoAlt: "Festival guests dancing together in a hall",
   },

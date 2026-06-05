@@ -53,6 +53,8 @@ export async function Footer() {
             </div>
           </div>
 
+          {/* Link lists: side by side on mobile, individual columns from md up */}
+          <div className="grid grid-cols-2 gap-8 md:contents">
           {/* Explore */}
           <nav aria-label={t.footer.exploreAria}>
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-pink-200">
@@ -90,6 +92,7 @@ export async function Footer() {
               ))}
             </ul>
           </nav>
+          </div>
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-cream-100/15 pt-6 text-xs text-cream-100/65 sm:flex-row sm:items-center sm:justify-between">

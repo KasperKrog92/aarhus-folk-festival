@@ -22,9 +22,12 @@ const categoryIcon: Record<string, React.ReactNode> = {
 export function EventCard({
   event,
   locale,
+  priority = false,
 }: {
   event: FestivalEvent;
   locale: Locale;
+  /** Eager-load + high fetch priority. Set on the LCP card (first, above the fold). */
+  priority?: boolean;
 }) {
   const t = getDictionary(locale);
   const title = event.title[locale];
@@ -38,6 +41,7 @@ export function EventCard({
               src={event.image}
               alt={`${t.eventCard.imageAlt} ${title}`}
               fill
+              priority={priority}
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
             />

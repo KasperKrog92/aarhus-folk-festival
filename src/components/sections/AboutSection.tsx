@@ -57,12 +57,11 @@ export async function AboutSection() {
             <p>{t.about.paragraph2}</p>
           </div>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="mt-8">
             <Button href="#om" variant="solidLight" size="lg">
               {t.about.cta}
               <IconArrowRight className="size-5" />
             </Button>
-            <p className="text-sm text-cream-100/70">{t.about.tags}</p>
           </div>
         </div>
       </Container>
