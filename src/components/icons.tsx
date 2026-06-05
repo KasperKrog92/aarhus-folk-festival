@@ -223,12 +223,3 @@ export function IconInstagram(props: IconProps) {
     </Svg>
   );
 }
-
-export function IconYoutube(props: IconProps) {
-  return (
-    <Svg {...props}>
-      <rect x="3" y="6" width="18" height="12" rx="3.5" />
-      <path d="m11 9.5 4 2.5-4 2.5z" />
-    </Svg>
-  );
-}

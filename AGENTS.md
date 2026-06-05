@@ -20,7 +20,14 @@ pnpm build    # production build — also runs typecheck
 pnpm lint     # eslint
 ```
 
-Always run `pnpm build` before considering a change done; it catches type + lint errors.
+Scale verification to the change: `pnpm lint` or a typecheck is often enough for
+small code edits, while `pnpm build` is for substantive changes that need full
+production confidence. For tiny visual copy/CSS/SVG adjustments, do not run a
+build unless explicitly requested.
+
+If a dev server is already running, do **not** open the site or run browser
+verification yourself. Assume the owner has it open and will check visual
+changes manually; ask them to verify anything that needs browser judgment.
 
 ## Git workflow
 

@@ -19,44 +19,54 @@ export function JubilaeumBadge({ className }: JubilaeumBadgeProps) {
       <defs>
         <path
           id="badge-arc-top"
-          d="M 100,100 m -74,0 a 74,74 0 1 1 148,0"
+          d="M 38,100 A 62,62 0 0 1 162,100"
         />
         <path
           id="badge-arc-bottom"
-          d="M 100,100 m -68,0 a 68,68 0 1 0 136,0"
+          d="M 34,100 A 66,66 0 0 0 166,100"
         />
       </defs>
 
       {/* seal body */}
-      <circle cx="100" cy="100" r="88" fill="#134e57" />
+      <circle cx="100" cy="100" r="90" fill="#0e3b43" />
+      <circle cx="100" cy="100" r="84" fill="#134e57" />
       <circle
         cx="100"
         cy="100"
-        r="80"
+        r="76"
         fill="none"
         stroke="#7bb4bb"
-        strokeWidth="1.5"
-        strokeDasharray="2 5"
+        strokeWidth="1.25"
+        strokeDasharray="1.5 5"
         strokeLinecap="round"
+      />
+      <circle
+        cx="100"
+        cy="100"
+        r="53"
+        fill="none"
+        stroke="#7bb4bb"
+        strokeWidth="1"
+        strokeOpacity="0.35"
       />
 
       {/* circular lettering */}
       <text
         fill="currentColor"
-        fontSize="14"
+        fontSize="11.5"
         fontWeight="700"
-        letterSpacing="3"
+        letterSpacing="2.2"
         style={{ fontFamily: "var(--font-jakarta)" }}
       >
         <textPath href="#badge-arc-top" startOffset="50%" textAnchor="middle">
-          AARHUS · FOLK · FESTIVAL
+          AARHUS FOLK FESTIVAL
         </textPath>
       </text>
       <text
         fill="#7bb4bb"
-        fontSize="11"
+        fontSize="9.5"
         fontWeight="600"
-        letterSpacing="4"
+        letterSpacing="2.6"
         style={{ fontFamily: "var(--font-jakarta)" }}
       >
         <textPath
@@ -71,10 +81,10 @@ export function JubilaeumBadge({ className }: JubilaeumBadgeProps) {
       {/* centre mark */}
       <text
         x="100"
-        y="98"
+        y="96"
         textAnchor="middle"
         fill="#f0bccb"
-        fontSize="44"
+        fontSize="43"
         fontWeight="700"
         style={{ fontFamily: "var(--font-fraunces)" }}
       >
@@ -85,21 +95,21 @@ export function JubilaeumBadge({ className }: JubilaeumBadgeProps) {
         y="122"
         textAnchor="middle"
         fill="currentColor"
-        fontSize="14"
+        fontSize="13"
         fontWeight="600"
-        letterSpacing="6"
+        letterSpacing="5.5"
         style={{ fontFamily: "var(--font-jakarta)" }}
       >
         ÅRS
       </text>
       <text
         x="100"
-        y="138"
+        y="140"
         textAnchor="middle"
         fill="#7bb4bb"
-        fontSize="9"
+        fontSize="8.5"
         fontWeight="600"
-        letterSpacing="3"
+        letterSpacing="2.4"
         style={{ fontFamily: "var(--font-jakarta)" }}
       >
         JUBILÆUM

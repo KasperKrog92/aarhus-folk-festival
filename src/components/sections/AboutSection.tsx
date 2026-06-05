@@ -1,7 +1,7 @@
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
-import { IconDance, IconHeart, IconArrowRight } from "@/components/icons";
+import { IconHeart, IconArrowRight } from "@/components/icons";
 
 export function AboutSection() {
   return (
@@ -11,15 +11,20 @@ export function AboutSection() {
       className="scroll-mt-24 bg-petroleum py-16 text-cream-100 sm:py-24"
     >
       <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-        {/* Imagined community photo */}
+        {/* Festival community photo */}
         <div className="relative">
-          <ImagePlaceholder
-            alt="Festivalgæster danser sammen i en fyldt sal"
-            tone="teal"
-            icon={<IconDance />}
-            caption="Sammen om musikken"
-            className="aspect-[5/4] w-full rounded-3xl shadow-xl"
-          />
+          <div className="relative aspect-[5/4] w-full overflow-hidden rounded-3xl shadow-xl">
+            <Image
+              src="/images/sammen.jpg"
+              alt="Festivalgæster danser sammen i en fyldt sal"
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+            <span className="absolute bottom-3 left-3 rounded-full bg-black/25 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wider text-white/80 backdrop-blur-sm">
+              Sammen om musikken
+            </span>
+          </div>
           {/* decorative hearts */}
           <div
             aria-hidden

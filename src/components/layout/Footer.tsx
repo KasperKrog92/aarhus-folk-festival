@@ -1,18 +1,21 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { FolkBorder } from "@/components/decorative/FolkBorder";
-import {
-  IconFacebook,
-  IconInstagram,
-  IconYoutube,
-} from "@/components/icons";
+import { IconFacebook, IconInstagram } from "@/components/icons";
 import { footerNav, mainNav } from "@/data/navigation";
 import { site } from "@/data/site";
 
 const socials = [
-  { label: "Facebook", href: "#", Icon: IconFacebook },
-  { label: "Instagram", href: "#", Icon: IconInstagram },
-  { label: "YouTube", href: "#", Icon: IconYoutube },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/aarhusfolkfestival",
+    Icon: IconFacebook,
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/aarhusfolkfestival/",
+    Icon: IconInstagram,
+  },
 ];
 
 export function Footer() {
