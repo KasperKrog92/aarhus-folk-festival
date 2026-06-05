@@ -3,15 +3,15 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { associationPage } from "@/data/association";
-import { site } from "@/data/site";
 import { getLocale } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
 
   return {
-    title: `${associationPage.title[locale]} | ${site.name}`,
+    title: associationPage.title[locale],
     description: associationPage.intro[locale],
+    alternates: { canonical: associationPage.href },
   };
 }
 

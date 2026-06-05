@@ -26,6 +26,7 @@ in `components/decorative/` rather than re-rolling patterns.
 - `public/logos/logo_text.png` - full source wordmark, **transparent** bg.
 - `public/logos/logo_text_header.png` - optimized header wordmark; use this in the sticky header.
 - `public/logos/logo.png` - accordion mark only, baked cream bg (avoid on non-cream surfaces).
+- `public/logos/logo_mark_black.png` - accordion mark in solid black on a **transparent** bg; unused for now, kept for future monochrome use (e.g. favicon/icon source).
 - `public/images/mockup_*.png` - design reference mockups (not used in the build).
 - Use JPEG/WebP/AVIF for photo-like assets. Keep PNG for transparency, logos, mockups, or graphic artwork.
 - Real photography is arriving incrementally. `EventCard` already renders a real photo via

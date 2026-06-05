@@ -6,8 +6,10 @@ components compose.
 ```
 src/
   app/
-    layout.tsx            # fonts, locale-aware metadata + <html lang>, LocaleProvider, Header/Footer/skip link
+    layout.tsx            # fonts, locale-aware metadata (OG/Twitter/canonical/title template) + <html lang>, LocaleProvider, Header/Footer/skip link
     page.tsx              # homepage: composes the section components in order
+    robots.ts             # /robots.txt (allow all + sitemap link)
+    sitemap.ts            # /sitemap.xml (the public routes)
     globals.css           # design tokens (@theme) + base styles
   components/
     layout/               # Header (client, mobile menu + language toggle), Footer
@@ -37,3 +39,12 @@ src/
 - Keep components small and composable; share spacing via `Container` and headings via
   `SectionHeading`. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
 - Section `id`s double as in-page nav anchors (`#program`, `#oplev`, `#om`, `#praktisk`).
+
+## SEO / metadata
+
+- `site.url` (in `data/site.ts`) is the canonical origin and the single source of truth for
+  `metadataBase`, `robots.ts`, and `sitemap.ts`. Update it there only.
+- The root `layout.tsx` sets the shared OpenGraph/Twitter card (image: `public/images/opengraph.png`),
+  a `%s | Aarhus Folk Festival` title template, and the home canonical. Subpages just set their
+  page `title`, `description`, and own `alternates.canonical` — they inherit the OG/Twitter card.
+- Adding a new public route? Give it a `canonical` in its `generateMetadata` and add it to `sitemap.ts`.

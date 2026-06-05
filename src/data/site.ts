@@ -23,6 +23,12 @@ export const site = {
     en: "Four days of concerts, dance, workshops and shared moments across the city.",
   } as Localized,
   city: "Aarhus",
+  /**
+   * Canonical production origin (no trailing slash). Used for SEO metadata.
+   * Currently hosted at folk.gamestormers.dk; will move to
+   * https://www.aarhusfolkfestival.dk in the future.
+   */
+  url: "https://folk.gamestormers.dk",
   /** Partout-ticket sales (external, per locale). */
   ticketUrl: {
     da: "https://place2book.com/da/sw2/sales/9j1ap558p1",

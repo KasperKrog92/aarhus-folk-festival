@@ -4,15 +4,15 @@ import { Container } from "@/components/ui/Container";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { IconMail } from "@/components/icons";
 import { contactPage } from "@/data/contact";
-import { site } from "@/data/site";
 import { getLocale } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
 
   return {
-    title: `${contactPage.title[locale]} | ${site.name}`,
+    title: contactPage.title[locale],
     description: contactPage.intro[locale],
+    alternates: { canonical: contactPage.href },
   };
 }
 

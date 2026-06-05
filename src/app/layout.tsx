@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
@@ -21,18 +21,49 @@ const fraunces = Fraunces({
   axes: ["opsz", "SOFT"],
 });
 
+export const viewport: Viewport = {
+  themeColor: "#134e57",
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const title = `${site.name} ${site.year}, ${site.tagline[locale]}`;
   const description = `${site.dates[locale]}. ${site.intro[locale]}`;
+  const ogAlt = `${site.name} ${site.year} — ${site.dates[locale]}`;
+
   return {
-    title,
+    metadataBase: new URL(site.url),
+    title: {
+      default: title,
+      template: `%s | ${site.name}`,
+    },
     description,
+    alternates: { canonical: "/" },
     openGraph: {
-      title: `${site.name} ${site.year}`,
+      title,
       description: site.intro[locale],
+      url: "/",
+      siteName: site.name,
       locale: locale === "da" ? "da_DK" : "en_DK",
       type: "website",
+      images: [
+        {
+          url: "/images/opengraph.png",
+          width: 1734,
+          height: 907,
+          alt: ogAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: site.intro[locale],
+      images: ["/images/opengraph.png"],
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
