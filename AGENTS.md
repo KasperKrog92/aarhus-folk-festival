@@ -44,6 +44,12 @@ small code edits, while `pnpm build` is for substantive changes that need full
 production confidence. For tiny visual copy/CSS/SVG adjustments, do not run a
 build unless explicitly requested.
 
+When the best implementation requires a specialized tool or package (for
+example image optimizers, asset conversion CLIs, inspection utilities, or
+framework helpers), install the appropriate tool and use it. Prefer project-local
+dev dependencies or documented one-off commands over improvised workarounds, and
+keep installs scoped to what the task genuinely needs.
+
 If a dev server is already running, do **not** open the site or run browser
 verification yourself. Assume the owner has it open and will check visual
 changes manually; ask them to verify anything that needs browser judgment.

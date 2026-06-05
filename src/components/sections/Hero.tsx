@@ -21,10 +21,11 @@ export async function Hero() {
       {/* Background photo + warm readability overlays */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/images/hero_dancing.png"
+          src="/images/hero_dancing.jpg"
           alt={t.hero_alt.background}
           fill
-          priority
+          fetchPriority="high"
+          loading="eager"
           sizes="100vw"
           className="object-cover object-[58%_20%]"
         />

@@ -10,7 +10,7 @@ const base =
 const variants: Record<Variant, string> = {
   // Dusty coral pink, the festival's primary call to action.
   primary:
-    "bg-pink text-white shadow-sm shadow-pink/30 hover:bg-pink-600 hover:-translate-y-0.5 active:translate-y-0",
+    "bg-pink-600 text-white shadow-sm shadow-pink/30 hover:bg-rust hover:-translate-y-0.5 active:translate-y-0",
   // Subtle outline for use on cream surfaces.
   outline:
     "border border-ink/20 text-ink hover:border-ink/40 hover:bg-ink/[0.04]",

@@ -10,7 +10,7 @@ utilities (`bg-petroleum`, `text-pink-600`, `border-ink/15`, gradients, opacity 
 |-------|-----|
 | `cream` / `cream-50/100/200` | page + card backgrounds (warm paper) |
 | `petroleum` / `petroleum-700/900`, `teal` | deep teal sections, accents, header bunting |
-| `pink` / `pink-600` / `pink-200/100` | **primary CTA** (dusty coral), eyebrows, decoration |
+| `pink` / `pink-600` / `pink-200/100` | dusty coral family: `pink` for decoration/soft fills, `pink-600` for accessible small accent text and primary CTA backgrounds |
 | `aubergine` | deep accent (gradients, icon badges) |
 | `rust` | brick red from the logo (hover/links) |
 | `ink` / `ink-soft` / `ink-muted` | warm off-black text scale |
@@ -23,9 +23,11 @@ in `components/decorative/` rather than re-rolling patterns.
 
 ## Assets
 
-- `public/logos/logo_text.png` - full wordmark, **transparent** bg, used in the header.
+- `public/logos/logo_text.png` - full source wordmark, **transparent** bg.
+- `public/logos/logo_text_header.png` - optimized header wordmark; use this in the sticky header.
 - `public/logos/logo.png` - accordion mark only, baked cream bg (avoid on non-cream surfaces).
 - `public/images/mockup_*.png` - design reference mockups (not used in the build).
+- Use JPEG/WebP/AVIF for photo-like assets. Keep PNG for transparency, logos, mockups, or graphic artwork.
 - Real photography is arriving incrementally. `EventCard` already renders a real photo via
   `next/image` when an event has an `image` (e.g. `public/events/detlysebal.jpg`), and falls
   back to `ImagePlaceholder` otherwise. Elsewhere, `ImagePlaceholder` still renders on-brand

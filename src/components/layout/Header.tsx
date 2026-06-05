@@ -53,11 +53,10 @@ export function Header() {
             aria-label={`${site.name}, ${t.header.home}`}
           >
             <Image
-              src="/logos/logo_text.png"
+              src="/logos/logo_text_header.png"
               alt={site.name}
-              width={1203}
-              height={626}
-              priority
+              width={240}
+              height={125}
               className="h-11 w-auto sm:h-12 lg:h-14"
             />
           </Link>

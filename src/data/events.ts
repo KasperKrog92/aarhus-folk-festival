@@ -32,7 +32,7 @@ export const todaysEvents: FestivalEvent[] = [
     title: { da: "Dreamers' Circus", en: "Dreamers' Circus" },
     venue: { da: "Sankt Lukas Kirke", en: "Sankt Lukas Kirke" },
     tone: "petroleum",
-    image: "/events/dreamers.png",
+    image: "/events/dreamers.jpg",
   },
   {
     id: "det-lyse-bal",

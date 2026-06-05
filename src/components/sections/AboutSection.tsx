@@ -20,7 +20,7 @@ export async function AboutSection() {
         <div className="relative">
           <div className="relative aspect-[5/4] w-full overflow-hidden rounded-3xl shadow-xl">
             <Image
-              src="/images/sammen.png"
+              src="/images/sammen.jpg"
               alt={t.about.photoAlt}
               fill
               sizes="(min-width: 1024px) 50vw, 100vw"

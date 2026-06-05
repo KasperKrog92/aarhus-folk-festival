@@ -41,9 +41,9 @@ export async function ProgramPreview() {
         </div>
 
         <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {todaysEvents.map((event, index) => (
+          {todaysEvents.map((event) => (
             <li key={event.id}>
-              <EventCard event={event} locale={locale} priority={index === 0} />
+              <EventCard event={event} locale={locale} />
             </li>
           ))}
         </ul>
