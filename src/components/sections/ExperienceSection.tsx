@@ -14,7 +14,7 @@ export async function ExperienceSection() {
     <section
       id="oplev"
       aria-labelledby="oplev-overskrift"
-      className="scroll-mt-24 bg-cream-100 py-16 sm:py-20"
+      className="bg-cream-100 py-16 sm:py-20"
     >
       <Container>
         <div className="flex flex-col items-center gap-3 text-center">

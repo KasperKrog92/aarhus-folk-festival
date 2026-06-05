@@ -46,7 +46,9 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    /* Offset in-page anchors by the sticky header height so sections land just
+       below it: 80px nav bar (h-20) + 28px folk bunting (h-7) = 6.75rem. */
+    scroll-padding-top: 6.75rem;
   }
 
   body {

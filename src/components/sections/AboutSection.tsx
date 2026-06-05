@@ -13,7 +13,7 @@ export async function AboutSection() {
     <section
       id="om"
       aria-labelledby="om-overskrift"
-      className="scroll-mt-24 bg-petroleum py-16 text-cream-100 sm:py-24"
+      className="bg-petroleum py-16 text-cream-100 sm:py-24"
     >
       <Container className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         {/* Festival community photo */}

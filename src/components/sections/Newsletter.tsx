@@ -19,7 +19,7 @@ export function Newsletter() {
     <section
       id="nyhedsbrev"
       aria-labelledby="nyhedsbrev-overskrift"
-      className="scroll-mt-24 pb-20 pt-4"
+      className="pb-20 pt-4"
     >
       <Container>
         <div className="relative overflow-hidden rounded-3xl border border-pink-200/60 bg-gradient-to-br from-pink-100 via-cream-50 to-cream-100 px-6 py-10 sm:px-12 sm:py-14">

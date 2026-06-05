@@ -14,7 +14,7 @@ export async function ProgramPreview() {
     <section
       id="program"
       aria-labelledby="program-overskrift"
-      className="scroll-mt-24 py-16 sm:py-20"
+      className="py-16 sm:py-20"
     >
       <Container>
         <div className="flex flex-wrap items-end justify-between gap-4">

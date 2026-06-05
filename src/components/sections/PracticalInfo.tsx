@@ -16,7 +16,7 @@ export async function PracticalInfo() {
     <section
       id="praktisk"
       aria-labelledby="praktisk-overskrift"
-      className="scroll-mt-24 py-16 sm:py-20"
+      className="py-16 sm:py-20"
     >
       <Container>
         <SectionHeading

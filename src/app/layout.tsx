@@ -48,6 +48,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
+      data-scroll-behavior="smooth"
       className={`${jakarta.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-cream text-ink">

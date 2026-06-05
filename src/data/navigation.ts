@@ -15,7 +15,7 @@ export const mainNav: NavItem[] = [
 ];
 
 export const footerNav: NavItem[] = [
-  { label: { da: "Kontakt", en: "Contact" }, href: "/#kontakt" },
+  { label: { da: "Kontakt", en: "Contact" }, href: "/kontakt" },
   { label: { da: "Presse", en: "Press" }, href: "/#presse" },
   { label: { da: "Sponsorer", en: "Sponsors" }, href: "/#sponsorer" },
   { label: { da: "Arkiv", en: "Archive" }, href: "/#arkiv" },
