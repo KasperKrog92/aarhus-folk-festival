@@ -27,11 +27,12 @@ export const programDay = {
 export const todaysEvents: FestivalEvent[] = [
   {
     id: "dreamers-circus",
-    time: "18.00",
+    time: "17.00",
     category: { da: "Koncert", en: "Concert" },
     title: { da: "Dreamers' Circus", en: "Dreamers' Circus" },
     venue: { da: "Sankt Lukas Kirke", en: "Sankt Lukas Kirke" },
     tone: "petroleum",
+    image: "/events/dreamers.png",
   },
   {
     id: "det-lyse-bal",
@@ -50,21 +51,23 @@ export const todaysEvents: FestivalEvent[] = [
   },
   {
     id: "aaben-session",
-    time: "17.30",
+    time: "20.00",
     category: { da: "Session", en: "Session" },
     title: { da: "Åben folkesession", en: "Open folk session" },
     venue: {
-      da: "Folkecaféen, Godsbanen",
-      en: "Folkecaféen, Godsbanen",
+      da: "Cafe Folkeven",
+      en: "Cafe Folkeven",
     },
     tone: "teal",
+    image: "/events/jam.jpg",
   },
   {
-    id: "hedegaard-broedsgaard",
+    id: "tumult",
     time: "21.00",
     category: { da: "Koncert", en: "Concert" },
-    title: { da: "Hedegaard & Brødsgaard", en: "Hedegaard & Brødsgaard" },
+    title: { da: "Tumult", en: "Tumult" },
     venue: { da: "Godsbanen", en: "Godsbanen" },
     tone: "aubergine",
+    image: "/events/tumult.jpg",
   },
 ];
