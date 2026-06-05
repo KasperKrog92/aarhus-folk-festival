@@ -5,7 +5,7 @@ type FolkStripeProps = {
 };
 
 /**
- * Woven textile stripe — a repeating folk pattern of diamonds and crosses in
+ * Woven textile stripe, a repeating folk pattern of diamonds and crosses in
  * the festival palette, reminiscent of embroidered ribbon. Decorative divider
  * used between content blocks.
  */

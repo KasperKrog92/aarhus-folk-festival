@@ -7,12 +7,12 @@ type JubilaeumBadgeProps = {
 };
 
 /**
- * Round "10 års jubilæum" stamp with circular lettering — a nod to the
+ * Round "10 års jubilæum" stamp with circular lettering, a nod to the
  * festival's anniversary, styled like a hand-stamped seal.
  */
 export function JubilaeumBadge({
   className,
-  label = "10 års jubilæum — Aarhus Folk Festival",
+  label = "10 års jubilæum, Aarhus Folk Festival",
 }: JubilaeumBadgeProps) {
   return (
     <svg
@@ -79,7 +79,7 @@ export function JubilaeumBadge({
           startOffset="50%"
           textAnchor="middle"
         >
-          EST · 2016 — 2026
+          EST · 2016 · 2026
         </textPath>
       </text>
 

@@ -8,7 +8,7 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
-  // Dusty coral pink — the festival's primary call to action.
+  // Dusty coral pink, the festival's primary call to action.
   primary:
     "bg-pink text-white shadow-sm shadow-pink/30 hover:bg-pink-600 hover:-translate-y-0.5 active:translate-y-0",
   // Subtle outline for use on cream surfaces.
@@ -46,7 +46,7 @@ type ButtonProps = ButtonAsLink | ButtonAsButton;
 
 /**
  * Polymorphic button. Renders a Next.js `<Link>` when `href` is provided,
- * otherwise a native `<button>` — so the same styling covers navigation and
+ * otherwise a native `<button>`, so the same styling covers navigation and
  * actions alike.
  */
 export function Button({

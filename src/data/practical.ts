@@ -17,8 +17,8 @@ export const practicalItems: PracticalItem[] = [
     icon: "pin",
     title: { da: "Steder & transport", en: "Venues & transport" },
     description: {
-      da: "Find festivalens scener og kom nemt rundt i Aarhus.",
-      en: "Find the festival stages and get around Aarhus with ease.",
+      da: "Find spillestederne og de nemme veje mellem dem.",
+      en: "Find the venues and the simple ways between them.",
     },
     href: "#praktisk",
   },
@@ -27,8 +27,8 @@ export const practicalItems: PracticalItem[] = [
     icon: "bed",
     title: { da: "Overnatning", en: "Accommodation" },
     description: {
-      da: "Hoteller, vandrerhjem og overnatning tæt på det hele.",
-      en: "Hotels, hostels and places to stay close to it all.",
+      da: "Gode steder at sove tæt på festivalen og byen.",
+      en: "Places to stay close to the festival and the city.",
     },
     href: "#praktisk",
   },
@@ -37,8 +37,8 @@ export const practicalItems: PracticalItem[] = [
     icon: "cup",
     title: { da: "Mad & drikke", en: "Food & drink" },
     description: {
-      da: "Madboder, caféer og lokale spisesteder ved scenerne.",
-      en: "Food stalls, cafés and local eateries by the stages.",
+      da: "Kaffe, mad og lokale steder nær scenerne.",
+      en: "Coffee, food and local places near the stages.",
     },
     href: "#praktisk",
   },
@@ -47,8 +47,8 @@ export const practicalItems: PracticalItem[] = [
     icon: "accessibility",
     title: { da: "Tilgængelighed", en: "Accessibility" },
     description: {
-      da: "Sådan oplever alle festivalen med os — uanset behov.",
-      en: "How everyone can experience the festival with us — whatever your needs.",
+      da: "Praktisk hjælp, adgangsforhold og ro til forskellige behov.",
+      en: "Access details, practical help and quieter options for different needs.",
     },
     href: "#praktisk",
   },

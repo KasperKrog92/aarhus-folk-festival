@@ -9,7 +9,7 @@ export function Newsletter() {
   const t = useTranslations();
   const [submitted, setSubmitted] = useState(false);
 
-  // No backend yet — just acknowledge the sign-up locally for this concept.
+  // No backend yet. Just acknowledge the sign-up locally for this concept.
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);

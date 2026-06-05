@@ -49,7 +49,7 @@ export function Header() {
           <Link
             href="#top"
             className="flex shrink-0 items-center"
-            aria-label={`${site.name} — ${t.header.home}`}
+            aria-label={`${site.name}, ${t.header.home}`}
           >
             <Image
               src="/logos/logo_text.png"
@@ -169,7 +169,7 @@ export function Header() {
   );
 }
 
-/** DA / EN toggle — persists the choice in a cookie and refreshes the tree. */
+/** DA / EN toggle. Persists the choice in a cookie and refreshes the tree. */
 function LanguageToggle() {
   const { locale, setLocale } = useLocale();
   const t = useTranslations();

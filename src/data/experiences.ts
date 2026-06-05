@@ -1,5 +1,5 @@
 /**
- * "Oplev festivalen" — the kinds of experiences on offer.
+ * "Oplev festivalen", the kinds of experiences on offer.
  * `icon` is a key resolved to an SVG component in the rendering layer, so this
  * stays a plain data file.
  */
@@ -29,8 +29,8 @@ export const experiences: Experience[] = [
     icon: "concert",
     title: { da: "Koncerter", en: "Concerts" },
     description: {
-      da: "Intime kirkerum og fyldte sale med folk fra hele Norden.",
-      en: "Intimate church rooms and packed halls with artists from across the Nordics.",
+      da: "Nære kirkerum og fyldte sale med musikere fra Norden og videre ud.",
+      en: "Close-up concerts in churches and halls with musicians from the Nordics and beyond.",
     },
     href: "#program",
     accent: "petroleum",
@@ -40,8 +40,8 @@ export const experiences: Experience[] = [
     icon: "dance",
     title: { da: "Dans", en: "Dance" },
     description: {
-      da: "Lær trinene til balfolk, eller kast dig bare ud i det.",
-      en: "Learn the steps of bal folk, or simply throw yourself into it.",
+      da: "Lær trinene sammen med andre, eller find rytmen undervejs.",
+      en: "Learn the steps with others, or find the rhythm as you go.",
     },
     href: "#program",
     accent: "pink",
@@ -51,8 +51,8 @@ export const experiences: Experience[] = [
     icon: "session",
     title: { da: "Jam & sessions", en: "Jam & sessions" },
     description: {
-      da: "Tag instrumentet med til de åbne sessioner rundt i byen.",
-      en: "Bring your instrument to the open sessions around the city.",
+      da: "Tag instrumentet under armen og slå dig ned i en åben session.",
+      en: "Bring your instrument and sit in on an open session.",
     },
     href: "#program",
     accent: "teal",
@@ -62,8 +62,8 @@ export const experiences: Experience[] = [
     icon: "workshop",
     title: { da: "Workshops", en: "Workshops" },
     description: {
-      da: "Syng, spil og byg sammen med kyndige spillemænd.",
-      en: "Sing, play and build alongside skilled folk musicians.",
+      da: "Kom tæt på sangene, dansene og håndværket bag musikken.",
+      en: "Get closer to the songs, dances and craft behind the music.",
     },
     href: "#oplev",
     accent: "aubergine",
@@ -73,8 +73,8 @@ export const experiences: Experience[] = [
     icon: "family",
     title: { da: "Børn & familie", en: "Children & family" },
     description: {
-      da: "Folkemusik i børnehøjde med dans, sang og fortælling.",
-      en: "Folk music at kids' level with dance, song and storytelling.",
+      da: "Musik, dans og fortællinger i børnehøjde.",
+      en: "Music, dance and stories made for children and families.",
     },
     href: "#program",
     accent: "rust",
@@ -84,8 +84,8 @@ export const experiences: Experience[] = [
     icon: "info",
     title: { da: "Praktisk info", en: "Practical info" },
     description: {
-      da: "Alt du skal vide, før du tager afsted til festivalen.",
-      en: "Everything you need to know before you head to the festival.",
+      da: "Billetter, steder og små ting, der er rare at vide på forhånd.",
+      en: "Tickets, venues and the small things that are good to know before you arrive.",
     },
     href: "#praktisk",
     accent: "petroleum",

@@ -42,22 +42,23 @@ export function ExperienceCard({
   return (
     <Link
       href={experience.href}
-      className="group relative flex h-full flex-col gap-4 rounded-2xl border border-ink/[0.07] bg-cream-50 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-ink/15 hover:shadow-md"
+      className="group relative flex h-full flex-col gap-5 rounded-2xl border border-ink/[0.07] bg-cream-50 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-ink/15 hover:shadow-md"
     >
-      <span
-        className={`grid size-14 place-items-center rounded-2xl ${accents[experience.accent]}`}
-      >
-        <Icon className="size-7" />
-      </span>
+      <div className="flex items-center gap-4">
+        <span
+          className={`grid size-14 shrink-0 place-items-center rounded-2xl ${accents[experience.accent]}`}
+        >
+          <Icon className="size-7" />
+        </span>
 
-      <div className="flex flex-col gap-1.5">
-        <h3 className="font-display text-xl font-semibold text-ink">
+        <h3 className="min-w-0 font-display text-xl font-semibold leading-snug text-ink">
           {experience.title[locale]}
         </h3>
-        <p className="text-sm leading-relaxed text-ink-soft">
-          {experience.description[locale]}
-        </p>
       </div>
+
+      <p className="text-sm leading-relaxed text-ink-soft">
+        {experience.description[locale]}
+      </p>
 
       <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-petroleum transition-colors group-hover:text-rust">
         {t.common.readMore}

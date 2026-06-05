@@ -7,7 +7,7 @@ type FolkBorderProps = {
 };
 
 /**
- * Folk "bunting" band — a row of little triangles on a petroleum strip,
+ * Folk "bunting" band, a row of little triangles on a petroleum strip,
  * echoing the embroidered borders on the festival's poster. Purely
  * decorative; rendered as a tiled SVG so it scales to any width.
  */

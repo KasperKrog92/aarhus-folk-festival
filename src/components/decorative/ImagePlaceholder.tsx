@@ -12,7 +12,7 @@ const toneGradients: Record<Tone, string> = {
 };
 
 type ImagePlaceholderProps = {
-  /** Describes the imagined photo — used as the accessible label. */
+  /** Describes the imagined photo and is used as the accessible label. */
   alt: string;
   tone?: Tone;
   /** Optional watermark icon shown faintly in the centre. */

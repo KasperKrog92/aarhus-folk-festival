@@ -15,9 +15,9 @@ const da = {
     readMore: "Læs mere",
   },
   header: {
-    home: "til forsiden", // composed as "{name} — {home}"
+    home: "til forsiden", // composed as "{name}, {home}"
     mainMenu: "Hovedmenu",
-    save: "Gem festivalen",
+    save: "Gem festivaldatoen",
     openMenu: "Åbn menu",
     closeMenu: "Luk menu",
     menu: "Menu",
@@ -25,69 +25,69 @@ const da = {
   },
   hero: {
     headlineLine1: "Folkemusikken",
-    headlineLine2: "indtager Aarhus",
+    headlineLine2: "samler Aarhus",
     seeProgram: "Se program",
-    badgeLabel: "10 års jubilæum — Aarhus Folk Festival",
+    badgeLabel: "10 års jubilæum, Aarhus Folk Festival",
   },
   program: {
-    eyebrow: "I dag på festivalen",
+    eyebrow: "Torsdag på festivalen",
     seeFullProgram: "Se hele programmet",
   },
   experiences: {
     eyebrow: "Oplev festivalen",
-    title: "Musik. Mennesker. Minder.",
+    title: "Lyt, dans og vær med",
     intro:
-      "Fra stille kirkekoncerter til svedige sessioner — der er en plads til dig, uanset om du lytter, danser eller spiller med.",
+      "Fra stille koncerter til åbne sessioner. Du er velkommen, uanset om du kommer for at lytte, danse eller spille med.",
   },
   about: {
     eyebrow: "Om festivalen",
-    title: "Festivalen er vi sammen om",
+    title: "Et sted at mødes om musikken",
     paragraph1:
-      "Aarhus Folk Festival er et mødested for alle, der holder af levende musik. Her klinger spillemandens violin op ad kirkemuren, fødderne finder rytmen i dansen, og fremmede bliver til venner over en fælles melodi.",
+      "Aarhus Folk Festival samler mennesker om levende musik midt i byen. Violinen kan klinge i et kirkerum, dansen kan fylde et gulv, og en enkel melodi kan blive noget, vi deler.",
     paragraph2:
-      "Vi dyrker nysgerrigheden og traditionen på én gang — den gamle folkemelodi og det nye, vi skaber sammen. Kom som du er, lyt med, syng med, eller tag instrumentet under armen. Der er plads til både den garvede musiker og den, der hører folkemusik for første gang.",
-    cta: "Læs mere om festivalen",
-    tags: "Musik · dans · nysgerrighed · fællesskab",
+      "Festivalen bygger på tradition, nysgerrighed og lysten til at være sammen. Kom som du er. Lyt med, syng med, dans med, eller tag instrumentet under armen. Du behøver ikke kende folkemusikken på forhånd for at finde en plads her.",
+    cta: "Læs om festivalen",
+    tags: "Musik · dans · tradition · fællesskab",
     photoCaption: "Sammen om musikken",
-    photoAlt: "Festivalgæster danser sammen i en fyldt sal",
+    photoAlt: "Festivalgæster danser sammen i en sal",
   },
   practical: {
     eyebrow: "Praktisk info",
-    title: "Planlæg din festival",
+    title: "Planlæg dit besøg",
     intro:
-      "Alt det praktiske, så du kan bruge kræfterne på musikken. Her er det vigtigste at have styr på, før du tager til Aarhus.",
+      "Her finder du de praktiske ting, der gør besøget lettere: steder, billetter, mad, overnatning og adgangsforhold.",
   },
   newsletter: {
-    eyebrow: "Nyhedsbrev 2026",
-    title: "Vær først med det hele",
-    body: "Få besked, når programmet løftes, billetterne åbner, og de første kunstnere offentliggøres. Ingen spam — kun folkemusik.",
-    success: "Tak! Vi skriver til dig, så snart der er nyt. 🎶",
+    eyebrow: "Nyt fra festivalen",
+    title: "Få nyt, når der er noget at fortælle",
+    body: "Vi skriver, når programmet tager form, billetsalget åbner, og de første navne er klar. Korte mails, skrevet af mennesker.",
+    success: "Tak, vi skriver, når der er nyt.",
     emailLabel: "Din e-mailadresse",
     placeholder: "din@email.dk",
     submit: "Tilmeld",
-    demoNote: "Demo — formularen sender ikke noget endnu.",
+    demoNote: "Demo: formularen sender ikke noget endnu.",
   },
   footer: {
     blurb:
-      "Fire dage med folkemusik, dans og fællesskab midt i Aarhus — for nysgerrige sjæle i alle aldre.", // composed as "{dates}. {blurb}"
+      "Fire dage med folkemusik, dans og fællesskab midt i Aarhus. For alle, der har lyst til at lytte, lære og være med.", // composed as "{dates}. {blurb}"
     exploreHeading: "Udforsk",
     exploreAria: "Sektioner",
     festivalHeading: "Festival",
     festivalAria: "Festival",
-    copyright: "Et frivilligdrevet kulturmøde i Aarhus.", // composed as "© {year} {name}. {copyright}"
+    copyright: "Kulturfestival i Aarhus.", // composed as "© {year} {name}. {copyright}"
   },
   eventCard: {
-    imageAlt: "Stemningsbillede fra", // composed as "{imageAlt} {title}"
+    imageAlt: "Billede fra", // composed as "{imageAlt} {title}"
     save: "Gem", // composed as "{save} {title}"
-    seeInProgram: "se i programmet", // composed as "{title} — {seeInProgram}"
+    seeInProgram: "se i programmet", // composed as "{title}, {seeInProgram}"
   },
   hero_alt: {
     background:
-      "Festivalgæster danser til levende folkemusik i en stemningsfyldt lade med lyskæder, mens en violinist og en harmonikaspiller spiller",
+      "Festivalgæster danser til levende folkemusik i varmt lys, mens en violinist og en harmonikaspiller spiller",
   },
 };
 
-/** Shape derived from the Danish source — `en` must match it exactly. */
+/** Shape derived from the Danish source. `en` must match it exactly. */
 export type Dictionary = typeof da;
 
 const en: Dictionary = {
@@ -99,7 +99,7 @@ const en: Dictionary = {
   header: {
     home: "to the homepage",
     mainMenu: "Main menu",
-    save: "Save the festival",
+    save: "Save the festival date",
     openMenu: "Open menu",
     closeMenu: "Close menu",
     menu: "Menu",
@@ -107,59 +107,59 @@ const en: Dictionary = {
   },
   hero: {
     headlineLine1: "Folk music",
-    headlineLine2: "takes over Aarhus",
+    headlineLine2: "brings Aarhus together",
     seeProgram: "See programme",
-    badgeLabel: "10th anniversary — Aarhus Folk Festival",
+    badgeLabel: "10th anniversary, Aarhus Folk Festival",
   },
   program: {
-    eyebrow: "Today at the festival",
+    eyebrow: "Thursday at the festival",
     seeFullProgram: "See the full programme",
   },
   experiences: {
     eyebrow: "Experience the festival",
-    title: "Music. People. Memories.",
+    title: "Listen, dance and join in",
     intro:
-      "From quiet church concerts to sweaty late-night sessions — there's a place for you, whether you listen, dance or play along.",
+      "From quiet concerts to open sessions. You are welcome whether you come to listen, dance or play along.",
   },
   about: {
     eyebrow: "About the festival",
-    title: "A festival we share",
+    title: "A place to meet through music",
     paragraph1:
-      "Aarhus Folk Festival is a meeting place for everyone who loves live music. Here the fiddler's strings ring out against the church wall, feet find the rhythm of the dance, and strangers become friends over a shared tune.",
+      "Aarhus Folk Festival brings people together around live music in the heart of the city. A fiddle can fill a church room, a dance can fill the floor, and a simple tune can become something we share.",
     paragraph2:
-      "We nurture curiosity and tradition at once — the old folk melody and the new thing we create together. Come as you are, listen in, sing along, or bring your instrument. There's room for the seasoned musician and the first-time listener alike.",
-    cta: "Read more about the festival",
-    tags: "Music · dance · curiosity · community",
+      "The festival is built on tradition, curiosity and the pleasure of being together. Come as you are. Listen, sing, dance, or bring your instrument. You do not need to know folk music already to feel at home here.",
+    cta: "Read about the festival",
+    tags: "Music · dance · tradition · togetherness",
     photoCaption: "Together around the music",
-    photoAlt: "Festival guests dancing together in a packed hall",
+    photoAlt: "Festival guests dancing together in a hall",
   },
   practical: {
     eyebrow: "Practical info",
-    title: "Plan your festival",
+    title: "Plan your visit",
     intro:
-      "All the practicalities, so you can spend your energy on the music. Here's the essentials to have sorted before you head to Aarhus.",
+      "Here are the practical details that make the visit easier: venues, tickets, food, places to stay and access information.",
   },
   newsletter: {
-    eyebrow: "Newsletter 2026",
-    title: "Be the first to know",
-    body: "Get word when the programme drops, tickets open and the first artists are announced. No spam — just folk music.",
-    success: "Thanks! We'll write as soon as there's news. 🎶",
+    eyebrow: "Festival news",
+    title: "Hear from us when there is news to share",
+    body: "We will write when the programme takes shape, tickets open and the first names are ready. Short notes, written by people.",
+    success: "Thanks, we will write when there is news.",
     emailLabel: "Your email address",
     placeholder: "you@email.com",
     submit: "Sign up",
-    demoNote: "Demo — the form doesn't send anything yet.",
+    demoNote: "Demo: this form does not send anything yet.",
   },
   footer: {
     blurb:
-      "Four days of folk music, dance and community in the heart of Aarhus — for curious souls of all ages.",
+      "Four days of folk music, dance and community in the heart of Aarhus. For everyone who wants to listen, learn and join in.",
     exploreHeading: "Explore",
     exploreAria: "Sections",
     festivalHeading: "Festival",
     festivalAria: "Festival",
-    copyright: "A volunteer-run cultural gathering in Aarhus.",
+    copyright: "Cultural festival in Aarhus.",
   },
   eventCard: {
-    imageAlt: "Atmosphere photo from",
+    imageAlt: "Photo from",
     save: "Save",
     seeInProgram: "see in the programme",
   },

@@ -74,7 +74,7 @@ export function EventCard({
           <Link
             href="#program"
             className="after:absolute after:inset-0"
-            aria-label={`${title} — ${t.eventCard.seeInProgram}`}
+            aria-label={`${title}, ${t.eventCard.seeInProgram}`}
           >
             {title}
           </Link>

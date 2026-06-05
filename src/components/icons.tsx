@@ -3,7 +3,7 @@
  *
  * Every icon is a 24×24, stroke-based glyph that inherits `currentColor`,
  * so colour and size are controlled with Tailwind utilities on the element
- * (e.g. `className="size-6 text-pink"`). Decorative by default — pass a
+ * (e.g. `className="size-6 text-pink"`). Decorative by default. Pass a
  * `title` to expose an accessible label when an icon stands on its own.
  */
 import type { SVGProps } from "react";

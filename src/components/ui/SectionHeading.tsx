@@ -7,7 +7,7 @@ type SectionHeadingProps = {
   /** Optional supporting paragraph below the title. */
   intro?: React.ReactNode;
   align?: "left" | "center";
-  /** Colour theme — `light` for dark / petroleum backgrounds. */
+  /** Colour theme. `light` is for dark / petroleum backgrounds. */
   tone?: "dark" | "light";
   className?: string;
   /** Heading level for correct document outline (defaults to h2). */

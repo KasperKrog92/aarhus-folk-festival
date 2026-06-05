@@ -11,16 +11,16 @@ export const site = {
   year: 2026,
   edition: { da: "10. udgave", en: "10th edition" } as Localized,
   dates: {
-    da: "24.–27. september 2026",
-    en: "24–27 September 2026",
+    da: "24.-27. september 2026",
+    en: "24-27 September 2026",
   } as Localized,
   tagline: {
-    da: "Folkemusikken indtager Aarhus",
-    en: "Folk music takes over Aarhus",
+    da: "Folkemusik samler Aarhus",
+    en: "Folk music brings Aarhus together",
   } as Localized,
   intro: {
-    da: "Fire dage fyldt med koncerter, dans, workshops og fællesskab.",
-    en: "Four days of concerts, dance, workshops and community.",
+    da: "Fire dage med koncerter, dans, workshops og levende møder i byen.",
+    en: "Four days of concerts, dance, workshops and shared moments across the city.",
   } as Localized,
   city: "Aarhus",
   /** Partout-ticket sales (external, per locale). */

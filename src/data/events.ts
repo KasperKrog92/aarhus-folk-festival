@@ -1,5 +1,5 @@
 /**
- * "I dag på festivalen" — today's programme preview.
+ * Programme preview.
  * Mostly placeholder line-up; "Det Lyse Bal" is a real event. Swap the rest for
  * real data when the programme is set.
  */
@@ -36,7 +36,7 @@ export const todaysEvents: FestivalEvent[] = [
   {
     id: "det-lyse-bal",
     time: "18.30",
-    category: { da: "Bal", en: "Bal" },
+    category: { da: "Bal", en: "Folk dance" },
     title: {
       da: "Det Lyse Bal + Nordisk Dans",
       en: "Det Lyse Bal + Nordisk Dans",

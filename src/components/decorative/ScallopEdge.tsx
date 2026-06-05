@@ -2,12 +2,12 @@ import { cn } from "@/lib/cn";
 
 type ScallopEdgeProps = {
   className?: string;
-  /** Tailwind text-color utility — sets the scallop colour via currentColor. */
+  /** Tailwind text-color utility. Sets the scallop colour via currentColor. */
   colorClassName?: string;
 };
 
 /**
- * Scalloped divider — a row of half-circles, like a hand-cut paper edge.
+ * Scalloped divider, a row of half-circles like a hand-cut paper edge.
  * Place it at the bottom of a section (absolutely positioned) so the colour
  * of the *next* section appears to bite into the current one.
  */

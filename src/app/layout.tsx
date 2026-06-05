@@ -23,7 +23,7 @@ const fraunces = Fraunces({
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
-  const title = `${site.name} ${site.year} — ${site.tagline[locale]}`;
+  const title = `${site.name} ${site.year}, ${site.tagline[locale]}`;
   const description = `${site.dates[locale]}. ${site.intro[locale]}`;
   return {
     title,
