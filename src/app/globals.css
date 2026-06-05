@@ -86,4 +86,46 @@
   .animate-float-slow {
     animation: float-slow 6s ease-in-out infinite;
   }
+
+  /* Favourite heart: a little squash-and-pop when it fills. */
+  @keyframes heart-pop {
+    0% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(0.82);
+    }
+    55% {
+      transform: scale(1.22);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-heart-pop {
+    animation: heart-pop 0.42s ease-out;
+  }
+
+  /* Little hearts that drift up from the button and fade away.
+     Drift, travel, rotation and scale come from per-heart CSS variables. */
+  @keyframes heart-float {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+    }
+    18% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--tx, 0px)), calc(-50% + var(--ty, -64px)))
+        scale(var(--sc, 1)) rotate(var(--rot, 0deg));
+    }
+  }
+
+  .animate-heart-float {
+    animation: heart-float 1s ease-out forwards;
+    will-change: transform, opacity;
+  }
 }

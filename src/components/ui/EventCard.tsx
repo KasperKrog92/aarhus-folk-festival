@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
+import { FavouriteButton } from "@/components/ui/FavouriteButton";
 import {
   IconConcert,
   IconDance,
   IconSession,
-  IconHeart,
   IconPin,
 } from "@/components/icons";
 import type { FestivalEvent } from "@/data/events";
@@ -56,14 +56,12 @@ export function EventCard({
           {event.time}
         </span>
 
-        {/* save / favourite (non-functional placeholder) */}
-        <button
-          type="button"
-          aria-label={`${t.eventCard.save} ${title}`}
-          className="absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-white/90 text-ink/70 shadow-sm backdrop-blur transition-colors hover:text-pink-600"
-        >
-          <IconHeart className="size-5" />
-        </button>
+        {/* save / favourite, remembered in the aff_favourites cookie */}
+        <FavouriteButton
+          eventId={event.id}
+          label={`${t.eventCard.save} ${title}`}
+          className="absolute right-3 top-3 z-10 grid size-9 place-items-center rounded-full bg-white/90 text-ink/70 shadow-sm backdrop-blur transition-colors hover:text-pink-600"
+        />
       </div>
 
       <div className="flex flex-1 flex-col gap-1.5 p-4">

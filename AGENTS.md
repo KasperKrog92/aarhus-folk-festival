@@ -49,7 +49,7 @@ src/
     layout/               # Header (client, mobile menu + language toggle), Footer
     sections/             # one component per homepage section
     ui/                   # reusable primitives: Container, Button, SectionHeading,
-                          #   EventCard, ExperienceCard, PracticalCard
+                          #   EventCard, ExperienceCard, PracticalCard, FavouriteButton
     decorative/           # folk visual elements: FolkBorder (bunting), ScallopEdge,
                           #   FolkStripe, JubilaeumBadge, ImagePlaceholder
     icons.tsx             # all inline SVG icons (24×24, stroke=currentColor)
@@ -58,6 +58,9 @@ src/
   i18n/                   # cookie-based DA/EN: config (Locale, Localized), dictionaries
                           #   (UI chrome), server.ts (getLocale), LocaleProvider (client)
   lib/cn.ts               # tiny className joiner (no clsx dependency)
+  lib/favourites.ts       # aff_favourites cookie: parse (SSR-safe) + client read/toggle
+                          #   of favourited event ids (FavouriteButton writes it; a future
+                          #   programme "Show favourited" filter will read it)
 ```
 
 **Content lives in `src/data/`**, not hardcoded in components. Edit data there; sections map over it.
@@ -137,7 +140,10 @@ in `components/decorative/` rather than re-rolling patterns.
   intentionally replaced with a warm "Om festivalen" / community section. Do not add volunteer
   signup or management.
 - **No CMS / backend.** Content is static arrays in `src/data/`. The newsletter form is a
-  visual demo only (`preventDefault`, no network).
+  visual demo only (`preventDefault`, no network). The one bit of persistence is client-only:
+  `FavouriteButton` remembers favourited events in the `aff_favourites` cookie (see
+  `src/lib/favourites.ts`) so a future programme "Show favourited" filter can read them. No
+  server, no account, no network.
 - **Mobile-first, accessible, semantic.** Keep landmark elements, real heading order, focus
   styles, and descriptive `alt`/`aria-label`. `<html lang>` follows the active locale.
 - **Bilingual UI copy (DA default / EN).** Danish is the default and source of truth; every
@@ -147,8 +153,8 @@ in `components/decorative/` rather than re-rolling patterns.
 ## Conventions
 
 - Server components by default; add `"use client"` only when interactivity is needed
-  (currently `Header`, `Newsletter`, and the i18n `LocaleProvider`). Section components are
-  `async` server components that read the locale via `getLocale()`.
+  (currently `Header`, `Newsletter`, `FavouriteButton`, and the i18n `LocaleProvider`). Section
+  components are `async` server components that read the locale via `getLocale()`.
 - Keep components small and composable; share spacing via `Container` and headings via
   `SectionHeading`. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
 - Section `id`s double as in-page nav anchors (`#program`, `#oplev`, `#om`, `#praktisk`).

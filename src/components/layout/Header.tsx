@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { FavouriteButton } from "@/components/ui/FavouriteButton";
 import { FolkBorder } from "@/components/decorative/FolkBorder";
-import { IconMenu, IconClose, IconHeart } from "@/components/icons";
+import { IconMenu, IconClose } from "@/components/icons";
 import { mainNav } from "@/data/navigation";
 import { site } from "@/data/site";
 import { locales } from "@/i18n/config";
@@ -80,13 +81,10 @@ export function Header() {
           {/* Desktop actions */}
           <div className="hidden items-center gap-3 lg:flex">
             <LanguageToggle />
-            <button
-              type="button"
-              aria-label={t.header.save}
+            <FavouriteButton
+              label={t.header.save}
               className="grid size-10 place-items-center rounded-full text-ink/70 transition-colors hover:bg-ink/[0.05] hover:text-pink-600"
-            >
-              <IconHeart className="size-5" />
-            </button>
+            />
             <Button
               href={ticketHref}
               target="_blank"
