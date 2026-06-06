@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { artists, artistsPage } from "@/data/artists";
 import { workshops, workshopsPage } from "@/data/workshops";
 import { programPage } from "@/data/program";
+import { aboutPage } from "@/data/about";
 import { associationPage } from "@/data/association";
 import { contactPage } from "@/data/contact";
 import { site } from "@/data/site";
@@ -47,6 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
+    {
+      url: `${site.url}${aboutPage.href}`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     {
       url: `${site.url}${associationPage.href}`,
       lastModified,

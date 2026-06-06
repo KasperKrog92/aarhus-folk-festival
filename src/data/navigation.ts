@@ -11,7 +11,7 @@ export const mainNav: NavItem[] = [
   { label: { da: "Kunstnere", en: "Artists" }, href: "/kunstnere" },
   { label: { da: "Workshops", en: "Workshops" }, href: "/workshops" },
   { label: { da: "Praktisk info", en: "Practical info" }, href: "/#praktisk" },
-  { label: { da: "Om festivalen", en: "About" }, href: "/#om" },
+  { label: { da: "Om festivalen", en: "About" }, href: "/om-festivalen" },
 ];
 
 export const footerNav: NavItem[] = [

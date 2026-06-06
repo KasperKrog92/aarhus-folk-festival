@@ -11,6 +11,7 @@ src/
     program/              # /program: full schedule, grouped by day (derived from acts)
     kunstnere/            # /kunstnere + /kunstnere/[slug]: artists listing + detail
     workshops/            # /workshops + /workshops/[slug]: workshops listing + detail
+    om-festivalen/        # /om-festivalen: atmospheric, copy-led "Om festivalen" about page
     foreningen/, kontakt/ # association + contact pages
     robots.ts             # /robots.txt (allow all + sitemap link)
     sitemap.ts            # /sitemap.xml (the public routes)
@@ -25,7 +26,7 @@ src/
                           #   FolkStripe, JubilaeumBadge, ImagePlaceholder
     icons.tsx             # all inline SVG icons (24×24, stroke=currentColor)
   data/                   # static content (site, navigation, artists, workshops, program,
-                          #   experiences, practical, association, contact) - the "content source"
+                          #   experiences, practical, about, association, contact) - the "content source"
   i18n/                   # cookie-based DA/EN: config (Locale, Localized), dictionaries
                           #   (UI chrome), server.ts (getLocale), LocaleProvider (client)
   lib/cn.ts               # tiny className joiner (no clsx dependency)
@@ -63,8 +64,9 @@ them, so an act that plays more than once is edited in one place.
 - Keep components small and composable; share spacing via `Container` and headings via
   `SectionHeading`. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
 - Homepage section `id`s double as in-page nav anchors (`#oplev`, `#om`, `#praktisk`; the
-  homepage keeps a `#program` preview section). Program, Kunstnere and Workshops are dedicated
-  routes (`/program`, `/kunstnere`, `/workshops`), not anchors.
+  homepage keeps a `#program` preview section). Program, Kunstnere, Workshops and Om festivalen
+  are dedicated routes (`/program`, `/kunstnere`, `/workshops`, `/om-festivalen`), not anchors.
+  The homepage `AboutSection` (`#om`) is a teaser whose CTA links to `/om-festivalen`.
 
 ## SEO / metadata
 

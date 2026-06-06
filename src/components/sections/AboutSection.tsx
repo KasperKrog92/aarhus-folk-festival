@@ -58,7 +58,7 @@ export async function AboutSection() {
           </div>
 
           <div className="mt-8">
-            <Button href="#om" variant="solidLight" size="lg">
+            <Button href="/om-festivalen" variant="solidLight" size="lg">
               {t.about.cta}
               <IconArrowRight className="size-5" />
             </Button>
