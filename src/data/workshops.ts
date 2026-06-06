@@ -80,6 +80,4 @@ export const workshopsPage = {
     da: "Tilbage til forsiden",
     en: "Back to the homepage",
   } as Localized,
-  /** Subpage: link back to the listing. */
-  allWorkshops: { da: "Alle workshops", en: "All workshops" } as Localized,
 } as const;

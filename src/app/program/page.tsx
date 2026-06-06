@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { EventCard } from "@/components/ui/EventCard";
+import { ProgramSchedule } from "@/components/sections/ProgramSchedule";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { getProgramByDay, programPage } from "@/data/program";
 import { getLocale } from "@/i18n/server";
@@ -37,23 +37,7 @@ export default async function ProgramPage() {
 
         <FolkStripe className="my-10" />
 
-        <div className="space-y-14">
-          {days.map(({ day, events }) => (
-            <div key={day.id}>
-              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
-                {day.weekday[locale]}{" "}
-                <span className="text-petroleum">{day.date[locale]}</span>
-              </h2>
-              <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                {events.map((event) => (
-                  <li key={event.id}>
-                    <EventCard event={event} locale={locale} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+        <ProgramSchedule days={days} locale={locale} />
 
         <div className="mt-12">
           <Button href="/" variant="outline">

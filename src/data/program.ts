@@ -133,4 +133,15 @@ export const programPage = {
     da: "Tilbage til forsiden",
     en: "Back to the homepage",
   } as Localized,
+  filter: {
+    /** Turns the favourites-only view on (shown while it is off). */
+    showFavourites: { da: "Vis hjerte-events", en: "Show hearted events" } as Localized,
+    /** Turns the favourites-only view off again (shown while it is on). */
+    showAll: { da: "Vis hele programmet", en: "Show the full programme" } as Localized,
+    /** Empty state when favourites-only is on but nothing is saved yet. */
+    empty: {
+      da: "Du har ikke gemt nogen events endnu. Tryk på hjertet ved et program, så samler vi dine favoritter her.",
+      en: "You haven't saved anything yet. Tap the heart on a programme item and we'll gather your favourites here.",
+    } as Localized,
+  },
 } as const;

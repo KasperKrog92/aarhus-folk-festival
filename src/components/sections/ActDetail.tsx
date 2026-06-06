@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/Button";
+import { Button, buttonClasses } from "@/components/ui/Button";
+import { BackButton } from "@/components/ui/BackButton";
 import { Container } from "@/components/ui/Container";
 import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
@@ -34,7 +34,6 @@ export function ActDetail({
   category,
   shows,
   backHref,
-  backLabel,
 }: {
   locale: Locale;
   eyebrow: string;
@@ -46,8 +45,8 @@ export function ActDetail({
   tone: EventTone;
   category: string;
   shows: ActDetailShow[];
+  /** Where "Tilbage" / "Back" lands when there's no browser history to step back to. */
   backHref: string;
-  backLabel: string;
 }) {
   const t = getDictionary(locale);
 
@@ -55,13 +54,13 @@ export function ActDetail({
     <article className="py-12 sm:py-16">
       <Container>
         <div className="mx-auto max-w-4xl">
-          <Link
-            href={backHref}
+          <BackButton
+            fallbackHref={backHref}
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-petroleum transition-colors hover:text-rust"
           >
             <IconArrowRight className="size-4 rotate-180 transition-transform group-hover:-translate-x-1" />
-            {backLabel}
-          </Link>
+            {t.common.back}
+          </BackButton>
 
           <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:items-center">
             <div className="overflow-hidden rounded-3xl border border-ink/[0.07] shadow-sm">
@@ -158,9 +157,9 @@ export function ActDetail({
           </div>
 
           <div className="mt-12">
-            <Button href={backHref} variant="outline">
-              {backLabel}
-            </Button>
+            <BackButton fallbackHref={backHref} className={buttonClasses("outline")}>
+              {t.common.back}
+            </BackButton>
           </div>
         </div>
       </Container>

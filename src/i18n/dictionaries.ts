@@ -13,6 +13,7 @@ const da = {
   common: {
     buyTicket: "Køb billet",
     readMore: "Læs mere",
+    back: "Tilbage",
   },
   header: {
     home: "til forsiden", // composed as "{name}, {home}"
@@ -92,6 +93,7 @@ const en: Dictionary = {
   common: {
     buyTicket: "Buy ticket",
     readMore: "Read more",
+    back: "Back",
   },
   header: {
     home: "to the homepage",

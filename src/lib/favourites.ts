@@ -1,8 +1,9 @@
 /**
- * Favourited events, stored in a cookie so a future "Show favourited" filter on
- * the programme page can read them. Framework-free and SSR-safe: `parseFavourites`
- * is pure (use it server-side with `cookies()` from `next/headers`), while the
- * read/write helpers touch `document` and no-op during server rendering.
+ * Favourited events, stored in a cookie that the programme's "Vis hjerte-events"
+ * filter reads (see `components/sections/ProgramSchedule.tsx`). Framework-free and
+ * SSR-safe: `parseFavourites` is pure (use it server-side with `cookies()` from
+ * `next/headers`), while the read/write helpers touch `document` and no-op during
+ * server rendering.
  *
  * The cookie holds a comma-separated list of event ids (see `src/data/events.ts`).
  * Those ids are kebab-case slugs, so they never contain a comma.

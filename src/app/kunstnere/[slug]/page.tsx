@@ -67,7 +67,6 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
         venue: show.venue[locale],
       }))}
       backHref={artistsPage.href}
-      backLabel={artistsPage.allArtists[locale]}
     />
   );
 }

@@ -27,6 +27,18 @@ const sizes: Record<Size, string> = {
   lg: "px-7 py-3.5 text-base",
 };
 
+/**
+ * The button's resolved classes, exported so non-`Button` controls (e.g. the
+ * client `BackButton`) can wear the same pill styling without duplicating it.
+ */
+export function buttonClasses(
+  variant: Variant = "primary",
+  size: Size = "md",
+  className?: string,
+) {
+  return cn(base, variants[variant], sizes[size], className);
+}
+
 type CommonProps = {
   variant?: Variant;
   size?: Size;
@@ -56,7 +68,7 @@ export function Button({
   children,
   ...props
 }: ButtonProps) {
-  const classes = cn(base, variants[variant], sizes[size], className);
+  const classes = buttonClasses(variant, size, className);
 
   if (props.href !== undefined) {
     const { href, ...rest } = props;

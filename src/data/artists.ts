@@ -146,6 +146,4 @@ export const artistsPage = {
     da: "Tilbage til forsiden",
     en: "Back to the homepage",
   } as Localized,
-  /** Subpage: link back to the listing. */
-  allArtists: { da: "Alle kunstnere", en: "All artists" } as Localized,
 } as const;

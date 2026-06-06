@@ -19,7 +19,8 @@ src/
   components/
     layout/               # Header (client, mobile menu + language toggle), Footer
     sections/             # one component per homepage section, plus ActDetail
-                          #   (shared artist/workshop detail-page body)
+                          #   (shared artist/workshop detail-page body) and
+                          #   ProgramSchedule (the /program list + favourites filter)
     ui/                   # reusable primitives: Container, Button, SectionHeading, ActCard,
                           #   EventCard, ExperienceCard, PracticalCard, FavouriteButton
     decorative/           # folk visual elements: FolkBorder (bunting), ScallopEdge,
@@ -31,8 +32,8 @@ src/
                           #   (UI chrome), server.ts (getLocale), LocaleProvider (client)
   lib/cn.ts               # tiny className joiner (no clsx dependency)
   lib/favourites.ts       # aff_favourites cookie: parse (SSR-safe) + client read/toggle
-                          #   of favourited event ids (FavouriteButton writes it; a future
-                          #   programme "Show favourited" filter will read it)
+                          #   of favourited event ids (FavouriteButton writes it; the
+                          #   programme's ProgramSchedule filter reads it)
 ```
 
 **Content lives in `src/data/`**, not hardcoded in components. Edit data there; sections map over it.
@@ -52,6 +53,10 @@ them, so an act that plays more than once is edited in one place.
 - `/program` and the homepage `ProgramPreview` both render `getProgramByDay()`;
   each act's detail page renders its own `shows` via `ActDetail`. `EventCard` takes
   a `ProgramEvent` and links to the act's page; `ActCard` is the shared listing card.
+- `/program` passes the day groups to the client `ProgramSchedule`, which adds the
+  "Vis hjerte-events" toggle: it reads the `aff_favourites` cookie (via
+  `lib/favourites.ts`) as an external store and narrows the list to favourited
+  events. The page itself stays a server component; the filter is the only client part.
 - **To add an act:** add it to `artists.ts` / `workshops.ts` with its `shows`. It
   then appears in the programme, the homepage preview and its own detail page
   automatically. Reuse `ActCard` / `ActDetail` for any new listing/detail pages.

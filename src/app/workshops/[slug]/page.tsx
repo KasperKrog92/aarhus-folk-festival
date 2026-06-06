@@ -68,7 +68,6 @@ export default async function WorkshopPage({ params }: WorkshopPageProps) {
         venue: show.venue[locale],
       }))}
       backHref={workshopsPage.href}
-      backLabel={workshopsPage.allWorkshops[locale]}
     />
   );
 }
