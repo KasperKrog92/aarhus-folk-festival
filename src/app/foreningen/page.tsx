@@ -43,24 +43,41 @@ export default async function AssociationPage() {
               {associationPage.detailsHeading[locale]}
             </h2>
             <ul className="mt-5 grid gap-4 sm:grid-cols-3">
-              {associationPage.details.map((item) => (
-                <li
-                  key={item.id}
-                  className="rounded-xl border border-petroleum/10 bg-cream p-4"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-pink-600">
-                    {item.label[locale]}
-                  </p>
-                  <p className="mt-2 font-display text-xl font-semibold text-ink">
-                    {typeof item.value === "string"
-                      ? item.value
-                      : item.value[locale]}
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                    {item.description[locale]}
-                  </p>
-                </li>
-              ))}
+              {associationPage.details.map((item) => {
+                const value =
+                  typeof item.value === "string" ? item.value : item.value[locale];
+                const isEmail = item.id === "email" && value.includes("@");
+                const [emailName, emailDomain] = isEmail
+                  ? value.split("@")
+                  : ["", ""];
+
+                return (
+                  <li
+                    key={item.id}
+                    className="rounded-xl border border-petroleum/10 bg-cream p-4"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-pink-600">
+                      {item.label[locale]}
+                    </p>
+                    {isEmail ? (
+                      <a
+                        href={associationPage.contactHref}
+                        className="mt-2 block font-sans text-base font-semibold leading-snug text-ink underline decoration-petroleum/30 underline-offset-4 transition-colors hover:text-rust hover:decoration-rust sm:text-sm md:text-base"
+                      >
+                        {emailName}
+                        <wbr />@{emailDomain}
+                      </a>
+                    ) : (
+                      <p className="mt-2 font-display text-xl font-semibold text-ink">
+                        {value}
+                      </p>
+                    )}
+                    <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                      {item.description[locale]}
+                    </p>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
