@@ -7,9 +7,9 @@ export type NavItem = {
 };
 
 export const mainNav: NavItem[] = [
-  { label: { da: "Program", en: "Programme" }, href: "/#program" },
-  { label: { da: "Kunstnere", en: "Artists" }, href: "/#kunstnere" },
-  { label: { da: "Workshops", en: "Workshops" }, href: "/#oplev" },
+  { label: { da: "Program", en: "Programme" }, href: "/program" },
+  { label: { da: "Kunstnere", en: "Artists" }, href: "/kunstnere" },
+  { label: { da: "Workshops", en: "Workshops" }, href: "/workshops" },
   { label: { da: "Praktisk info", en: "Practical info" }, href: "/#praktisk" },
   { label: { da: "Om festivalen", en: "About" }, href: "/#om" },
 ];

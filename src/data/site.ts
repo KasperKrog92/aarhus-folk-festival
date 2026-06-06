@@ -34,5 +34,5 @@ export const site = {
     da: "https://place2book.com/da/sw2/sales/9j1ap558p1",
     en: "https://place2book.com/en/sw2/sales/9j1ap558p1",
   } as Localized,
-  programUrl: "#program",
+  programUrl: "/program",
 } as const;

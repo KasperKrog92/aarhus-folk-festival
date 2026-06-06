@@ -59,7 +59,7 @@ const da = {
   newsletter: {
     eyebrow: "Nyt fra festivalen",
     title: "Få nyt, når der er noget at fortælle",
-    body: "Vi skriver, når programmet tager form, billetsalget åbner, og de første navne er klar. Korte mails, skrevet af mennesker.",
+    body: "Vi skriver, når programmet tager form, billetsalget åbner, og de første navne er klar.",
     success: "Tak, vi skriver, når der er nyt.",
     emailLabel: "Din e-mailadresse",
     placeholder: "din@email.dk",
@@ -76,9 +76,7 @@ const da = {
     copyright: "Kulturfestival i Aarhus.", // composed as "© {year} {name}. {copyright}"
   },
   eventCard: {
-    imageAlt: "Billede fra", // composed as "{imageAlt} {title}"
     save: "Gem", // composed as "{save} {title}"
-    seeInProgram: "se i programmet", // composed as "{title}, {seeInProgram}"
   },
   hero_alt: {
     background:
@@ -140,7 +138,7 @@ const en: Dictionary = {
   newsletter: {
     eyebrow: "Festival news",
     title: "Hear from us when there is news to share",
-    body: "We will write when the programme takes shape, tickets open and the first names are ready. Short notes, written by people.",
+    body: "We will write when the programme takes shape, tickets open and the first names are ready.",
     success: "Thanks, we will write when there is news.",
     emailLabel: "Your email address",
     placeholder: "you@email.com",
@@ -157,9 +155,7 @@ const en: Dictionary = {
     copyright: "Cultural festival in Aarhus.",
   },
   eventCard: {
-    imageAlt: "Photo from",
     save: "Save",
-    seeInProgram: "see in the programme",
   },
   hero_alt: {
     background:

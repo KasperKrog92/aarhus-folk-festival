@@ -2,7 +2,8 @@
 
 A public-facing website concept for **Aarhus Folk Festival** (24.-27. september 2026).
 Replaces the outdated existing site (https://www.aarhusfolkfestival.dk/) with a warm,
-modern Nordic folk aesthetic. Currently a single polished homepage with static content.
+modern Nordic folk aesthetic. A growing set of static pages: a polished homepage plus
+programme, artists and workshops pages (with detail subpages), and association + contact.
 
 This file holds what every agent should know on every task. Deeper detail lives in
 `docs/` — read the relevant file when a task touches that area (see the map below).

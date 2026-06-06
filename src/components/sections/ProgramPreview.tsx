@@ -2,13 +2,17 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { EventCard } from "@/components/ui/EventCard";
 import { IconArrowRight } from "@/components/icons";
-import { programDay, todaysEvents } from "@/data/events";
+import { getProgramByDay, programPage } from "@/data/program";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
 
 export async function ProgramPreview() {
   const locale = await getLocale();
   const t = getDictionary(locale);
+
+  // Preview the opening day; the full schedule lives on /program.
+  const [firstDay] = getProgramByDay();
+  if (!firstDay) return null;
 
   return (
     <section
@@ -26,13 +30,13 @@ export async function ProgramPreview() {
               id="program-overskrift"
               className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
             >
-              {programDay.weekday[locale]}{" "}
-              <span className="text-petroleum">{programDay.date[locale]}</span>
+              {firstDay.day.weekday[locale]}{" "}
+              <span className="text-petroleum">{firstDay.day.date[locale]}</span>
             </h2>
           </div>
 
           <Link
-            href="#program"
+            href={programPage.href}
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-petroleum transition-colors hover:text-rust"
           >
             {t.program.seeFullProgram}
@@ -41,7 +45,7 @@ export async function ProgramPreview() {
         </div>
 
         <ul className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {todaysEvents.map((event) => (
+          {firstDay.events.map((event) => (
             <li key={event.id}>
               <EventCard event={event} locale={locale} />
             </li>

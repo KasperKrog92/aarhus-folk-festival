@@ -8,13 +8,14 @@ import {
   IconSession,
   IconPin,
 } from "@/components/icons";
-import type { FestivalEvent } from "@/data/events";
+import type { ProgramEvent } from "@/data/program";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 
 /** Maps a programme category (canonical Danish key) to its watermark icon. */
 const categoryIcon: Record<string, React.ReactNode> = {
   Koncert: <IconConcert />,
+  Bal: <IconDance />,
   Dans: <IconDance />,
   Session: <IconSession />,
 };
@@ -23,7 +24,7 @@ export function EventCard({
   event,
   locale,
 }: {
-  event: FestivalEvent;
+  event: ProgramEvent;
   locale: Locale;
 }) {
   const t = getDictionary(locale);
@@ -36,7 +37,7 @@ export function EventCard({
           <div className="relative aspect-[4/3] w-full overflow-hidden">
             <Image
               src={event.image}
-              alt={`${t.eventCard.imageAlt} ${title}`}
+              alt={event.imageAlt[locale]}
               fill
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
@@ -44,7 +45,7 @@ export function EventCard({
           </div>
         ) : (
           <ImagePlaceholder
-            alt={`${t.eventCard.imageAlt} ${title}`}
+            alt={event.imageAlt[locale]}
             tone={event.tone}
             icon={categoryIcon[event.category.da]}
             className="aspect-[4/3] w-full"
@@ -69,11 +70,7 @@ export function EventCard({
           {event.category[locale]}
         </span>
         <h3 className="font-display text-lg font-semibold leading-snug text-ink">
-          <Link
-            href="#program"
-            className="after:absolute after:inset-0"
-            aria-label={`${title}, ${t.eventCard.seeInProgram}`}
-          >
+          <Link href={event.href} className="after:absolute after:inset-0">
             {title}
           </Link>
         </h3>

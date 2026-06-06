@@ -16,3 +16,4 @@ For the i18n mechanics (dictionaries, `Localized`, locale reads), see
 ## Copy progress
 
 - 2026-06-05: Full Danish and English copy review completed across `src/data/`, `src/i18n/dictionaries.ts`, metadata, aria labels, and the anniversary badge. Tone adjusted to be warmer, less generic, and free of em-dashes in rendered copy.
+- 2026-06-06: Added the programme, artists and workshops pages. New DA/EN copy (artist + workshop bios, taglines, page intros) in `src/data/{artists,workshops,program}.ts`, written to the same tone and free of dash-pause punctuation in body copy.

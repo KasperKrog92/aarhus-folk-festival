@@ -29,7 +29,7 @@ in `components/decorative/` rather than re-rolling patterns.
 - `public/logos/logo_mark_black.png` - accordion mark in solid black on a **transparent** bg; unused for now, kept for future monochrome use (e.g. favicon/icon source).
 - `public/images/mockup_*.png` - design reference mockups (not used in the build).
 - Use JPEG/WebP/AVIF for photo-like assets. Keep PNG for transparency, logos, mockups, or graphic artwork.
-- Real photography is arriving incrementally. `EventCard` already renders a real photo via
-  `next/image` when an event has an `image` (e.g. `public/events/detlysebal.jpg`), and falls
-  back to `ImagePlaceholder` otherwise. Elsewhere, `ImagePlaceholder` still renders on-brand
-  gradient stand-ins; swap it for `next/image` as photos arrive (keep the descriptive `alt`).
+- Real photography is arriving incrementally. `EventCard`, `ActCard` and `ActDetail` render a
+  real photo via `next/image` when an act/event has an `image` (e.g. `public/events/detlysebal.jpg`),
+  and fall back to `ImagePlaceholder` otherwise. Elsewhere, `ImagePlaceholder` still renders
+  on-brand gradient stand-ins; swap it for `next/image` as photos arrive (keep the descriptive `alt`).
