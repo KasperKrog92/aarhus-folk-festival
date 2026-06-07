@@ -58,7 +58,14 @@ export function Header() {
               alt={site.name}
               width={240}
               height={125}
-              className="h-11 w-auto sm:h-12 lg:h-14 dark:brightness-0 dark:invert"
+              className="h-11 w-auto sm:h-12 lg:h-14 dark:hidden"
+            />
+            <Image
+              src="/logos/logo_text_header_light.png"
+              alt={site.name}
+              width={240}
+              height={125}
+              className="hidden h-11 w-auto sm:h-12 lg:h-14 dark:block"
             />
           </Link>
 

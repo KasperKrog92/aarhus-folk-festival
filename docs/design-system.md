@@ -73,7 +73,8 @@ Two gotchas the remap doesn't solve on its own:
 ## Assets
 
 - `public/logos/logo_text.png` - full source wordmark, **transparent** bg.
-- `public/logos/logo_text_header.png` - optimized header wordmark; use this in the sticky header. Verify legibility on the dark header (the wordmark is coloured on transparent; if it reads poorly on dark, produce a light/cream variant and swap by theme).
+- `public/logos/logo_text_header.png` - optimized header wordmark (coloured on transparent); used in the sticky header in light mode.
+- `public/logos/logo_text_header_light.png` - light/cream header wordmark for dark mode. The header renders both and swaps by theme with `dark:hidden` / `hidden dark:block` (no CSS filter).
 - `public/logos/logo.png` - accordion mark only, baked cream bg (avoid on non-cream surfaces).
 - `public/logos/logo_mark_black.png` - accordion mark in solid black on a **transparent** bg; would disappear on a dark header — do not use there.
 - `public/images/mockup_*.png` - design reference mockups (not used in the build).
