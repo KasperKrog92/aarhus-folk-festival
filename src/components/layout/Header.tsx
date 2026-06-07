@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { FavouriteButton } from "@/components/ui/FavouriteButton";
 import { FolkBorder } from "@/components/decorative/FolkBorder";
 import { IconMenu, IconClose } from "@/components/icons";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { mainNav } from "@/data/navigation";
 import { site } from "@/data/site";
 import { locales } from "@/i18n/config";
@@ -41,7 +42,7 @@ export function Header() {
     <header className="sticky top-0 z-50">
       <div
         className={cn(
-          "bg-cream/90 backdrop-blur transition-shadow",
+          "bg-surface/90 backdrop-blur transition-shadow",
           scrolled && "shadow-[0_1px_0_rgba(42,34,29,0.08)]",
         )}
       >
@@ -57,7 +58,7 @@ export function Header() {
               alt={site.name}
               width={240}
               height={125}
-              className="h-11 w-auto sm:h-12 lg:h-14"
+              className="h-11 w-auto sm:h-12 lg:h-14 dark:brightness-0 dark:invert"
             />
           </Link>
 
@@ -70,7 +71,7 @@ export function Header() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-semibold text-ink/80 transition-colors hover:text-rust"
+                className="text-sm font-semibold text-content/80 transition-colors hover:text-rust"
               >
                 {item.label[locale]}
               </Link>
@@ -80,9 +81,10 @@ export function Header() {
           {/* Desktop actions */}
           <div className="hidden items-center gap-3 lg:flex">
             <LanguageToggle />
+            <ThemeToggle />
             <FavouriteButton
               label={t.header.save}
-              className="grid size-10 place-items-center rounded-full text-ink/70 transition-colors hover:bg-ink/[0.05] hover:text-pink-600"
+              className="grid size-10 place-items-center rounded-full text-content/70 transition-colors hover:bg-content/[0.05] hover:text-pink-600"
             />
             <Button
               href={ticketHref}
@@ -110,7 +112,7 @@ export function Header() {
               aria-expanded={open}
               aria-controls="mobil-menu"
               aria-label={open ? t.header.closeMenu : t.header.openMenu}
-              className="grid size-11 place-items-center rounded-full border border-ink/15 text-ink transition-colors hover:bg-ink/[0.05]"
+              className="grid size-11 place-items-center rounded-full border border-line/15 text-content transition-colors hover:bg-content/[0.05]"
             >
               {open ? (
                 <IconClose className="size-6" />
@@ -134,20 +136,23 @@ export function Header() {
           aria-modal="true"
           aria-label={t.header.menu}
         >
-          <div className="border-b border-ink/10 bg-cream shadow-lg">
+          <div className="border-b border-line/10 bg-surface shadow-lg">
             <Container className="flex flex-col gap-1 py-4">
               {mainNav.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-3 text-lg font-semibold text-ink transition-colors hover:bg-ink/[0.05]"
+                  className="rounded-xl px-3 py-3 text-lg font-semibold text-content transition-colors hover:bg-content/[0.05]"
                 >
                   {item.label[locale]}
                 </Link>
               ))}
               <div className="mt-3 flex items-center justify-between px-1">
-                <LanguageToggle />
+                <div className="flex items-center gap-2">
+                  <LanguageToggle />
+                  <ThemeToggle />
+                </div>
                 <Button
                   href={ticketHref}
                   size="lg"
@@ -173,7 +178,7 @@ function LanguageToggle() {
 
   return (
     <div
-      className="flex items-center rounded-full border border-ink/15 p-0.5 text-xs font-semibold"
+      className="flex items-center rounded-full border border-line/15 p-0.5 text-xs font-semibold"
       role="group"
       aria-label={t.header.chooseLanguage}
     >
@@ -189,7 +194,7 @@ function LanguageToggle() {
               "rounded-full px-2.5 py-1 transition-colors",
               active
                 ? "bg-petroleum text-cream-50"
-                : "text-ink/60 hover:text-ink",
+                : "text-content/60 hover:text-content",
             )}
           >
             {code.toUpperCase()}

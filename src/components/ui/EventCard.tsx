@@ -31,7 +31,7 @@ export function EventCard({
   const title = event.title[locale];
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink/[0.07] bg-cream-50 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line/[0.07] bg-surface-raised shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
       <div className="relative">
         {event.image ? (
           <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -61,7 +61,7 @@ export function EventCard({
         <FavouriteButton
           eventId={event.id}
           label={`${t.eventCard.save} ${title}`}
-          className="absolute right-3 top-3 z-10 grid size-9 place-items-center rounded-full bg-white/90 text-ink/70 shadow-sm backdrop-blur transition-colors hover:text-pink-600"
+          className="absolute right-3 top-3 z-10 grid size-9 place-items-center rounded-full bg-surface-raised/90 text-content/70 shadow-sm backdrop-blur transition-colors hover:text-pink-600"
         />
       </div>
 
@@ -69,12 +69,12 @@ export function EventCard({
         <span className="text-xs font-semibold uppercase tracking-[0.16em] text-pink-600">
           {event.category[locale]}
         </span>
-        <h3 className="font-display text-lg font-semibold leading-snug text-ink">
+        <h3 className="font-display text-lg font-semibold leading-snug text-content">
           <Link href={event.href} className="after:absolute after:inset-0">
             {title}
           </Link>
         </h3>
-        <p className="mt-auto flex items-center gap-1.5 pt-1 text-sm text-ink-soft">
+        <p className="mt-auto flex items-center gap-1.5 pt-1 text-sm text-content-soft">
           <IconPin className="size-4 shrink-0 text-teal" aria-hidden />
           {event.venue[locale]}
         </p>

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Enable .dark class variant for the rare one-off dark: overrides. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
   Aarhus Folk Festival design tokens
   Warm Nordic folk palette sampled from the festival's visual identity:
@@ -35,7 +38,32 @@
   --color-ink: #2a221d;
   --color-ink-soft: #6b5d50;
   --color-ink-muted: #9a8b7c;
+
+  /* Semantic neutral roles — light values (current look). */
+  --color-surface:        #f4e8d8; /* page bg (was --color-cream)        */
+  --color-surface-raised: #fbf6ec; /* cards     (was --color-cream-50)   */
+  --color-surface-sunken: #ecdcc6; /* wells/fills (was --color-cream-200)*/
+  --color-content:        #2a221d; /* body text (was --color-ink)        */
+  --color-content-soft:   #6b5d50; /* (was --color-ink-soft)             */
+  --color-content-muted:  #9a8b7c; /* (was --color-ink-muted)            */
+  --color-line:           #2a221d; /* border base; use /10–/20           */
+  --color-focus:          #134e57; /* focus ring (petroleum in light)    */
 }
+
+/* Dark overrides — warm espresso darks, not pure black. */
+.dark {
+  color-scheme: dark;
+  --color-surface:        #17120f;
+  --color-surface-raised: #211a15;
+  --color-surface-sunken: #100c0a;
+  --color-content:        #f3e9da;
+  --color-content-soft:   #c8b7a4;
+  --color-content-muted:  #9c8d7d;
+  --color-line:           #f3e9da;
+  --color-focus:          #7bb4bb; /* teal-300: visible on dark petroleum surfaces */
+}
+
+:root { color-scheme: light; }
 
 /* Map next/font variables to Tailwind font utilities */
 @theme inline {
@@ -52,8 +80,8 @@
   }
 
   body {
-    background-color: var(--color-cream);
-    color: var(--color-ink);
+    background-color: var(--color-surface);
+    color: var(--color-content);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -61,13 +89,20 @@
 
   ::selection {
     background-color: var(--color-pink-200);
-    color: var(--color-ink);
+    color: var(--color-content);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-petroleum);
+    outline: 2px solid var(--color-focus);
     outline-offset: 2px;
     border-radius: 2px;
+  }
+}
+
+/* Smooth theme switch — only when the user hasn't requested reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }
 
@@ -128,4 +163,24 @@
     animation: heart-float 1s ease-out forwards;
     will-change: transform, opacity;
   }
+}
+
+/*
+  Dark-mode contrast corrections for brand accent colours.
+  text-petroleum (#134e57) and text-pink-600 (#a63a5d) were designed for the
+  cream background; on the dark surface (#17120f) they fail WCAG AA.
+  Lighten them just enough — teal-300 (~8:1) and pink (~6:1) — without
+  touching backgrounds, borders, or elements inside intentionally-dark sections
+  (those use text-cream-* / text-pink-200 already).
+*/
+.dark .text-petroleum {
+  color: var(--color-teal-300);
+}
+.dark .text-pink-600 {
+  color: var(--color-pink);
+}
+/* Hover states that swap to rust (#a5392f, ~2.9:1 on dark) also fail. */
+.dark .hover\:text-rust:hover,
+.dark .group:hover .group-hover\:text-rust {
+  color: var(--color-pink);
 }

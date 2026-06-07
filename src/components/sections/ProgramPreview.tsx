@@ -28,7 +28,7 @@ export async function ProgramPreview() {
             </span>
             <h2
               id="program-overskrift"
-              className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+              className="font-display text-3xl font-semibold tracking-tight text-content sm:text-4xl"
             >
               {firstDay.day.weekday[locale]}{" "}
               <span className="text-petroleum">{firstDay.day.date[locale]}</span>

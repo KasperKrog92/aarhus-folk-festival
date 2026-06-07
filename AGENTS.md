@@ -80,9 +80,10 @@ agent-relevant guidance belongs in the docs.
   intentionally replaced with a warm "Om festivalen" / community section. Do not add volunteer
   signup or management.
 - **No CMS / backend.** Content is static arrays in `src/data/`. The newsletter form is a
-  visual demo only (`preventDefault`, no network). The one bit of persistence is client-only:
+  visual demo only (`preventDefault`, no network). Two bits of client-only persistence:
   `FavouriteButton` remembers favourited events in the `aff_favourites` cookie (see
-  `src/lib/favourites.ts`) so a future programme "Show favourited" filter can read them. No
+  `src/lib/favourites.ts`); `ThemeToggle` remembers the visitor's light/dark preference in
+  the `aff_theme` cookie (see `src/lib/theme.ts` + `src/lib/theme-server.ts`). No
   server, no account, no network.
 - **Mobile-first, accessible, semantic.** Keep landmark elements, real heading order, focus
   styles, and descriptive `alt`/`aria-label`. `<html lang>` follows the active locale.

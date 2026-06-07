@@ -6,6 +6,8 @@ import { Footer } from "@/components/layout/Footer";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { getTheme } from "@/lib/theme-server";
 import { site } from "@/data/site";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -22,7 +24,10 @@ const fraunces = Fraunces({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#134e57",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#134e57" },
+    { media: "(prefers-color-scheme: dark)", color: "#17120f" },
+  ],
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -74,27 +79,30 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const locale = await getLocale();
+  const theme = await getTheme();
   const t = getDictionary(locale);
 
   return (
     <html
       lang={locale}
       data-scroll-behavior="smooth"
-      className={`${jakarta.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${jakarta.variable} ${fraunces.variable} h-full antialiased${theme === "dark" ? " dark" : ""}`}
     >
-      <body className="flex min-h-full flex-col bg-cream text-ink">
+      <body className="flex min-h-full flex-col bg-surface text-content">
         <LocaleProvider initialLocale={locale}>
-          <a
-            href="#indhold"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-petroleum focus:px-5 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-cream-50"
-          >
-            {t.skipLink}
-          </a>
-          <Header />
-          <main id="indhold" className="flex-1">
-            {children}
-          </main>
-          <Footer />
+          <ThemeProvider initialTheme={theme}>
+            <a
+              href="#indhold"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-petroleum focus:px-5 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-cream-50"
+            >
+              {t.skipLink}
+            </a>
+            <Header />
+            <main id="indhold" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </ThemeProvider>
         </LocaleProvider>
       </body>
     </html>

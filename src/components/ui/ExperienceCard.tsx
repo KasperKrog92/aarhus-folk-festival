@@ -42,7 +42,7 @@ export function ExperienceCard({
   return (
     <Link
       href={experience.href}
-      className="group relative flex h-full flex-col gap-5 rounded-2xl border border-ink/[0.07] bg-cream-50 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-ink/15 hover:shadow-md"
+      className="group relative flex h-full flex-col gap-5 rounded-2xl border border-line/[0.07] bg-surface-raised p-6 transition-all duration-200 hover:-translate-y-1 hover:border-line/15 hover:shadow-md"
     >
       <div className="flex items-center gap-4">
         <span
@@ -51,12 +51,12 @@ export function ExperienceCard({
           <Icon className="size-7" />
         </span>
 
-        <h3 className="min-w-0 font-display text-xl font-semibold leading-snug text-ink">
+        <h3 className="min-w-0 font-display text-xl font-semibold leading-snug text-content">
           {experience.title[locale]}
         </h3>
       </div>
 
-      <p className="text-sm leading-relaxed text-ink-soft">
+      <p className="text-sm leading-relaxed text-content-soft">
         {experience.description[locale]}
       </p>
 

@@ -23,6 +23,9 @@ const da = {
     closeMenu: "Luk menu",
     menu: "Menu",
     chooseLanguage: "Vælg sprog",
+    chooseTheme: "Vælg tema",
+    lightMode: "Lyst tema",
+    darkMode: "Mørkt tema",
   },
   hero: {
     headlineLine1: "Folkemusikken",
@@ -103,6 +106,9 @@ const en: Dictionary = {
     closeMenu: "Close menu",
     menu: "Menu",
     chooseLanguage: "Choose language",
+    chooseTheme: "Choose theme",
+    lightMode: "Light mode",
+    darkMode: "Dark mode",
   },
   hero: {
     headlineLine1: "Folk music",

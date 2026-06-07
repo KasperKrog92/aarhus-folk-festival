@@ -26,10 +26,10 @@ export default async function ContactPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
             {contactPage.eyebrow[locale]}
           </p>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-content sm:text-5xl">
             {contactPage.title[locale]}
           </h1>
-          <p className="mt-5 text-lg leading-relaxed text-ink-soft">
+          <p className="mt-5 text-lg leading-relaxed text-content-soft">
             {contactPage.intro[locale]}
           </p>
 
@@ -39,7 +39,7 @@ export default async function ContactPage() {
             {contactPage.channels.map((channel) => (
               <li
                 key={channel.id}
-                className="flex flex-col rounded-2xl border border-petroleum/15 bg-cream-50 p-6 shadow-sm"
+                className="flex flex-col rounded-2xl border border-petroleum/15 bg-surface-raised p-6 shadow-sm"
               >
                 <span className="grid size-11 place-items-center rounded-full bg-petroleum/10 text-petroleum">
                   <IconMail className="size-5" />
@@ -49,22 +49,22 @@ export default async function ContactPage() {
                 </p>
                 <a
                   href={`mailto:${channel.email}`}
-                  className="mt-2 font-display text-xl font-semibold text-ink underline decoration-petroleum/30 underline-offset-4 transition-colors hover:text-rust hover:decoration-rust"
+                  className="mt-2 font-display text-xl font-semibold text-content underline decoration-petroleum/30 underline-offset-4 transition-colors hover:text-rust hover:decoration-rust"
                 >
                   {channel.email}
                 </a>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                <p className="mt-2 text-sm leading-relaxed text-content-soft">
                   {channel.description[locale]}
                 </p>
               </li>
             ))}
           </ul>
 
-          <div className="mt-8 rounded-2xl border border-petroleum/10 bg-cream p-6">
-            <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-muted">
+          <div className="mt-8 rounded-2xl border border-petroleum/10 bg-surface p-6">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-content-muted">
               {contactPage.noteHeading[locale]}
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+            <p className="mt-2 text-sm leading-relaxed text-content-soft">
               {contactPage.note[locale]}
             </p>
           </div>

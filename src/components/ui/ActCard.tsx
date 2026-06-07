@@ -29,7 +29,7 @@ export function ActCard({
   cta: string;
 }) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink/[0.07] bg-cream-50 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line/[0.07] bg-surface-raised shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
       {image ? (
         <div className="relative aspect-[4/3] w-full overflow-hidden">
           <Image
@@ -48,12 +48,12 @@ export function ActCard({
         <span className="text-xs font-semibold uppercase tracking-[0.16em] text-pink-600">
           {eyebrow}
         </span>
-        <h3 className="font-display text-xl font-semibold leading-snug text-ink">
+        <h3 className="font-display text-xl font-semibold leading-snug text-content">
           <Link href={href} className="after:absolute after:inset-0">
             {name}
           </Link>
         </h3>
-        <p className="text-sm leading-relaxed text-ink-soft">{tagline}</p>
+        <p className="text-sm leading-relaxed text-content-soft">{tagline}</p>
         <span className="mt-auto inline-flex items-center gap-1.5 pt-3 text-sm font-semibold text-petroleum transition-colors group-hover:text-rust">
           {cta}
           <IconArrowRight className="size-4 transition-transform group-hover:translate-x-1" />

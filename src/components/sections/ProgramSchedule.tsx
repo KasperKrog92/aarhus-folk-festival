@@ -61,7 +61,7 @@ export function ProgramSchedule({
             "inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold tracking-tight transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2",
             onlyFavourites
               ? "border-pink-200 bg-pink-100 text-pink-600"
-              : "border-ink/15 text-ink hover:border-ink/30 hover:bg-ink/[0.04]",
+              : "border-line/15 text-content hover:border-line/30 hover:bg-content/[0.04]",
           )}
         >
           <IconHeart
@@ -86,7 +86,7 @@ export function ProgramSchedule({
         <div className="space-y-14">
           {visibleDays.map(({ day, events }) => (
             <div key={day.id}>
-              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-content sm:text-3xl">
                 {day.weekday[locale]}{" "}
                 <span className="text-petroleum">{day.date[locale]}</span>
               </h2>
@@ -101,9 +101,9 @@ export function ProgramSchedule({
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-ink/[0.07] bg-cream-50 px-6 py-14 text-center">
+        <div className="rounded-2xl border border-line/[0.07] bg-surface-raised px-6 py-14 text-center">
           <IconHeart className="mx-auto size-8 text-pink-600" aria-hidden />
-          <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-ink-soft">
+          <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed text-content-soft">
             {filter.empty[locale]}
           </p>
         </div>

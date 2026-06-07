@@ -31,9 +31,13 @@ src/
   i18n/                   # cookie-based DA/EN: config (Locale, Localized), dictionaries
                           #   (UI chrome), server.ts (getLocale), LocaleProvider (client)
   lib/cn.ts               # tiny className joiner (no clsx dependency)
+  lib/theme.ts            # framework-free theme config: Theme type, THEME_COOKIE, defaultTheme, isTheme()
+  lib/theme-server.ts     # server-only getTheme(): reads aff_theme cookie, falls back to "light"
   lib/favourites.ts       # aff_favourites cookie: parse (SSR-safe) + client read/toggle
                           #   of favourited event ids (FavouriteButton writes it; the
                           #   programme's ProgramSchedule filter reads it)
+  components/theme/       # ThemeProvider (client, holds theme state + setTheme)
+                          #   ThemeToggle (sun/moon button, placed in Header)
 ```
 
 **Content lives in `src/data/`**, not hardcoded in components. Edit data there; sections map over it.
@@ -64,8 +68,9 @@ them, so an act that plays more than once is edited in one place.
 ## Conventions
 
 - Server components by default; add `"use client"` only when interactivity is needed
-  (currently `Header`, `Newsletter`, `FavouriteButton`, and the i18n `LocaleProvider`). Section
-  components are `async` server components that read the locale via `getLocale()`.
+  (currently `Header`, `Newsletter`, `FavouriteButton`, the i18n `LocaleProvider`, and
+  `ThemeProvider` / `ThemeToggle`). Section components are `async` server components that
+  read the locale via `getLocale()`.
 - Keep components small and composable; share spacing via `Container` and headings via
   `SectionHeading`. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
 - Homepage section `id`s double as in-page nav anchors (`#oplev`, `#om`, `#praktisk`; the

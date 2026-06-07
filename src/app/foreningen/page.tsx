@@ -25,21 +25,21 @@ export default async function AssociationPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
             {associationPage.eyebrow[locale]}
           </p>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-content sm:text-5xl">
             {associationPage.title[locale]}
           </h1>
-          <p className="mt-5 text-lg leading-relaxed text-ink-soft">
+          <p className="mt-5 text-lg leading-relaxed text-content-soft">
             {associationPage.intro[locale]}
           </p>
 
           <FolkStripe className="my-10" />
 
-          <div className="rounded-2xl border border-petroleum/15 bg-cream-50 p-6 shadow-sm sm:p-8">
-            <p className="text-base leading-relaxed text-ink-soft">
+          <div className="rounded-2xl border border-petroleum/15 bg-surface-raised p-6 shadow-sm sm:p-8">
+            <p className="text-base leading-relaxed text-content-soft">
               {associationPage.body[locale]}
             </p>
 
-            <h2 className="mt-8 font-display text-2xl font-semibold text-ink">
+            <h2 className="mt-8 font-display text-2xl font-semibold text-content">
               {associationPage.detailsHeading[locale]}
             </h2>
             <ul className="mt-5 grid gap-4 sm:grid-cols-3">
@@ -54,7 +54,7 @@ export default async function AssociationPage() {
                 return (
                   <li
                     key={item.id}
-                    className="rounded-xl border border-petroleum/10 bg-cream p-4"
+                    className="rounded-xl border border-petroleum/10 bg-surface p-4"
                   >
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-pink-600">
                       {item.label[locale]}
@@ -62,17 +62,17 @@ export default async function AssociationPage() {
                     {isEmail ? (
                       <a
                         href={associationPage.contactHref}
-                        className="mt-2 block font-sans text-base font-semibold leading-snug text-ink underline decoration-petroleum/30 underline-offset-4 transition-colors hover:text-rust hover:decoration-rust sm:text-sm md:text-base"
+                        className="mt-2 block font-sans text-base font-semibold leading-snug text-content underline decoration-petroleum/30 underline-offset-4 transition-colors hover:text-rust hover:decoration-rust sm:text-sm md:text-base"
                       >
                         {emailName}
                         <wbr />@{emailDomain}
                       </a>
                     ) : (
-                      <p className="mt-2 font-display text-xl font-semibold text-ink">
+                      <p className="mt-2 font-display text-xl font-semibold text-content">
                         {value}
                       </p>
                     )}
-                    <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    <p className="mt-2 text-sm leading-relaxed text-content-soft">
                       {item.description[locale]}
                     </p>
                   </li>

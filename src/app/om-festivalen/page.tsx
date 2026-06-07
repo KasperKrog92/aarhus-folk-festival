@@ -48,14 +48,14 @@ export default async function AboutPage() {
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
               {aboutPage.eyebrow[locale]}
             </p>
-            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] text-ink sm:text-5xl">
+            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] text-content sm:text-5xl">
               {aboutPage.title[locale]}
             </h1>
             <p className="mt-5 font-display text-2xl font-medium leading-snug text-petroleum sm:text-3xl">
               {aboutPage.lead[locale]}
             </p>
 
-            <div className="mt-7 space-y-4 text-base leading-relaxed text-ink-soft sm:text-lg">
+            <div className="mt-7 space-y-4 text-base leading-relaxed text-content-soft sm:text-lg">
               {aboutPage.intro.map((paragraph, i) => (
                 <p key={i}>{paragraph[locale]}</p>
               ))}
@@ -107,10 +107,10 @@ export default async function AboutPage() {
                 className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
               >
                 <div className={reversed ? "lg:order-2" : undefined}>
-                  <h2 className="font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl">
+                  <h2 className="font-display text-3xl font-semibold leading-tight text-content sm:text-4xl">
                     {block.heading[locale]}
                   </h2>
-                  <div className="mt-5 space-y-4 text-base leading-relaxed text-ink-soft sm:text-lg">
+                  <div className="mt-5 space-y-4 text-base leading-relaxed text-content-soft sm:text-lg">
                     {block.paragraphs.map((paragraph, i) => (
                       <p key={i}>{paragraph[locale]}</p>
                     ))}
@@ -140,7 +140,7 @@ export default async function AboutPage() {
       >
         {/* Cream scallops bite down into the petroleum from the section above. */}
         <ScallopEdge
-          colorClassName="text-cream"
+          colorClassName="text-surface"
           className="absolute left-0 top-0 rotate-180"
         />
         <Container>

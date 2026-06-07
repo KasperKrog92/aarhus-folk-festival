@@ -13,7 +13,7 @@ type ScallopEdgeProps = {
  */
 export function ScallopEdge({
   className,
-  colorClassName = "text-cream",
+  colorClassName = "text-surface",
 }: ScallopEdgeProps) {
   return (
     <div

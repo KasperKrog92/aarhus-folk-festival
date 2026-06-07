@@ -11,9 +11,9 @@ const variants: Record<Variant, string> = {
   // Dusty coral pink, the festival's primary call to action.
   primary:
     "bg-pink-600 text-white shadow-sm shadow-pink/30 hover:bg-rust hover:-translate-y-0.5 active:translate-y-0",
-  // Subtle outline for use on cream surfaces.
+  // Subtle outline for use on page surfaces.
   outline:
-    "border border-ink/20 text-ink hover:border-ink/40 hover:bg-ink/[0.04]",
+    "border border-line/20 text-content hover:border-line/40 hover:bg-content/[0.04]",
   // Outline tuned for dark / photographic backgrounds.
   outlineLight:
     "border border-white/50 text-white hover:bg-white/10 hover:border-white",

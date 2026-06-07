@@ -27,10 +27,10 @@ export default async function ProgramPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
             {programPage.eyebrow[locale]}
           </p>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-content sm:text-5xl">
             {programPage.title[locale]}
           </h1>
-          <p className="mt-5 text-lg leading-relaxed text-ink-soft">
+          <p className="mt-5 text-lg leading-relaxed text-content-soft">
             {programPage.intro[locale]}
           </p>
         </div>

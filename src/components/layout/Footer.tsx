@@ -26,7 +26,7 @@ export async function Footer() {
 
   return (
     <footer id="kontakt" className="bg-petroleum text-cream-100">
-      <FolkBorder flip className="bg-cream text-petroleum" />
+      <FolkBorder flip className="bg-surface text-petroleum" />
 
       <Container className="py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">

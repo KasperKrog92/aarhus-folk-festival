@@ -63,7 +63,7 @@ export function ActDetail({
           </BackButton>
 
           <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:items-center">
-            <div className="overflow-hidden rounded-3xl border border-ink/[0.07] shadow-sm">
+            <div className="overflow-hidden rounded-3xl border border-line/[0.07] shadow-sm">
               {image ? (
                 <Image
                   src={image}
@@ -83,10 +83,10 @@ export function ActDetail({
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
                 {eyebrow}
               </p>
-              <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+              <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-content sm:text-5xl">
                 {name}
               </h1>
-              <p className="mt-4 text-lg leading-relaxed text-ink-soft">{tagline}</p>
+              <p className="mt-4 text-lg leading-relaxed text-content-soft">{tagline}</p>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -110,18 +110,18 @@ export function ActDetail({
               {bio.map((paragraph, index) => (
                 <p
                   key={index}
-                  className="text-base leading-relaxed text-ink-soft sm:text-lg"
+                  className="text-base leading-relaxed text-content-soft sm:text-lg"
                 >
                   {paragraph}
                 </p>
               ))}
             </div>
 
-            <aside className="rounded-2xl border border-petroleum/15 bg-cream-50 p-6 shadow-sm">
+            <aside className="rounded-2xl border border-petroleum/15 bg-surface-raised p-6 shadow-sm">
               <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-pink-600">
                 {scheduleCopy.onProgramme[locale]}
               </h2>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
+              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.14em] text-content-muted">
                 {category}
               </p>
               <ul className="mt-4 space-y-5">
@@ -133,10 +133,10 @@ export function ActDetail({
                     <div className="flex items-start gap-3">
                       <IconClock className="size-5 shrink-0 text-teal" aria-hidden />
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-content-muted">
                           {scheduleCopy.when[locale]}
                         </p>
-                        <p className="mt-0.5 text-sm font-medium text-ink">
+                        <p className="mt-0.5 text-sm font-medium text-content">
                           {show.day} · {show.time}
                         </p>
                       </div>
@@ -144,10 +144,10 @@ export function ActDetail({
                     <div className="flex items-start gap-3">
                       <IconPin className="size-5 shrink-0 text-teal" aria-hidden />
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">
+                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-content-muted">
                           {scheduleCopy.where[locale]}
                         </p>
-                        <p className="mt-0.5 text-sm font-medium text-ink">{show.venue}</p>
+                        <p className="mt-0.5 text-sm font-medium text-content">{show.venue}</p>
                       </div>
                     </div>
                   </li>

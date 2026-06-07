@@ -14,7 +14,7 @@ export async function ExperienceSection() {
     <section
       id="oplev"
       aria-labelledby="oplev-overskrift"
-      className="bg-cream-100 py-16 sm:py-20"
+      className="bg-surface-sunken py-16 sm:py-20"
     >
       <Container>
         <div className="flex flex-col items-center gap-3 text-center">
@@ -23,7 +23,7 @@ export async function ExperienceSection() {
           </span>
           <h2
             id="oplev-overskrift"
-            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-4xl"
+            className="font-display text-3xl font-semibold tracking-tight text-content sm:text-4xl"
           >
             {t.experiences.title}
           </h2>
@@ -38,7 +38,7 @@ export async function ExperienceSection() {
             <span className="h-px w-10 bg-pink/40" />
           </div>
 
-          <p className="mt-1 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
+          <p className="mt-1 max-w-xl text-base leading-relaxed text-content-soft sm:text-lg">
             {t.experiences.intro}
           </p>
         </div>

@@ -49,7 +49,7 @@ export function SectionHeading({
       <Tag
         className={cn(
           "font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl",
-          isLight ? "text-cream-50" : "text-ink",
+          isLight ? "text-cream-50" : "text-content",
         )}
       >
         {title}
@@ -59,7 +59,7 @@ export function SectionHeading({
           className={cn(
             "max-w-2xl text-base leading-relaxed sm:text-lg",
             align === "center" && "mx-auto",
-            isLight ? "text-cream-100/85" : "text-ink-soft",
+            isLight ? "text-cream-100/85" : "text-content-soft",
           )}
         >
           {intro}
