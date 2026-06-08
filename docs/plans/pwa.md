@@ -8,10 +8,10 @@ server components by default, bilingual UI copy in `dictionaries.ts`.
 > **Status: Layers 1 & 2 shipped** in commit `571fe3a` — install metadata
 > (manifest + icons), and a production-only Serwist service worker with an
 > offline fallback route. Phase 4 docs (architecture, design-system, AGENTS) are
-> now updated to match. Layer 3 polish (install prompt, update snackbar, cache
-> warming) and Layer 4 (web push) remain unimplemented. See **Progress (as
-> built)** for deltas from this plan, and **Open decisions** for how each was
-> resolved.
+> now updated to match. **Layer 3's update snackbar is now built** (see Progress);
+> the rest of Layer 3 (cache warming, optional install prompt) and Layer 4 (web
+> push) remain unimplemented. See **Progress (as built)** for deltas from this
+> plan, and **Open decisions** for how each was resolved.
 
 ## Progress (as built)
 
@@ -39,10 +39,46 @@ closely; the notable deltas:
   lib + `@serwist/next/typings` types and excludes `public/sw.js`. `build` is now
   `next build --webpack`.
 
-Still open: Layer 3 (InstallPrompt, update snackbar, cache warming) and Layer 4
-(web push). Phase 4 documentation is done — `architecture.md` now has a PWA /
-service-worker section, `design-system.md` lists the icon set, and `AGENTS.md`
-carries the `--webpack` build note + docs-map row.
+### Layer 3 — update snackbar (built)
+
+The update prompt landed after `571fe3a`:
+
+- **The SW now waits for consent.** [src/sw.ts](../../src/sw.ts) switched
+  `skipWaiting: true` → `false`. A new build installs but does not take over the
+  open page, so visitors keep reading the version they loaded. Leaving
+  `skipWaiting` off also registers Serwist's built-in `SKIP_WAITING` message
+  handler (it only wires that listener when `skipWaiting` is falsy). `clientsClaim`
+  stays on so the first install controls the page and the post-update activate
+  fires `controllerchange`.
+- **Client snackbar.** [src/components/pwa/UpdatePrompt.tsx](../../src/components/pwa/UpdatePrompt.tsx)
+  (`"use client"`, rendered in `layout.tsx` inside the providers) watches
+  `navigator.serviceWorker.ready` for a waiting worker — both one already present
+  at load (guarded by `navigator.serviceWorker.controller` so first install isn't
+  mistaken for an update) and one arriving via `updatefound` → `statechange`. On
+  "reload" it posts `{ type: "SKIP_WAITING" }` to the waiting worker and reloads
+  on the next `controllerchange`; it also has a dismiss (×) button. New
+  dictionary keys `update.available` / `update.reload` / `update.dismiss`.
+- **No dev impact.** The SW is disabled in dev, so `serviceWorker.ready` never
+  resolves and the snackbar renders nothing.
+
+The rest of Layer 3 was intentionally **not** built:
+
+- **Cache warming was skipped.** Pages read the locale/theme cookies on the
+  server, so they are dynamic, not static — precaching or warming a snapshot
+  would freeze locale/theme (the very thing the NetworkFirst nav strategy avoids),
+  and a programmatic `fetch` is not navigation-mode so it would not populate that
+  nav cache anyway. Next's `<Link prefetch>` plus NetworkFirst caching on first
+  navigation already cover repeat/offline reads.
+- **Favourites & theme offline need no code** — both are client cookies
+  (`aff_favourites`, `aff_theme`) that keep working once the programme HTML/JS is
+  cached. Verify in airplane mode rather than by code change.
+- **InstallPrompt** stays deferred per open decision #5 (rely on the browser's
+  native install affordance).
+
+Still open: Layer 3 cache warming (deliberately skipped above) and Layer 4 (web
+push). Phase 4 documentation is done — `architecture.md` now has a PWA /
+service-worker section (incl. the update flow), `design-system.md` lists the icon
+set, and `AGENTS.md` carries the `--webpack` build note + docs-map row.
 
 ## What “PWA” means for this site
 
@@ -390,8 +426,10 @@ Next.js documents this flow in the [PWA guide](https://nextjs.org/docs/app/guide
    `~offline` page, dictionary strings, `next.config.ts` wrap, `build` →
    `--webpack`. Owner offline test on `/program` + a detail page still
    outstanding.
-3. ⬜ **Cache tuning.** Adjust runtime routes; add update snackbar; optional
-   `InstallPrompt`. Re-run Lighthouse PWA + offline manual pass.
+3. 🟡 **Cache tuning.** Update snackbar shipped (`UpdatePrompt` + `skipWaiting:
+   false`); cache warming intentionally skipped (cookie-dynamic pages) and
+   `InstallPrompt` deferred. Owner: re-run Lighthouse PWA + an offline manual
+   pass, and confirm a fresh deploy surfaces the "new version" snackbar.
 4. ✅ **Docs + AGENTS map.** — architecture (PWA / service-worker section),
    design-system (icon set), AGENTS.md (`--webpack` build note, persistence note,
    docs-map row) all updated.
@@ -415,7 +453,10 @@ visual QA — ask the owner to test install + offline on a phone after each phas
 | `src/sw.ts` | 2 (new) |
 | `src/app/~offline/page.tsx` | 2 (new) |
 | `src/i18n/dictionaries.ts` | 2–3 (offline + update + optional install copy) |
-| `src/components/pwa/InstallPrompt.tsx` | 3 (optional) |
+| `src/sw.ts` | 3 (`skipWaiting: false` for the update prompt) |
+| `src/components/pwa/UpdatePrompt.tsx` | 3 (update snackbar — built) |
+| `src/app/layout.tsx` | 3 (render `<UpdatePrompt />`) |
+| `src/components/pwa/InstallPrompt.tsx` | 3 (optional — deferred) |
 | `docs/architecture.md` | 4 |
 | `docs/design-system.md` | 4 (icon assets) |
 | `AGENTS.md` | 4 |
@@ -435,6 +476,7 @@ No changes to `src/data/` content files unless adding PWA-specific copy there
 - [ ] Locale/theme toggle works offline (client cookies)
 - [ ] Ticket external link still opens browser / fails gracefully offline
 - [ ] New deploy: returning visitors get updated SW within reasonable time
+- [ ] New deploy: the "new version available" snackbar appears and "reload" loads it
 - [ ] Lighthouse: PWA category passes install + offline (post Layer 2)
 
 Local SW testing needs HTTPS or `localhost`. Use `pnpm build --webpack && pnpm start`, not `pnpm dev`.

@@ -31,7 +31,12 @@ const festivalAssets: RuntimeCaching = {
 const serwist = new Serwist({
   precacheEntries: self.__SW_MANIFEST,
   precacheOptions: { cleanupOutdatedCaches: true },
-  skipWaiting: true,
+  // A new build waits instead of taking over silently, so visitors keep the
+  // version they loaded until they accept the update. Leaving skipWaiting off
+  // also registers Serwist's built-in `SKIP_WAITING` message handler, which the
+  // client `UpdatePrompt` snackbar posts to. clientsClaim makes the activated
+  // worker claim the page (firing `controllerchange`) so the prompt can reload.
+  skipWaiting: false,
   clientsClaim: true,
   navigationPreload: true,
   runtimeCaching: [festivalAssets, ...defaultCache],

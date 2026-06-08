@@ -86,6 +86,11 @@ const da = {
   eventCard: {
     save: "Gem", // composed as "{save} {title}"
   },
+  update: {
+    available: "Ny version tilgængelig",
+    reload: "Genindlæs",
+    dismiss: "Luk",
+  },
   hero_alt: {
     background:
       "Festivalgæster danser til levende folkemusik i varmt lys, mens en violinist og en harmonikaspiller spiller",
@@ -172,6 +177,11 @@ const en: Dictionary = {
   },
   eventCard: {
     save: "Save",
+  },
+  update: {
+    available: "A new version is available",
+    reload: "Reload",
+    dismiss: "Dismiss",
   },
   hero_alt: {
     background:

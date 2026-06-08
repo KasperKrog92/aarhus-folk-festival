@@ -44,6 +44,8 @@ src/
                           #   programme's ProgramSchedule filter reads it)
   components/theme/       # ThemeProvider (client, holds theme state + setTheme)
                           #   ThemeToggle (sun/moon button, placed in Header)
+  components/pwa/         # UpdatePrompt (client snackbar: offers to reload when a
+                          #   new service worker is waiting)
   sw.ts                   # Serwist service worker source (compiled to public/sw.js on prod build)
 ```
 
@@ -106,7 +108,7 @@ them, so an act that plays more than once is edited in one place.
 ## PWA / service worker
 
 The site is an installable PWA. See [plans/pwa.md](plans/pwa.md) for the full
-rationale and the remaining roadmap (Layer 3 polish + web push are not built).
+rationale and the remaining roadmap (cache warming and web push are not built).
 
 - `app/manifest.ts` emits `/manifest.webmanifest` from `site.ts` constants
   (`start_url: /program`, `short_name: AFF`, light brand `theme_color`). The root
@@ -122,6 +124,15 @@ rationale and the remaining roadmap (Layer 3 polish + web push are not built).
   `defaultCache` (NetworkFirst for document navigations, so cached HTML never
   serves a stale locale/theme), and falls back to `app/~offline/page.tsx` when an
   offline navigation fails.
-- **Production builds use `pnpm build` → `next build --webpack`.** Serwist's SW
-  bundling needs Webpack, not Turbopack; dev (`next dev`) stays Turbopack with the
-  SW disabled.
+- **Updates wait for consent.** The SW uses `skipWaiting: false` so a new build
+  installs but does not take over the page until the visitor agrees. The client
+  `components/pwa/UpdatePrompt.tsx` snackbar (rendered in `layout.tsx`) watches
+  for the waiting worker, and on "reload" posts the `SKIP_WAITING` message
+  Serwist handles, then reloads on `controllerchange`. `clientsClaim` still lets
+  the worker control the page on first install (and fire that `controllerchange`).
+- **Both build and dev pass an explicit bundler flag.** `pnpm build` →
+  `next build --webpack` (Serwist's SW bundling needs Webpack); `pnpm dev` →
+  `next dev --turbopack` (Turbopack, SW disabled). The flags are not optional:
+  `@serwist/next` injects a `webpack` config into `next.config.ts`, and Next 16
+  defaults to Turbopack, so an unflagged `next dev` aborts with a
+  "Turbopack + webpack config" error. Keep both flags.
