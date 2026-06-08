@@ -185,6 +185,35 @@
   }
 }
 
+/* Decorative folk stripe (FolkStripe). Each 80×16 tile is a real inline SVG so
+   the cream blocks, pink diamonds and cream cross can react on their own. The
+   motion itself is driven in JS (Web Animations API) so each symbol finishes its
+   animation even after the pointer leaves; here we only fix the layout and the
+   per-symbol rotation centre. `transform-box: fill-box` makes the SVG shapes
+   rotate about their own centre rather than the SVG origin. */
+.folk-tile {
+  flex: none;
+  /* The square's spin/morph sweeps past the 16px SVG box; let it show and let
+     the rounded container (h-6, overflow-hidden) do the clipping instead. */
+  overflow: visible;
+}
+
+.folk-block,
+.folk-diamond,
+.folk-cross {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Celebration sparks: short-lived particles spawned in JS and flung out of the
+   stripe's top and bottom. Positioned at a point, then transformed away and
+   removed; pointer-events off so they never block interaction. */
+.folk-spark {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
 /*
   Dark-mode contrast corrections for brand accent colours.
   text-petroleum (#134e57) and text-pink-600 (#a63a5d) were designed for the

@@ -192,6 +192,10 @@ export function Header() {
             >
               {t.common.buyTicket}
             </Button>
+            <FavouriteButton
+              label={t.header.save}
+              className="grid size-11 place-items-center rounded-full text-content/70 transition-colors hover:bg-content/[0.05] hover:text-pink-600"
+            />
             <button
               ref={menuButtonRef}
               type="button"
