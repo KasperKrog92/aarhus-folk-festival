@@ -108,20 +108,18 @@
 
 /* Gentle, optional motion that respects reduced-motion preference */
 @media (prefers-reduced-motion: no-preference) {
-  @keyframes route-settle {
+  @keyframes route-fade {
     from {
       opacity: 0;
-      transform: translateY(6px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 
   .route-transition {
-    animation: route-settle 160ms ease-out both;
-    will-change: opacity, transform;
+    animation: route-fade 110ms ease-out both;
+    will-change: opacity;
   }
 
   @keyframes float-slow {

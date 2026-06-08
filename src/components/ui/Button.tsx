@@ -72,6 +72,15 @@ export function Button({
 
   if (props.href !== undefined) {
     const { href, ...rest } = props;
+
+    if (/^https?:\/\//.test(href)) {
+      return (
+        <a href={href} className={classes} {...rest}>
+          {children}
+        </a>
+      );
+    }
+
     return (
       <Link href={href} className={classes} {...rest}>
         {children}

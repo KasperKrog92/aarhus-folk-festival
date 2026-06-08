@@ -8,7 +8,6 @@ src/
   app/
     layout.tsx            # fonts, locale-aware metadata (OG/Twitter/canonical/title template) + <html lang>, LocaleProvider, Header/Footer/skip link
     template.tsx          # route-remount shell: wraps page content in RouteTransition
-    loading.tsx           # lightweight route fallback skeleton shaped like common page intros
     page.tsx              # homepage: composes the section components in order
     program/              # /program: full schedule, grouped by day (derived from acts)
     kunstnere/            # /kunstnere + /kunstnere/[slug]: artists listing + detail
@@ -23,7 +22,7 @@ src/
     globals.css           # design tokens (@theme) + base styles
   components/
     layout/               # Header (client, mobile menu + language/theme toggles),
-                          #   RouteTransition (client route-mount opacity/settle), Footer
+                          #   RouteTransition (client route-mount opacity fade), Footer
     sections/             # one component per homepage section, plus ActListing
                           #   (shared artist/workshop listing-page body), ActDetail
                           #   (shared artist/workshop detail-page body) and
@@ -99,16 +98,17 @@ them, so an act that plays more than once is edited in one place.
 - Keep components small and composable; share spacing via `Container` and headings via
   `SectionHeading` — its default `size="section"` is for in-page `<h2>` sections, and
   `size="page"` (defaults `as="h1"`) is the larger eyebrow/title/intro block at the top of a
-  standalone page. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
+  standalone page. Use the `Button` component for all CTAs (it renders a plain `<a>` for
+  absolute external URLs, `<Link>` for internal routes, or `<button>` for actions).
   Detail pages use `Breadcrumbs` for quiet contextual trails above their normal back link.
 - Homepage section `id`s double as in-page nav anchors (`#oplev`, `#om`, `#praktisk`; the
   homepage keeps a `#program` preview section). Program, Kunstnere, Workshops and Om festivalen
   are dedicated routes (`/program`, `/kunstnere`, `/workshops`, `/om-festivalen`), not anchors.
   The homepage `AboutSection` (`#om`) is a teaser whose CTA links to `/om-festivalen`.
-- Route changes get a short mount-only opacity/vertical settle through `app/template.tsx` and
-  `components/layout/RouteTransition.tsx`. Keep it under 200ms, animate only opacity/transform,
-  and preserve the `prefers-reduced-motion` override in `globals.css`. The sticky header and
-  footer stay outside this transition.
+- Route changes get a short mount-only opacity fade through `app/template.tsx` and
+  `components/layout/RouteTransition.tsx`. Keep it subtle, avoid vertical movement on body
+  content, and preserve the `prefers-reduced-motion` override in `globals.css`. The sticky
+  header and footer stay outside this transition.
 
 ## SEO / metadata
 
