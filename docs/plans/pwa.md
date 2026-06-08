@@ -1,0 +1,435 @@
+# Plan: Progressive Web App (PWA)
+
+A plan for making Aarhus Folk Festival installable on phones and resilient when
+venue Wi‑Fi is spotty. Written to fit the existing conventions: Next.js 16 App
+Router, static content in `src/data/`, cookie-based locale/theme/favourites,
+server components by default, bilingual UI copy in `dictionaries.ts`.
+
+> Status: proposal. No PWA plumbing exists yet — no manifest, no service worker,
+> no install icons beyond the OG image. Open decisions are collected at the end.
+
+## What “PWA” means for this site
+
+This is a **mostly static festival brochure** with a few client bits (language
+toggle, dark mode, programme favourites filter). Visitors care about:
+
+1. **Add to home screen** — quick access to the programme during the festival.
+2. **Offline / flaky-network read access** — programme, artist/workshop detail
+   pages, and favourites still usable in a tent or basement venue.
+3. **Fast repeat visits** — cached fonts, logos, hero images.
+
+Lower priority (defer unless explicitly requested):
+
+- **Web push** for schedule changes or reminders (needs VAPID keys, subscription
+  storage, and a sending pipeline — none exist today).
+- **Background sync** for newsletter signup or ticket purchases (external flows).
+
+The official Next.js PWA guide notes that **install prompts work without offline
+support**; a manifest alone unlocks “Add to home screen” on many platforms.
+Offline is a separate, worthwhile layer for this use case.
+
+## The core decision: two layers, shipped in order
+
+| Layer | Delivers | Depends on |
+|-------|----------|------------|
+| **1. Web app manifest + icons** | Installability, standalone chrome, splash colours | Next.js built-in `app/manifest.ts`; static PNGs in `public/` |
+| **2. Service worker + caching** | Offline / fast repeat loads | Serwist (`@serwist/next`) or a small hand-written SW |
+
+**Recommend shipping Layer 1 first.** It is small, has no bundler impact, and
+matches how the dark-mode plan staged plumbing before polish. Layer 2 adds real
+value for festival-goers but introduces build-script and cache-invalidation
+complexity.
+
+### Tooling: Serwist vs manual service worker
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| **Serwist** (`@serwist/next`) | Precaching, runtime routes, offline fallback page, maintained; [Next.js docs](https://nextjs.org/docs/app/guides/progressive-web-apps) point here for offline | Wraps `next.config.ts`; **production SW build uses Webpack**, not Turbopack — add `--webpack` to `pnpm build` (and any prod SW test) |
+| **Manual SW** (`public/sw.js`) | Full transparency, no extra dependency, Turbopack-friendly for dev | More boilerplate; easy to get caching wrong; you maintain strategies yourself |
+
+**Recommend Serwist for Layer 2** unless the team strongly prefers zero
+dependencies. The festival site has ~15+ HTML routes (see `sitemap.ts`); Serwist’s
+precache manifest generation saves manual URL lists. A manual SW is reasonable if
+the goal is only “cache `/program` + static assets” with no plugin.
+
+**Do not use `next-pwa`.** It is unmaintained relative to Serwist and has the
+same Webpack requirement in Next.js 16.
+
+## Site-specific constraints
+
+### Cookie-driven SSR (locale, theme)
+
+Every page read cookies (`aff_locale`, `aff_theme`, `aff_favourites`) on the
+server. Cached HTML is **per-user-state**, not a single canonical document.
+
+Implications for the service worker:
+
+- **Do not cache-first HTML navigations globally** — a Danish light-mode page
+  served from cache after the visitor switches to English or dark mode is a bug.
+- **Prefer network-first (or stale-while-revalidate with short TTL) for
+  document requests**, with offline fallback to the last successfully fetched
+  version of *that* URL (accepting that locale/theme may match the last online
+  visit).
+- **Cache-first is fine for hashed build assets** (`/_next/static/…`), fonts,
+  logos, and programme images under `/images/`.
+
+This matches real festival usage: visitors set language once, then re-open
+`/program` offline.
+
+### Static content model (good news)
+
+Acts, workshops, and the derived programme live in `src/data/` and ship with the
+build. There is no CMS or live API. Once HTML for a route is generated at build
+time, content is stable until the next deploy. Runtime caching mainly helps
+**connectivity**, not freshness — deploy a new build to update the schedule.
+
+### External / network-only surfaces
+
+Leave these **uncached** (network-only or navigate to browser):
+
+- Ticket links (`site.ticketUrl` → Place2book)
+- Contact email (`mailto:`)
+- Any future newsletter backend
+
+### Canonical origin
+
+`site.url` in [site.ts](../../src/data/site.ts) is the production origin
+(currently `https://folk.gamestormers.dk`, moving to `aarhusfolkfestival.dk`).
+The manifest `start_url` / `scope` must use **path-only** values (`/`, `/program`)
+so a domain migration does not require manifest changes. Update `site.url` only
+in `site.ts` (existing SEO rule).
+
+### Existing metadata to extend, not replace
+
+[layout.tsx](../../src/app/layout.tsx) already sets `metadataBase`, OpenGraph,
+Twitter, and `viewport.themeColor` (petroleum light / espresso dark). PWA work
+**adds** `applicationName`, `appleWebApp`, and manifest icons — it should not
+duplicate or fight the OG card (`/images/opengraph.png` is for link previews,
+not the home-screen icon).
+
+---
+
+## Layer 1 — Manifest, icons, install metadata
+
+### 1a. `src/app/manifest.ts`
+
+Next.js App Router serves this at `/manifest.webmanifest` automatically.
+Use `MetadataRoute.Manifest` and pull constants from `site`:
+
+```ts
+import type { MetadataRoute } from "next";
+import { site } from "@/data/site";
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: `${site.name} ${site.year}`,
+    short_name: "AFF", // or "AFF 2026" — see open decisions
+    description: site.tagline.da, // manifest has no per-locale file; pick DA default or shortest EN
+    start_url: "/program", // festival-first; see open decisions
+    scope: "/",
+    display: "standalone",
+    orientation: "portrait-primary",
+    background_color: "#f4e8d8", // surface light (splash while loading)
+    theme_color: "#134e57",      // petroleum (matches light themeColor)
+    lang: "da",
+    dir: "ltr",
+    icons: [
+      {
+        src: "/icons/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icons/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icons/icon-maskable-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+    ],
+  };
+}
+```
+
+Tune `description` / default `lang` in open decisions. No `router.refresh()`
+or client code required.
+
+### 1b. App icons (`public/icons/`)
+
+**Source asset:** [public/logos/logo.png](../../public/logos/logo.png) — the
+accordion mark on a baked cream background (750×750). It already matches the
+festival identity; no separate mark-on-transparent composite is needed.
+
+Generated outputs (committed under `public/icons/`):
+
+| File | Size | Purpose |
+|------|------|---------|
+| `icon-192.png` | 192×192 | Manifest `any` |
+| `icon-512.png` | 512×512 | Manifest `any` |
+| `icon-maskable-512.png` | 512×512 | Manifest `maskable` — accordion scaled to 80% on `#f4e8d8` so Android adaptive icons do not clip the bellows |
+| `apple-touch-icon.png` | 180×180 | iOS home screen |
+
+Regenerate after editing the source logo:
+
+```bash
+node scripts/generate-pwa-icons.mjs
+```
+
+The script uses `sharp` (devDependency). Do not generate icons at request time
+in production — commit the PNG outputs.
+
+### 1c. Extend root metadata in `layout.tsx`
+
+Add to `generateMetadata()` (alongside existing OG/Twitter):
+
+```ts
+applicationName: site.name,
+appleWebApp: {
+  capable: true,
+  title: site.name,
+  statusBarStyle: "default", // "black-translucent" if splash should feel immersive
+},
+formatDetection: { telephone: false },
+```
+
+Optional explicit link (usually redundant if `manifest.ts` exists):
+
+```tsx
+// in <head> via metadata.icons or manual — only if audit tools complain
+icons: { apple: "/icons/apple-touch-icon.png" },
+```
+
+`theme_color` in the manifest is static; the layout already uses media-query
+`themeColor` for browser chrome. That split is acceptable (manifest = light
+brand default).
+
+### 1d. Verify installability (Layer 1 done)
+
+- `pnpm build && pnpm start` (no Webpack flag needed for manifest-only).
+- Chrome DevTools → Application → Manifest: no errors; icons resolve.
+- Lighthouse PWA audit: installable (may still warn “no service worker” until
+  Layer 2).
+- Owner sanity-check on a real phone: Add to Home Screen, icon, splash, opens
+  to `start_url`.
+
+**No new dependencies for Layer 1.**
+
+---
+
+## Layer 2 — Service worker with Serwist
+
+### 2a. Dependencies
+
+```bash
+pnpm add @serwist/next serwist
+```
+
+### 2b. `next.config.ts`
+
+Wrap the existing config:
+
+```ts
+import withSerwistInit from "@serwist/next";
+
+const withSerwist = withSerwistInit({
+  swSrc: "src/sw.ts",
+  swDest: "public/sw.js",
+  disable: process.env.NODE_ENV === "development",
+  register: true,
+  reloadOnOnline: true,
+});
+
+const nextConfig = { /* existing options */ };
+
+export default withSerwist(nextConfig);
+```
+
+Keep `disable: true` in development so Turbopack dev is unaffected. SW is
+generated only on production build.
+
+### 2c. `src/sw.ts` (service worker source)
+
+Follow Serwist’s App Router template. Recommended strategies for this site:
+
+| Request | Strategy | Rationale |
+|---------|----------|-----------|
+| `/_next/static/*` | Precache (build revision) | Hashed filenames; safe cache-first |
+| `/logos/*`, `/images/*`, `/icons/*` | Cache-first + expiration (e.g. 30 days) | Static festival assets |
+| `/_next/image*` | Stale-while-revalidate | Optimised images |
+| Document navigations (`accept: text/html`) | **Network-first**, fallback to cache | Avoid stale locale/theme; offline still shows last visit |
+| Cross-origin (Place2book, fonts.googleapis.com if any) | Network only | External |
+
+Add an offline fallback route:
+
+- `src/app/~offline/page.tsx` — minimal server page using `getLocale()` +
+  dictionary keys (`common.offlineTitle`, `common.offlineBody`, link to `/program`).
+- Register in Serwist `additionalPrecacheEntries` or `navigateFallback` per
+  Serwist docs.
+
+Bilingual copy for the offline page belongs in [dictionaries.ts](../../src/i18n/dictionaries.ts), not hardcoded.
+
+### 2d. Build scripts
+
+Serwist’s SW compilation requires Webpack:
+
+```json
+"build": "next build --webpack",
+"start": "next start"
+```
+
+Document in AGENTS.md that production builds use `--webpack` for PWA. Dev stays
+`next dev` (Turbopack, no SW).
+
+### 2e. Service worker HTTP headers
+
+Ensure `public/sw.js` is served with:
+
+- `Cache-Control: no-cache` (or short max-age) so updates propagate
+- `Service-Worker-Allowed: /` if scope needs widening
+
+Next.js / Serwist usually handle this; verify in production `pnpm start`.
+
+### 2f. Optional install UX (client)
+
+Browsers increasingly suppress custom install banners. If a gentle prompt is
+desired:
+
+- `src/components/pwa/InstallPrompt.tsx` (`"use client"`) — listen for
+  `beforeinstallprompt`, show a small dismissible banner (Header area or
+  programme page only).
+- Dictionary keys: `installApp`, `installAppDismiss`.
+- Respect `localStorage` dismiss flag; never block content.
+
+Skip in v1 if keeping scope minimal.
+
+---
+
+## Layer 3 — Programme-first offline polish
+
+After Layer 2 works:
+
+1. **Warm cache on first online visit** — after SW install, prefetch `/program`,
+   `/kunstnere`, `/workshops` via `workbox` / Serwist `addRoute` or a client
+   `useEffect` that `fetch`es key routes once (optional; precache list may be
+   enough).
+2. **Favourites offline** — `aff_favourites` is already a client cookie;
+   `ProgramSchedule` + `lib/favourites.ts` keep working offline if programme
+   HTML/JS is cached. Manually test “Vis hjerte-events” in airplane mode.
+3. **Theme offline** — `aff_theme` + `ThemeProvider` are client-side; no SW
+   change needed.
+4. **Update prompt** — when a new SW is waiting, show a one-line “Ny version
+   tilgængelig — genindlæs” snackbar (`controllerchange` / Serwist lifecycle).
+   Dictionary keys + dismiss.
+
+---
+
+## Layer 4 — Web push (optional, separate project)
+
+Only if the festival team wants schedule-change notifications:
+
+- VAPID key pair (env vars, never committed)
+- Server Actions or Route Handlers for subscribe / unsubscribe
+- Database or KV for push subscriptions (cookies are wrong for this)
+- Client permission UI (Header or programme page)
+- iOS requires installed PWA + iOS 16.4+
+
+Next.js documents this flow in the [PWA guide](https://nextjs.org/docs/app/guides/progressive-web-apps).
+**Do not bundle into Layers 1–3** — it is a backend feature, not a manifest tweak.
+
+---
+
+## Rollout phases
+
+1. **Installable (manifest + icons + metadata).** Add `manifest.ts`, `public/icons/*`,
+   extend `generateMetadata`, optional `scripts/generate-pwa-icons.mjs`. Light mode
+   unchanged. `pnpm build` (no `--webpack` yet). Owner tests Add to Home Screen.
+2. **Serwist plumbing.** Add packages, `src/sw.ts`, `~offline` page, dictionary
+   strings, `next.config.ts` wrap, `build` → `--webpack`. Confirm `public/sw.js`
+   appears after build. Test offline on `/program` and one detail page.
+3. **Cache tuning.** Adjust runtime routes; add update snackbar; optional
+   `InstallPrompt`. Re-run Lighthouse PWA + offline manual pass.
+4. **Docs + AGENTS map.** Update architecture, design-system (icons), AGENTS.md
+   (`--webpack` build note, persistence section).
+
+Verify with `pnpm build` after phases 2–3. Do not self-launch the browser for
+visual QA — ask the owner to test install + offline on a phone after each phase.
+
+---
+
+## File touch list (expected)
+
+| File | Phase |
+|------|-------|
+| `src/app/manifest.ts` | 1 (new) |
+| `public/logos/logo.png` | 1 (source — accordion on cream) |
+| `public/icons/*` | 1 (new, generated) |
+| `scripts/generate-pwa-icons.mjs` | 1 (new) |
+| `src/app/layout.tsx` | 1 (`applicationName`, `appleWebApp`, …) |
+| `package.json` | 2 (`@serwist/next`, `serwist`; `build --webpack`) |
+| `next.config.ts` | 2 |
+| `src/sw.ts` | 2 (new) |
+| `src/app/~offline/page.tsx` | 2 (new) |
+| `src/i18n/dictionaries.ts` | 2–3 (offline + update + optional install copy) |
+| `src/components/pwa/InstallPrompt.tsx` | 3 (optional) |
+| `docs/architecture.md` | 4 |
+| `docs/design-system.md` | 4 (icon assets) |
+| `AGENTS.md` | 4 |
+
+No changes to `src/data/` content files unless adding PWA-specific copy there
+(which would be wrong — UI chrome stays in dictionaries).
+
+---
+
+## Testing checklist
+
+- [ ] Manifest validates in Chrome Application panel
+- [ ] Icons sharp on Android home screen and iOS (installed)
+- [ ] `start_url` opens correct page standalone (no browser URL bar)
+- [ ] Programme readable offline after one online visit
+- [ ] Favourites filter works offline
+- [ ] Locale/theme toggle works offline (client cookies)
+- [ ] Ticket external link still opens browser / fails gracefully offline
+- [ ] New deploy: returning visitors get updated SW within reasonable time
+- [ ] Lighthouse: PWA category passes install + offline (post Layer 2)
+
+Local SW testing needs HTTPS or `localhost`. Use `pnpm build --webpack && pnpm start`, not `pnpm dev`.
+
+---
+
+## Docs to update when implementing
+
+- [architecture.md](../architecture.md): `manifest.ts`, `src/sw.ts`, `~offline`,
+  optional `components/pwa/`, build `--webpack` note.
+- [design-system.md](../design-system.md): PWA icon set under Assets (source:
+  `public/logos/logo.png`; outputs in `public/icons/`).
+- [AGENTS.md](../../AGENTS.md): documentation map row for PWA if the section
+  grows; build command note; persistence list unchanged (favourites/theme still
+  cookies — SW does not replace them).
+
+---
+
+## Open decisions
+
+1. **`start_url`:** **`/program`** (festival utility-first) vs **`/`** (marketing
+   home). Recommend `/program` for installed repeat use; marketing CTAs remain on
+   the web site.
+2. **`short_name`:** **`AFF`** (fits icon label) vs **`AFF 2026`** (edition
+   clarity). Recommend `AFF` with full name in `name`.
+3. **Manifest `description` / `lang`:** Single DA default vs EN — manifests are
+   not localized per cookie. Recommend `description: site.tagline.da`, `lang: "da"`,
+   or shortest bilingual string if store listing matters.
+4. **Serwist vs manual SW:** Recommend Serwist unless dependency-averse.
+5. **Custom install prompt:** Ship without (browser default) in v1, or add
+   `InstallPrompt` in Phase 3.
+6. **Web push:** Defer entirely unless product asks for schedule alerts.
+7. **Precache all sitemap routes vs programme-only:** Full sitemap (~N artist +
+   workshop pages) increases install size but guarantees offline detail pages.
+   Recommend precaching **all public routes** from `sitemap.ts` logic (static
+   site, modest total size); fall back to programme + listings only if build SW
+   size is a concern.

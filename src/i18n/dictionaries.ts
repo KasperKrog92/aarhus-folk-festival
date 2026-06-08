@@ -15,6 +15,9 @@ const da = {
     readMore: "Læs mere",
     back: "Tilbage",
     backToHome: "Tilbage til forsiden",
+    offlineTitle: "Du er offline",
+    offlineBody:
+      "Forbindelsen er væk lige nu. Prøv igen, når du har netværk — eller gå til programmet, hvis du allerede har besøgt det.",
   },
   header: {
     home: "til forsiden", // composed as "{name}, {home}"
@@ -99,6 +102,9 @@ const en: Dictionary = {
     readMore: "Read more",
     back: "Back",
     backToHome: "Back to the homepage",
+    offlineTitle: "You are offline",
+    offlineBody:
+      "The connection is down right now. Try again when you are back online — or open the programme if you have visited it before.",
   },
   header: {
     home: "to the homepage",

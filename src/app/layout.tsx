@@ -70,6 +70,14 @@ export async function generateMetadata(): Promise<Metadata> {
       index: true,
       follow: true,
     },
+    applicationName: site.name,
+    appleWebApp: {
+      capable: true,
+      title: site.name,
+      statusBarStyle: "default",
+    },
+    formatDetection: { telephone: false },
+    icons: { apple: "/icons/apple-touch-icon.png" },
   };
 }
 
