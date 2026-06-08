@@ -114,6 +114,12 @@ them, so an act that plays more than once is edited in one place.
 
 - `site.url` (in `data/site.ts`) is the canonical origin and the single source of truth for
   `metadataBase`, `robots.ts`, and `sitemap.ts`. Update it there only.
+- The site currently runs on the **temporary** host `folk.gamestormers.dk` and will later move
+  to the real domain. `next.config.ts` keeps a `noindexHosts` list and serves
+  `X-Robots-Tag: noindex, nofollow` for those hosts, so the staging origin never accrues index
+  signals. Crawling stays *allowed* in `robots.ts` on purpose — a crawler must fetch the page to
+  see the header. On launch: repoint `site.url` at the real domain and drop the old host from
+  `noindexHosts`. A fuller SEO audit + roadmap lives in [plans/seo-audit-and-plan.md](plans/seo-audit-and-plan.md).
 - The root `layout.tsx` sets the shared OpenGraph/Twitter card (image: `public/images/opengraph.png`),
   a `%s | Aarhus Folk Festival` title template, and the home canonical. Subpages just set their
   page `title`, `description`, and own `alternates.canonical` — they inherit the OG/Twitter card.

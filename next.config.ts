@@ -16,6 +16,26 @@ const withSerwist = withSerwistInit({
   reloadOnOnline: true,
 });
 
-const nextConfig: NextConfig = {};
+/**
+ * Hosts that should never be indexed. The site is currently served from the
+ * temporary `folk.gamestormers.dk` origin and will later move to the real
+ * domain; keeping the staging host out of the index avoids duplicate-content
+ * and migration headaches. Crawling stays *allowed* in `robots.ts` on purpose —
+ * a crawler must be able to fetch the page to see this `noindex` header (a
+ * `Disallow` would hide the header and could still surface a URL-only result).
+ * Remove a host here once it becomes the canonical, indexable origin.
+ */
+const noindexHosts = ["folk.gamestormers.dk"];
+
+const nextConfig: NextConfig = {
+  async headers() {
+    return noindexHosts.map((host) => ({
+      // Apply to every route on the staging host.
+      source: "/:path*",
+      has: [{ type: "host" as const, value: host }],
+      headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+    }));
+  },
+};
 
 export default withSerwist(nextConfig);
