@@ -96,7 +96,11 @@ const da = {
     body: "Læg Aarhus Folk Festival på din hjemmeskærm, så programmet altid er et tryk væk.",
     action: "Installer",
     dismiss: "Ikke nu",
+    close: "Luk",
     iosBody: "Tryk på Del-knappen og vælg Føj til hjemmeskærm.",
+    installedTitle: "Appen er installeret",
+    installedBody:
+      "Aarhus Folk Festival ligger nu på din hjemmeskærm. Åbn appen derfra, når du vil hurtigt tilbage til programmet.",
   },
   hero_alt: {
     background:
@@ -195,7 +199,11 @@ const en: Dictionary = {
     body: "Add Aarhus Folk Festival to your home screen so the programme is always a tap away.",
     action: "Install",
     dismiss: "Not now",
+    close: "Close",
     iosBody: "Tap the Share button, then choose Add to Home Screen.",
+    installedTitle: "The app is installed",
+    installedBody:
+      "Aarhus Folk Festival is now on your home screen. Open the app from there whenever you want a quick way back to the programme.",
   },
   hero_alt: {
     background:

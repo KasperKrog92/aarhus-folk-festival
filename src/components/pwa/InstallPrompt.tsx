@@ -20,15 +20,15 @@ import { cn } from "@/lib/cn";
  *   detection already guarantees a touch device, so this one is not viewport-gated.
  *
  * A `localStorage` flag (`aff_install_dismissed`) stops either card nagging after
- * dismiss/install, and `appinstalled` clears it too. Already-installed visitors
- * (standalone display mode) never see it.
+ * dismiss/install. `appinstalled` swaps the prompt for a short confirmation.
+ * Already-installed visitors (standalone display mode) never see it.
  */
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
-type Mode = "none" | "android" | "ios";
+type Mode = "none" | "android" | "ios" | "installed";
 
 const DISMISS_KEY = "aff_install_dismissed";
 
@@ -81,7 +81,8 @@ export function InstallPrompt() {
       setMode("android");
     };
     const onInstalled = () => {
-      setMode("none");
+      setMode("installed");
+      setPromptEvent(null);
       localStorage.setItem(DISMISS_KEY, "1");
     };
 
@@ -105,9 +106,13 @@ export function InstallPrompt() {
     await promptEvent.prompt();
     const { outcome } = await promptEvent.userChoice;
     // A given prompt event can only be used once; drop it either way.
-    setMode("none");
     setPromptEvent(null);
-    if (outcome === "accepted") localStorage.setItem(DISMISS_KEY, "1");
+    if (outcome === "accepted") {
+      setMode("installed");
+      localStorage.setItem(DISMISS_KEY, "1");
+      return;
+    }
+    setMode("none");
   };
 
   return (
@@ -131,7 +136,7 @@ export function InstallPrompt() {
             id="install-prompt-title"
             className="font-display text-base font-semibold tracking-tight text-content"
           >
-            {t.install.title}
+            {mode === "installed" ? t.install.installedTitle : t.install.title}
           </p>
 
           {mode === "android" ? (
@@ -156,7 +161,7 @@ export function InstallPrompt() {
                 </button>
               </div>
             </>
-          ) : (
+          ) : mode === "ios" ? (
             <p className="mt-1 flex items-start gap-2 text-sm leading-relaxed text-content-muted">
               <IconShare
                 className="mt-0.5 size-4 shrink-0 text-petroleum"
@@ -164,15 +169,21 @@ export function InstallPrompt() {
               />
               <span>{t.install.iosBody}</span>
             </p>
+          ) : (
+            <p className="mt-1 text-sm leading-relaxed text-content-muted">
+              {t.install.installedBody}
+            </p>
           )}
         </div>
 
-        {mode === "ios" && (
+        {(mode === "ios" || mode === "installed") && (
           <button
             type="button"
             onClick={dismiss}
-            aria-label={t.install.dismiss}
-            title={t.install.dismiss}
+            aria-label={
+              mode === "installed" ? t.install.close : t.install.dismiss
+            }
+            title={mode === "installed" ? t.install.close : t.install.dismiss}
             className="grid size-8 shrink-0 place-items-center rounded-full text-content-muted transition-colors hover:bg-content/[0.05] hover:text-content focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-petroleum"
           >
             <IconClose className="size-5" />

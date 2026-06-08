@@ -139,8 +139,10 @@ rationale and the remaining roadmap (cache warming and web push are not built).
   Screen" hint (no button — iOS has no programmatic trigger; that card isn't
   viewport-gated since the detection already implies a touch device). A
   `localStorage` flag (`aff_install_dismissed`) stops either card nagging after
-  dismiss/install, and already-installed (standalone) visitors never see it.
-  Copy: `install.*` keys; the Share glyph is `IconShare`.
+  dismiss/install. When Chromium reports `appinstalled`, the card becomes a short
+  confirmation that tells the visitor to open the app from the home screen.
+  Already-installed (standalone) visitors never see it. Copy: `install.*` keys;
+  the Share glyph is `IconShare`.
 - **Both build and dev pass an explicit bundler flag.** `pnpm build` →
   `next build --webpack` (Serwist's SW bundling needs Webpack); `pnpm dev` →
   `next dev --turbopack` (Turbopack, SW disabled). The flags are not optional:
