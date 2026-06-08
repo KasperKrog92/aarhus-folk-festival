@@ -18,7 +18,8 @@ src/
     globals.css           # design tokens (@theme) + base styles
   components/
     layout/               # Header (client, mobile menu + language toggle), Footer
-    sections/             # one component per homepage section, plus ActDetail
+    sections/             # one component per homepage section, plus ActListing
+                          #   (shared artist/workshop listing-page body), ActDetail
                           #   (shared artist/workshop detail-page body) and
                           #   ProgramSchedule (the /program list + favourites filter)
     ui/                   # reusable primitives: Container, Button, SectionHeading, ActCard,
@@ -51,19 +52,23 @@ them, so an act that plays more than once is edited in one place.
   copy. Every act has a `category`, an image/`tone`, and a `shows: Show[]` array,
   one entry per appearance (`dayId` + `time` + `venue`).
 - `data/program.ts` is the schedule backbone: `festivalDays` (the day list), the
-  shared `Show` / `ProgramEvent` / `EventTone` types, and `getProgramByDay()`,
-  which flattens every act's `shows` into a time-sorted, day-grouped programme
-  (empty days are dropped). `formatDay(dayId, locale)` resolves a day label.
+  shared `Show` / `ActDetailShow` / `ProgramEvent` / `EventTone` types,
+  `getProgramByDay()`, which flattens every act's `shows` into a time-sorted,
+  day-grouped programme (empty days are dropped), and `actDetailShows()`, which
+  resolves an act's showtimes for the shared detail-page panel. `formatDay(dayId,
+  locale)` resolves a day label.
 - `/program` and the homepage `ProgramPreview` both render `getProgramByDay()`;
   each act's detail page renders its own `shows` via `ActDetail`. `EventCard` takes
-  a `ProgramEvent` and links to the act's page; `ActCard` is the shared listing card.
+  a `ProgramEvent` and links to the act's page; `ActListing` is the shared listing
+  page body for act collections, while `ActCard` is the shared listing card.
 - `/program` passes the day groups to the client `ProgramSchedule`, which adds the
   "Vis hjerte-events" toggle: it reads the `aff_favourites` cookie (via
   `lib/favourites.ts`) as an external store and narrows the list to favourited
   events. The page itself stays a server component; the filter is the only client part.
 - **To add an act:** add it to `artists.ts` / `workshops.ts` with its `shows`. It
   then appears in the programme, the homepage preview and its own detail page
-  automatically. Reuse `ActCard` / `ActDetail` for any new listing/detail pages.
+  automatically. Reuse `ActListing` / `ActCard` / `ActDetail`, `actDetailShows()`,
+  and `lib/metadata.ts`'s `actMetadata()` for any new act listing/detail pages.
 
 ## Conventions
 

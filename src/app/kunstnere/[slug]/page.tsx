@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ActDetail } from "@/components/sections/ActDetail";
 import { artists, artistsPage, getArtist } from "@/data/artists";
-import { formatDay } from "@/data/program";
-import { site } from "@/data/site";
+import { actDetailShows } from "@/data/program";
 import { getLocale } from "@/i18n/server";
+import { actMetadata } from "@/lib/metadata";
 
 type ArtistPageProps = {
   params: Promise<{ slug: string }>;
@@ -25,19 +25,16 @@ export async function generateMetadata({
   }
 
   const locale = await getLocale();
-  const description = `${artist.name} — ${artist.tagline[locale]}`;
 
-  return {
-    title: artist.name,
-    description,
-    alternates: { canonical: `${artistsPage.href}/${artist.slug}` },
-    openGraph: {
-      title: `${artist.name} | ${site.name}`,
-      description,
-      url: `${artistsPage.href}/${artist.slug}`,
-      ...(artist.image ? { images: [{ url: artist.image }] } : {}),
+  return actMetadata(
+    {
+      name: artist.name,
+      tagline: artist.tagline[locale],
+      image: artist.image,
+      href: `${artistsPage.href}/${artist.slug}`,
     },
-  };
+    locale,
+  );
 }
 
 export default async function ArtistPage({ params }: ArtistPageProps) {
@@ -61,11 +58,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
       imageAlt={artist.imageAlt[locale]}
       tone={artist.tone}
       category={artist.category[locale]}
-      shows={artist.shows.map((show) => ({
-        day: formatDay(show.dayId, locale),
-        time: show.time,
-        venue: show.venue[locale],
-      }))}
+      shows={actDetailShows(artist.shows, locale)}
       backHref={artistsPage.href}
     />
   );

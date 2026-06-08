@@ -34,6 +34,13 @@ export type Show = {
   venue: Localized;
 };
 
+export type ActDetailShow = {
+  /** Resolved "Weekday Date" label. */
+  day: string;
+  time: string;
+  venue: string;
+};
+
 /** A single performance/session in the schedule (one act on one day + time). */
 export type ProgramEvent = {
   id: string;
@@ -111,6 +118,15 @@ export function getProgramByDay(): ProgramDayGroup[] {
 export function formatDay(dayId: string, locale: Locale): string {
   const day = festivalDays.find((d) => d.id === dayId);
   return day ? `${day.weekday[locale]} ${day.date[locale]}` : "";
+}
+
+/** Resolves an act's show list for the shared detail page panel. */
+export function actDetailShows(shows: Show[], locale: Locale): ActDetailShow[] {
+  return shows.map((show) => ({
+    day: formatDay(show.dayId, locale),
+    time: show.time,
+    venue: show.venue[locale],
+  }));
 }
 
 /** Shared UI copy for any "schedule" surface (act panels, programme). */

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ActDetail } from "@/components/sections/ActDetail";
-import { formatDay } from "@/data/program";
+import { actDetailShows } from "@/data/program";
 import { getWorkshop, workshops, workshopsPage } from "@/data/workshops";
-import { site } from "@/data/site";
 import { getLocale } from "@/i18n/server";
+import { actMetadata } from "@/lib/metadata";
 
 type WorkshopPageProps = {
   params: Promise<{ slug: string }>;
@@ -26,19 +26,16 @@ export async function generateMetadata({
 
   const locale = await getLocale();
   const name = workshop.name[locale];
-  const description = `${name} — ${workshop.tagline[locale]}`;
 
-  return {
-    title: name,
-    description,
-    alternates: { canonical: `${workshopsPage.href}/${workshop.slug}` },
-    openGraph: {
-      title: `${name} | ${site.name}`,
-      description,
-      url: `${workshopsPage.href}/${workshop.slug}`,
-      ...(workshop.image ? { images: [{ url: workshop.image }] } : {}),
+  return actMetadata(
+    {
+      name,
+      tagline: workshop.tagline[locale],
+      image: workshop.image,
+      href: `${workshopsPage.href}/${workshop.slug}`,
     },
-  };
+    locale,
+  );
 }
 
 export default async function WorkshopPage({ params }: WorkshopPageProps) {
@@ -62,11 +59,7 @@ export default async function WorkshopPage({ params }: WorkshopPageProps) {
       imageAlt={workshop.imageAlt[locale]}
       tone={workshop.tone}
       category={workshop.category[locale]}
-      shows={workshop.shows.map((show) => ({
-        day: formatDay(show.dayId, locale),
-        time: show.time,
-        venue: show.venue[locale],
-      }))}
+      shows={actDetailShows(workshop.shows, locale)}
       backHref={workshopsPage.href}
     />
   );

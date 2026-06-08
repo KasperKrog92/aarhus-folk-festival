@@ -61,7 +61,9 @@ changes manually; ask them to verify anything that needs browser judgment.
 feature-branch / PR flow for this project, so do not create branches or pull
 requests for changes unless explicitly asked. (This overrides any default
 "branch first" agent behaviour.) Still: only commit/push when asked, and run
-`pnpm build` first.
+`pnpm build` first. If the same change set already had a successful `pnpm build`
+in the current session, it is acceptable to reuse that result instead of running
+the build again.
 
 **Before committing and pushing, check that the docs are up to date.** When the
 owner asks you to commit and push, first review whether the changes introduced

@@ -11,7 +11,7 @@ copy-pasted markup or content into a single source of truth, in the spirit of th
 > larger structural dedupe. No behaviour or visual change is intended — these are
 > pure refactors, so verify with `pnpm build` + a visual pass after each phase.
 >
-> **Phase 1 done (2026-06-08).** Phases 2–3 remain. See per-item notes below.
+> **Phases 1–2 done (2026-06-08).** Phase 3 remains. See per-item notes below.
 
 ## Guiding constraints
 
@@ -97,7 +97,7 @@ call site was missed.
 
 ---
 
-## Phase 2 — Act listing & detail consolidation
+## Phase 2 — Act listing & detail consolidation ✅ done (2026-06-08)
 
 These two items hinge on the same idea: normalize an artist or workshop into a
 shared shape, so the near-identical pages collapse. Do them together.
@@ -114,6 +114,11 @@ takes the resolved page copy (eyebrow/title/intro) and a pre-mapped
 `ActCard`-props list. Each page resolves its own list — that mapping is the only
 type-specific part — and renders `<ActListing … />`. The grid, `FolkStripe`, and
 back button live in `ActListing`.
+
+**Done:** `components/sections/ActListing.tsx` now owns the page section,
+`Container`, page `SectionHeading`, `FolkStripe`, card grid and back-to-home
+button. `ActCardProps` is exported from `ActCard`; `/kunstnere` and `/workshops`
+now only resolve locale/page data and map acts into those card props.
 
 ### 2b. Shared detail mapping + metadata helper
 
@@ -140,6 +145,13 @@ through `/kunstnere/[slug]` and `/workshops/[slug]` in both locales.
 **Docs:** update [architecture.md](../../architecture.md) "Programme & acts" to
 mention `ActListing`, `actDetailShows`, and the metadata helper as the reuse
 points for new listing/detail pages.
+
+**Done:** `data/program.ts` now exports `ActDetailShow` and `actDetailShows()`;
+both act detail routes use it. `lib/metadata.ts` now exports `actMetadata()`;
+both detail routes use it for title/description/canonical/OpenGraph. The
+"Programme & acts" section of `architecture.md` documents the new reuse points.
+`pnpm build` passes. Browser verification was skipped because a dev server was
+already active on port 3000, per the project guide.
 
 ---
 

@@ -4,6 +4,17 @@ import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
 import { IconArrowRight } from "@/components/icons";
 import type { EventTone } from "@/data/program";
 
+export type ActCardProps = {
+  href: string;
+  eyebrow: string;
+  name: string;
+  tagline: string;
+  image?: string;
+  imageAlt: string;
+  tone: EventTone;
+  cta: string;
+};
+
 /**
  * Listing card for an "act" — an artist or a workshop. Strings are passed in
  * already resolved for the active locale, so the card stays content-agnostic
@@ -18,16 +29,7 @@ export function ActCard({
   imageAlt,
   tone,
   cta,
-}: {
-  href: string;
-  eyebrow: string;
-  name: string;
-  tagline: string;
-  image?: string;
-  imageAlt: string;
-  tone: EventTone;
-  cta: string;
-}) {
+}: ActCardProps) {
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line/[0.07] bg-surface-raised shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
       {image ? (

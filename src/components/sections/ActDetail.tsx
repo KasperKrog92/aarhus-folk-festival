@@ -5,17 +5,10 @@ import { Container } from "@/components/ui/Container";
 import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { IconArrowRight, IconClock, IconPin } from "@/components/icons";
-import { scheduleCopy, type EventTone } from "@/data/program";
+import { scheduleCopy, type ActDetailShow, type EventTone } from "@/data/program";
 import { site } from "@/data/site";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-
-export type ActDetailShow = {
-  /** Resolved "Weekday Date" label. */
-  day: string;
-  time: string;
-  venue: string;
-};
 
 /**
  * Detail page body shared by an artist and a workshop. The page resolves all
