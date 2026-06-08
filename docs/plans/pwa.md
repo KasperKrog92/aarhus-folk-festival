@@ -5,8 +5,44 @@ venue Wi‑Fi is spotty. Written to fit the existing conventions: Next.js 16 App
 Router, static content in `src/data/`, cookie-based locale/theme/favourites,
 server components by default, bilingual UI copy in `dictionaries.ts`.
 
-> Status: proposal. No PWA plumbing exists yet — no manifest, no service worker,
-> no install icons beyond the OG image. Open decisions are collected at the end.
+> **Status: Layers 1 & 2 shipped** in commit `571fe3a` — install metadata
+> (manifest + icons), and a production-only Serwist service worker with an
+> offline fallback route. Phase 4 docs (architecture, design-system, AGENTS) are
+> now updated to match. Layer 3 polish (install prompt, update snackbar, cache
+> warming) and Layer 4 (web push) remain unimplemented. See **Progress (as
+> built)** for deltas from this plan, and **Open decisions** for how each was
+> resolved.
+
+## Progress (as built)
+
+Layers 1 and 2 landed together in `571fe3a`. The implementation follows this plan
+closely; the notable deltas:
+
+- **Offline precache is deploy-versioned.** [next.config.ts](../../next.config.ts)
+  computes `git rev-parse HEAD` (falling back to a random UUID) and passes
+  `additionalPrecacheEntries: [{ url: "/~offline", revision }]`, so the offline
+  fallback is re-precached on every deploy.
+- **Service worker leans on Serwist’s `defaultCache`.** [src/sw.ts](../../src/sw.ts)
+  registers one custom `CacheFirst` route for `/logos`, `/images`, `/icons`
+  (30-day expiration, 64 entries) and otherwise spreads `...defaultCache`, which
+  already does NetworkFirst for document navigations — satisfying the
+  “no stale locale/theme” rule below without a hand-written nav strategy. Also
+  enables `navigationPreload`, `skipWaiting`, `clientsClaim`, and
+  `cleanupOutdatedCaches`.
+- **Offline page reuses existing copy.** [src/app/~offline/page.tsx](../../src/app/~offline/page.tsx)
+  adds `common.offlineTitle` / `common.offlineBody` to the dictionaries but reuses
+  `hero.seeProgram` for the “go to programme” button rather than a new key.
+- **`icons.apple` was included** in `generateMetadata` (the plan marked it
+  optional) alongside `applicationName`, `appleWebApp`, and `formatDetection`.
+- **Generated SW is gitignored.** `public/sw*` / `public/swe-worker*` are ignored;
+  only the committed `public/icons/*` ship. `tsconfig.json` adds the `webworker`
+  lib + `@serwist/next/typings` types and excludes `public/sw.js`. `build` is now
+  `next build --webpack`.
+
+Still open: Layer 3 (InstallPrompt, update snackbar, cache warming) and Layer 4
+(web push). Phase 4 documentation is done — `architecture.md` now has a PWA /
+service-worker section, `design-system.md` lists the icon set, and `AGENTS.md`
+carries the `--webpack` build note + docs-map row.
 
 ## What “PWA” means for this site
 
@@ -346,16 +382,19 @@ Next.js documents this flow in the [PWA guide](https://nextjs.org/docs/app/guide
 
 ## Rollout phases
 
-1. **Installable (manifest + icons + metadata).** Add `manifest.ts`, `public/icons/*`,
-   extend `generateMetadata`, optional `scripts/generate-pwa-icons.mjs`. Light mode
-   unchanged. `pnpm build` (no `--webpack` yet). Owner tests Add to Home Screen.
-2. **Serwist plumbing.** Add packages, `src/sw.ts`, `~offline` page, dictionary
-   strings, `next.config.ts` wrap, `build` → `--webpack`. Confirm `public/sw.js`
-   appears after build. Test offline on `/program` and one detail page.
-3. **Cache tuning.** Adjust runtime routes; add update snackbar; optional
+1. ✅ **Installable (manifest + icons + metadata).** — shipped in `571fe3a`.
+   `manifest.ts`, `public/icons/*`, `scripts/generate-pwa-icons.mjs`, extended
+   `generateMetadata`. Owner sanity-check of Add to Home Screen on a phone still
+   outstanding.
+2. ✅ **Serwist plumbing.** — shipped in `571fe3a`. Packages, `src/sw.ts`,
+   `~offline` page, dictionary strings, `next.config.ts` wrap, `build` →
+   `--webpack`. Owner offline test on `/program` + a detail page still
+   outstanding.
+3. ⬜ **Cache tuning.** Adjust runtime routes; add update snackbar; optional
    `InstallPrompt`. Re-run Lighthouse PWA + offline manual pass.
-4. **Docs + AGENTS map.** Update architecture, design-system (icons), AGENTS.md
-   (`--webpack` build note, persistence section).
+4. ✅ **Docs + AGENTS map.** — architecture (PWA / service-worker section),
+   design-system (icon set), AGENTS.md (`--webpack` build note, persistence note,
+   docs-map row) all updated.
 
 Verify with `pnpm build` after phases 2–3. Do not self-launch the browser for
 visual QA — ask the owner to test install + offline on a phone after each phase.
@@ -414,22 +453,18 @@ Local SW testing needs HTTPS or `localhost`. Use `pnpm build --webpack && pnpm s
 
 ---
 
-## Open decisions
+## Open decisions (resolved)
 
-1. **`start_url`:** **`/program`** (festival utility-first) vs **`/`** (marketing
-   home). Recommend `/program` for installed repeat use; marketing CTAs remain on
-   the web site.
-2. **`short_name`:** **`AFF`** (fits icon label) vs **`AFF 2026`** (edition
-   clarity). Recommend `AFF` with full name in `name`.
-3. **Manifest `description` / `lang`:** Single DA default vs EN — manifests are
-   not localized per cookie. Recommend `description: site.tagline.da`, `lang: "da"`,
-   or shortest bilingual string if store listing matters.
-4. **Serwist vs manual SW:** Recommend Serwist unless dependency-averse.
-5. **Custom install prompt:** Ship without (browser default) in v1, or add
-   `InstallPrompt` in Phase 3.
-6. **Web push:** Defer entirely unless product asks for schedule alerts.
-7. **Precache all sitemap routes vs programme-only:** Full sitemap (~N artist +
-   workshop pages) increases install size but guarantees offline detail pages.
-   Recommend precaching **all public routes** from `sitemap.ts` logic (static
-   site, modest total size); fall back to programme + listings only if build SW
-   size is a concern.
+All Layer 1–2 decisions were settled when `571fe3a` shipped:
+
+1. **`start_url`:** ✅ **`/program`** — festival utility-first, as recommended.
+2. **`short_name`:** ✅ **`AFF`**, with full `${site.name} ${site.year}` in `name`.
+3. **Manifest `description` / `lang`:** ✅ `description: site.tagline.da`,
+   `lang: "da"` — single DA default, not localized per cookie.
+4. **Serwist vs manual SW:** ✅ **Serwist** (`@serwist/next` + `serwist`).
+5. **Custom install prompt:** ✅ Shipped **without** — relying on the browser
+   default. `InstallPrompt` remains a Layer 3 option.
+6. **Web push:** ⬜ Deferred (Layer 4) — no product request for schedule alerts.
+7. **Precache scope:** ✅ Relies on Serwist’s `__SW_MANIFEST` (build output) plus
+   `additionalPrecacheEntries` for `/~offline`; runtime `CacheFirst` covers
+   `/logos`, `/images`, `/icons`. No hand-maintained sitemap URL list.

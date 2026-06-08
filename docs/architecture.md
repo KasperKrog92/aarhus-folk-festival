@@ -15,6 +15,8 @@ src/
     foreningen/, kontakt/ # association + contact pages
     robots.ts             # /robots.txt (allow all + sitemap link)
     sitemap.ts            # /sitemap.xml (the public routes)
+    manifest.ts           # /manifest.webmanifest (PWA install metadata, from site.ts)
+    ~offline/             # offline fallback page the SW serves when a navigation fails
     globals.css           # design tokens (@theme) + base styles
   components/
     layout/               # Header (client, mobile menu + language toggle), Footer
@@ -42,6 +44,7 @@ src/
                           #   programme's ProgramSchedule filter reads it)
   components/theme/       # ThemeProvider (client, holds theme state + setTheme)
                           #   ThemeToggle (sun/moon button, placed in Header)
+  sw.ts                   # Serwist service worker source (compiled to public/sw.js on prod build)
 ```
 
 **Content lives in `src/data/`**, not hardcoded in components. Edit data there; sections map over it.
@@ -99,3 +102,26 @@ them, so an act that plays more than once is edited in one place.
   (it takes the `Localized` fields and resolves them) rather than hand-rolling it; act detail pages
   use `actMetadata()` instead, which also emits OpenGraph.
 - Adding a new public route? Give its `generateMetadata` a `canonical` via `pageMetadata` and add it to `sitemap.ts`.
+
+## PWA / service worker
+
+The site is an installable PWA. See [plans/pwa.md](plans/pwa.md) for the full
+rationale and the remaining roadmap (Layer 3 polish + web push are not built).
+
+- `app/manifest.ts` emits `/manifest.webmanifest` from `site.ts` constants
+  (`start_url: /program`, `short_name: AFF`, light brand `theme_color`). The root
+  `layout.tsx` adds `applicationName`, `appleWebApp`, `formatDetection`, and the
+  Apple touch icon (see [design-system.md](design-system.md) for the icon set).
+- `src/sw.ts` is the Serwist service worker source. `next.config.ts` wraps the
+  config with `withSerwistInit` and compiles it to `public/sw.js` **on production
+  build only** (disabled in dev). The generated `public/sw*` / `public/swe-worker*`
+  are gitignored — only `public/icons/*` are committed.
+- It precaches the build output plus the `/~offline` fallback (re-versioned per
+  deploy via `git rev-parse HEAD` in `next.config.ts`), runtime-caches `/logos`,
+  `/images`, `/icons` CacheFirst (30-day expiry), otherwise spreads Serwist's
+  `defaultCache` (NetworkFirst for document navigations, so cached HTML never
+  serves a stale locale/theme), and falls back to `app/~offline/page.tsx` when an
+  offline navigation fails.
+- **Production builds use `pnpm build` → `next build --webpack`.** Serwist's SW
+  bundling needs Webpack, not Turbopack; dev (`next dev`) stays Turbopack with the
+  SW disabled.

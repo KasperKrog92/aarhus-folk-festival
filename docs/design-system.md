@@ -77,6 +77,13 @@ Two gotchas the remap doesn't solve on its own:
 - `public/logos/logo_text_header_light.png` - light/cream header wordmark for dark mode. The header renders both and swaps by theme with `dark:hidden` / `hidden dark:block` (no CSS filter).
 - `public/logos/logo.png` - accordion mark only, baked cream bg (avoid on non-cream surfaces).
 - `public/logos/logo_mark_black.png` - accordion mark in solid black on a **transparent** bg; would disappear on a dark header — do not use there.
+- `public/icons/*` - PWA app icons generated from `public/logos/logo.png` by
+  `scripts/generate-pwa-icons.mjs` (sharp): `icon-192.png`, `icon-512.png`,
+  `apple-touch-icon.png` (180×180) — all `cover` crops of the mark — plus
+  `icon-maskable-512.png`, which scales the mark to the central 80% on cream
+  `#f4e8d8` (the `surface` token) so Android adaptive masks don't clip the bellows.
+  Committed; regenerate with `node scripts/generate-pwa-icons.mjs` after editing the
+  source logo. Wired up in `app/manifest.ts` + the layout's Apple touch icon.
 - `public/images/mockup_*.png` - design reference mockups (not used in the build).
 - Use JPEG/WebP/AVIF for photo-like assets. Keep PNG for transparency, logos, mockups, or graphic artwork.
 - Real photography is arriving incrementally. `EventCard`, `ActCard` and `ActDetail` render a

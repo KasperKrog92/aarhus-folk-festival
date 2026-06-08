@@ -18,6 +18,7 @@ Read the file that matches the task; don't read all of them by default.
 | any user-facing copy, locale, dictionaries, `Localized` data | [docs/i18n.md](docs/i18n.md) |
 | the voice/wording rules for the copy itself (DA + EN) | [docs/content-and-tone.md](docs/content-and-tone.md) |
 | colours, fonts, decorative motifs, layout styling, logos, images | [docs/design-system.md](docs/design-system.md) |
+| the service worker, manifest, offline / install (PWA), the `--webpack` build | [docs/architecture.md](docs/architecture.md) + [docs/plans/pwa.md](docs/plans/pwa.md) |
 
 If a change introduces a new area that none of these files cover well, and you
 judge it worth documenting for future agents, create a new `docs/<topic>.md` and
@@ -36,9 +37,13 @@ to an existing file when the topic already fits one.
 
 ```bash
 pnpm dev      # dev server (localhost:3000)
-pnpm build    # production build, also runs typecheck
+pnpm build    # production build (next build --webpack), also runs typecheck
 pnpm lint     # eslint
 ```
+
+Production builds run on **Webpack** (`next build --webpack`), not Turbopack, so
+the Serwist service worker compiles; dev stays Turbopack with the SW disabled.
+See [docs/architecture.md](docs/architecture.md) for the PWA wiring.
 
 Scale verification to the change: `pnpm lint` or a typecheck is often enough for
 small code edits, while `pnpm build` is for substantive changes that need full
@@ -86,7 +91,9 @@ agent-relevant guidance belongs in the docs.
   `FavouriteButton` remembers favourited events in the `aff_favourites` cookie (see
   `src/lib/favourites.ts`); `ThemeToggle` remembers the visitor's light/dark preference in
   the `aff_theme` cookie (see `src/lib/theme.ts` + `src/lib/theme-server.ts`). No
-  server, no account, no network.
+  server, no account, no network. A Serwist service worker (production builds only)
+  caches assets + the programme for offline reading and an offline fallback page —
+  still client-side caching, not a backend (see [docs/architecture.md](docs/architecture.md)).
 - **Mobile-first, accessible, semantic.** Keep landmark elements, real heading order, focus
   styles, and descriptive `alt`/`aria-label`. `<html lang>` follows the active locale.
 - **Bilingual UI copy (DA default / EN).** Danish is the default and source of truth; every
