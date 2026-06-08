@@ -36,10 +36,10 @@ third-party tracking unless the cookies/consent approach is revisited first.
 - Footer links for press, sponsors and archive currently point to homepage
   anchors that do not exist. Treat them as future content areas or remove/replace
   them when navigation is tightened.
-- Page changes currently feel abrupt because the persistent header stays still
-  while the main content swaps with no transition, loading treatment or shared
-  top-of-page rhythm. Smooth this with restrained page choreography, not heavy
-  animation.
+- Route changes now have a short opacity-only mount transition, and artist /
+  workshop detail pages have contextual breadcrumbs. Keep future navigation
+  polish similarly restrained; the site is fast enough that route skeletons feel
+  more distracting than helpful.
 
 ---
 
@@ -93,74 +93,65 @@ event data than the site has today.
 
 ---
 
-## Phase 2: Navigation fluidity
+## Phase 2: Navigation fluidity - implemented
 
 **Goal:** Make movement between routes feel calmer and more intentional while
 preserving accessibility and the current server-first architecture.
 
-### What feels jarring today
+Implemented on 2026-06-08.
 
-- The header persists, but the page body changes instantly. Moving from the dark
-  photographic homepage hero to a cream listing page is a strong visual cut.
-- Listing pages share a similar page-intro layout, but route transitions do not
-  acknowledge that shared structure.
-- There is no route-level loading state. If a dynamic route waits on cookies,
-  service-worker update checks or image work, the visitor gets a hard swap rather
-  than a soft pending state.
-- Back links on detail pages are useful, but there is no contextual "you are in
-  artists/workshops/programme" trail to make nested navigation feel connected.
+### Implemented improvements
 
-### Recommended improvements
-
-- Add a small route-transition wrapper around the page content. Keep it to a
-  short opacity + 4-8px vertical settle on route mount, and disable it under
-  `prefers-reduced-motion`. Avoid long exit animations.
-- Add `src/app/loading.tsx` with a lightweight skeleton that resembles the common
-  page-intro shape. For programme and listing routes, the skeleton should reserve
-  similar vertical space to reduce perceived layout jumps.
-- Add contextual breadcrumbs on detail pages:
+- Added `src/app/template.tsx` and `components/layout/RouteTransition.tsx` so
+  page content gets a short mount-only opacity fade while the header and footer
+  remain stable.
+- Kept the transition opacity-only. A first version used a small vertical
+  translate, but the fast pages made body text feel like it bounced during route
+  changes.
+- Did not keep `src/app/loading.tsx`. The site loads quickly enough that the
+  route skeleton only flashed for a split second and felt more jarring than the
+  original hard swap.
+- Added contextual breadcrumbs on artist and workshop detail pages via the
+  shared `Breadcrumbs` primitive and `ActDetail`:
   `Forside / Kunstnere / Dreamers' Circus` and
-  `Forside / Workshops / Åben folkesession`. Put labels in dictionaries and keep
-  the visual treatment quiet.
-- Normalize top spacing across standalone pages. Most pages use
-  `py-16 sm:py-20`; detail pages use `py-12 sm:py-16`. This is fine, but detail
-  routes should still feel intentionally connected to their listing pages through
-  breadcrumbs and consistent intro/media rhythm.
-- Make main-nav active states more forgiving for homepage anchors. If the visitor
-  clicks "Praktisk info" from another route and lands on `/#praktisk`, the active
-  state should not feel lost during the scroll/route change.
-- Consider prefetching the most common routes explicitly only if measurements
-  show delays. Next's normal `<Link>` prefetching is likely enough for the current
-  small site, so start with visual continuity first.
+  `Forside / Workshops / Åben folkesession`.
+- Made main-nav active states more forgiving for homepage anchors while a
+  cross-route anchor navigation is pending.
+- Documented the route-transition and breadcrumb conventions in
+  `docs/architecture.md`.
 
 ### Motion rules
 
-- Keep motion under roughly 200ms and use easing that feels like a gentle settle,
-  not a slide show.
-- Only animate opacity and transform. Do not animate height, top, layout, colour
-  themes or large decorative elements during route changes.
+- Keep route motion very short and subtle; the current route fade is 110ms.
+- Do not add vertical movement to route transitions unless there is a clear
+  reason and it has been checked in browser. On the current site, it reads as
+  bounce.
+- Only animate opacity for route changes. Do not animate height, top, layout,
+  colour themes or large decorative elements during route changes.
 - Respect `prefers-reduced-motion` globally. For reduced motion, skip movement
   and allow only an instant opacity change if needed.
 - Do not animate the sticky header or footer on route changes. They are spatial
   anchors and should remain stable.
 
-### Implementation notes
+### Future notes
 
-- A low-risk approach is `src/app/template.tsx` plus a small client component in
-  `components/layout/RouteTransition.tsx` keyed by `usePathname()`. The server
-  pages remain server components; only the transition shell is client-side.
+- The current low-risk shape is `src/app/template.tsx` plus a small client
+  component in `components/layout/RouteTransition.tsx` keyed by `usePathname()`.
+  Keep server pages as server components; only the transition shell is
+  client-side.
 - Keep transition copy out of the UI. The effect should be felt, not explained.
-- Route-loading skeleton text should either be visually hidden or use dictionary
-  strings if exposed to assistive technology.
-- Validate on homepage to listing page, listing page to detail page, detail page
-  back to listing page, and locale/theme toggles. Locale changes already call
-  `router.refresh()`, so they should not accidentally trigger an over-dramatic
-  page animation.
+- Avoid route-level loading skeletons unless real latency appears later. If they
+  are reintroduced, validate that they stay visible long enough to help rather
+  than flash.
+- Validate future motion changes on homepage to listing page, listing page to
+  detail page, detail page back to listing page, and locale/theme toggles.
+  Locale changes already call `router.refresh()`, so they should not accidentally
+  trigger an over-dramatic page animation.
 
 ### Verification
 
-- Run `pnpm lint` for the transition shell. Run `pnpm build` if adding
-  `template.tsx`, `loading.tsx` or changing route structure.
+- The implementation was verified with `pnpm lint`, `pnpm build`, and an in-app
+  browser check on `/kunstnere` and `/kunstnere/dreamers-circus`.
 - Ask the owner to check the feel in-browser, especially with reduced motion
   enabled and on mobile.
 
@@ -283,12 +274,14 @@ into an app with accounts or backend state.
 ## Suggested order
 
 1. Programme filters on `/program`.
-2. Navigation-fluidity pass: route transition, loading skeleton and breadcrumbs.
-3. Navigation cleanup for footer dead anchors.
-4. Practical-info page once real content is available.
-5. Asset optimisation pass and media-size guidelines.
-6. Structured data and richer event SEO after the programme/venues are more
+2. Navigation cleanup for footer dead anchors.
+3. Practical-info page once real content is available.
+4. Asset optimisation pass and media-size guidelines.
+5. Structured data and richer event SEO after the programme/venues are more
    complete.
+
+Completed: navigation-fluidity pass with route fade, breadcrumbs and homepage
+anchor active-state polish.
 
 This sequence gives the owner visible utility quickly while keeping content risk
 low and preserving the current static, public-facing architecture.

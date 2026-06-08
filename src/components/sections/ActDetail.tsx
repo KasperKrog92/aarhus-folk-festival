@@ -133,7 +133,7 @@ export function ActDetail({
               ))}
             </div>
 
-            <aside className="rounded-2xl border border-petroleum/15 bg-surface-raised p-6 shadow-sm">
+            <aside className="mx-auto w-full max-w-lg rounded-2xl border border-petroleum/15 bg-surface-raised p-5 shadow-sm sm:p-6 lg:max-w-none">
               <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-pink-600">
                 {scheduleCopy.onProgramme[locale]}
               </h2>

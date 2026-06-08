@@ -128,8 +128,9 @@ them, so an act that plays more than once is edited in one place.
 
 ## PWA / service worker
 
-The site is an installable PWA. See [plans/pwa.md](plans/pwa.md) for the full
-rationale and the remaining roadmap (cache warming and web push are not built).
+The site is an installable PWA. Manifest, offline, install prompt and update
+snackbar guidance lives here; broader future ideas such as web push belong in
+[plans/website-roadmap.md](plans/website-roadmap.md).
 
 - `app/manifest.ts` emits `/manifest.webmanifest` from `site.ts` constants
   (`start_url: /program`, `short_name: AFF`, light brand `theme_color`). The root
