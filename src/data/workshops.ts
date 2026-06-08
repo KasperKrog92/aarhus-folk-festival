@@ -76,8 +76,4 @@ export const workshopsPage = {
     da: "Kom tæt på musikken, dansene og håndværket. Vær med, uanset om du spiller selv eller bare vil lytte og lære.",
     en: "Get closer to the music, the dances and the craft. Join in whether you play yourself or just want to listen and learn.",
   } as Localized,
-  backLabel: {
-    da: "Tilbage til forsiden",
-    en: "Back to the homepage",
-  } as Localized,
 } as const;

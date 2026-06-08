@@ -14,6 +14,7 @@ const da = {
     buyTicket: "Køb billet",
     readMore: "Læs mere",
     back: "Tilbage",
+    backToHome: "Tilbage til forsiden",
   },
   header: {
     home: "til forsiden", // composed as "{name}, {home}"
@@ -97,6 +98,7 @@ const en: Dictionary = {
     buyTicket: "Buy ticket",
     readMore: "Read more",
     back: "Back",
+    backToHome: "Back to the homepage",
   },
   header: {
     home: "to the homepage",

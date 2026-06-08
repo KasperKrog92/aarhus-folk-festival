@@ -72,7 +72,9 @@ them, so an act that plays more than once is edited in one place.
   `ThemeProvider` / `ThemeToggle`). Section components are `async` server components that
   read the locale via `getLocale()`.
 - Keep components small and composable; share spacing via `Container` and headings via
-  `SectionHeading`. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
+  `SectionHeading` — its default `size="section"` is for in-page `<h2>` sections, and
+  `size="page"` (defaults `as="h1"`) is the larger eyebrow/title/intro block at the top of a
+  standalone page. Use the `Button` component for all CTAs (it renders `<Link>` or `<button>`).
 - Homepage section `id`s double as in-page nav anchors (`#oplev`, `#om`, `#praktisk`; the
   homepage keeps a `#program` preview section). Program, Kunstnere, Workshops and Om festivalen
   are dedicated routes (`/program`, `/kunstnere`, `/workshops`, `/om-festivalen`), not anchors.

@@ -48,8 +48,4 @@ export const contactPage = {
     da: "Direkte henvendelser til de enkelte bestyrelsesmedlemmer bliver ikke besvaret. Brug en af adresserne ovenfor, så ender din besked det rigtige sted.",
     en: "Messages sent directly to individual board members are not answered. Use one of the addresses above, and your message will reach the right place.",
   } as Localized,
-  backLabel: {
-    da: "Tilbage til forsiden",
-    en: "Back to the homepage",
-  } as Localized,
 } as const;

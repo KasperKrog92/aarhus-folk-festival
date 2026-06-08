@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { ActCard } from "@/components/ui/ActCard";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { workshops, workshopsPage } from "@/data/workshops";
 import { getDictionary } from "@/i18n/dictionaries";
@@ -24,17 +25,14 @@ export default async function WorkshopsPage() {
   return (
     <section className="py-16 sm:py-20">
       <Container>
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
-            {workshopsPage.eyebrow[locale]}
-          </p>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-content sm:text-5xl">
-            {workshopsPage.title[locale]}
-          </h1>
-          <p className="mt-5 text-lg leading-relaxed text-content-soft">
-            {workshopsPage.intro[locale]}
-          </p>
-        </div>
+        <SectionHeading
+          size="page"
+          as="h1"
+          className="max-w-2xl"
+          eyebrow={workshopsPage.eyebrow[locale]}
+          title={workshopsPage.title[locale]}
+          intro={workshopsPage.intro[locale]}
+        />
 
         <FolkStripe className="my-10" />
 
@@ -57,7 +55,7 @@ export default async function WorkshopsPage() {
 
         <div className="mt-10">
           <Button href="/" variant="outline">
-            {workshopsPage.backLabel[locale]}
+            {t.common.backToHome}
           </Button>
         </div>
       </Container>

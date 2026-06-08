@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { IconMail } from "@/components/icons";
 import { contactPage } from "@/data/contact";
+import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -18,20 +20,19 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ContactPage() {
   const locale = await getLocale();
+  const t = getDictionary(locale);
 
   return (
     <section className="py-16 sm:py-20">
       <Container>
         <div className="mx-auto max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
-            {contactPage.eyebrow[locale]}
-          </p>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-content sm:text-5xl">
-            {contactPage.title[locale]}
-          </h1>
-          <p className="mt-5 text-lg leading-relaxed text-content-soft">
-            {contactPage.intro[locale]}
-          </p>
+          <SectionHeading
+            size="page"
+            as="h1"
+            eyebrow={contactPage.eyebrow[locale]}
+            title={contactPage.title[locale]}
+            intro={contactPage.intro[locale]}
+          />
 
           <FolkStripe className="my-10" />
 
@@ -71,7 +72,7 @@ export default async function ContactPage() {
 
           <div className="mt-8">
             <Button href="/" variant="outline">
-              {contactPage.backLabel[locale]}
+              {t.common.backToHome}
             </Button>
           </div>
         </div>

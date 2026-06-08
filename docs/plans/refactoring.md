@@ -6,10 +6,12 @@ server-first — so this is housekeeping, not a rewrite. Every item below collap
 copy-pasted markup or content into a single source of truth, in the spirit of the
 "edit in one place" rule the architecture doc already states for acts.
 
-> Status: proposal. Findings are from an audit on 2026-06-08. Each phase is
+> Status: in progress. Findings are from an audit on 2026-06-08. Each phase is
 > independently shippable; the suggested order runs low-risk wins first, then the
 > larger structural dedupe. No behaviour or visual change is intended — these are
 > pure refactors, so verify with `pnpm build` + a visual pass after each phase.
+>
+> **Phase 1 done (2026-06-08).** Phases 2–3 remain. See per-item notes below.
 
 ## Guiding constraints
 
@@ -23,9 +25,9 @@ copy-pasted markup or content into a single source of truth, in the spirit of th
 
 ---
 
-## Phase 1 — Low-risk wins
+## Phase 1 — Low-risk wins ✅ done (2026-06-08)
 
-### 1a. A page-intro variant on `SectionHeading`
+### 1a. A page-intro variant on `SectionHeading` ✅
 
 The eyebrow + `<h1>` + intro block is hand-rolled, with identical classes, on six
 pages:
@@ -54,7 +56,16 @@ and defaults `as` to `"h1"`. Replace the six hand-rolled blocks with
 
 **Risk:** low. One component, additive prop.
 
-### 1b. Move `backLabel` out of content data into the dictionary
+**Done:** `size` prop added (default `"section"` unchanged). All six blocks now use
+`<SectionHeading size="page" … />`; program/kunstnere/workshops keep their
+`max-w-2xl` via `className`, foreningen/kontakt inherit the wrapper's `max-w-3xl`,
+and om-festivalen converts only eyebrow/title (its lead + intro grid stay as
+siblings). Canonical `"page"` title is `text-4xl sm:text-5xl leading-tight` (no
+`tracking-tight`) — this changed om-festivalen's `<h1>` from `leading-[1.1]` to
+`leading-tight` to match the other five pages; the rest is class-identical.
+architecture.md's conventions note now documents both sizes.
+
+### 1b. Move `backLabel` out of content data into the dictionary ✅
 
 `{ da: "Tilbage til forsiden", en: "Back to the homepage" }` is repeated as
 content data in five files:
@@ -77,6 +88,12 @@ the derived `Dictionary` type.
 
 **Docs:** note in [i18n.md](../../i18n.md) that nav/chrome labels live in the
 dictionary, not per-page data.
+
+**Done:** `common.backToHome` added to both locales; `backLabel` deleted from all
+five data files; every back button now reads `t.common.backToHome`
+(program/foreningen/kontakt gained the `getDictionary` import). i18n.md updated.
+`pnpm build` (incl. typecheck) passes — the derived `Dictionary` type confirms no
+call site was missed.
 
 ---
 
@@ -184,7 +201,7 @@ with a `tone` prop fits the existing decorative set.
 
 ## Suggested sequencing
 
-1. **Phase 1 (1a + 1b)** — one small PR, low risk, immediate clarity.
+1. ~~**Phase 1 (1a + 1b)** — one small PR, low risk, immediate clarity.~~ ✅ done (2026-06-08).
 2. **Phase 2 (2a + 2b)** — the biggest structural dedupe; do as one PR since both
    rely on act normalization. Update architecture.md.
 3. **Phase 3** — polish, cherry-picked as time allows.

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { ScallopEdge } from "@/components/decorative/ScallopEdge";
 import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
@@ -45,12 +46,12 @@ export default async function AboutPage() {
       <section className="py-16 sm:py-20 lg:py-24">
         <Container className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
-              {aboutPage.eyebrow[locale]}
-            </p>
-            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.1] text-content sm:text-5xl">
-              {aboutPage.title[locale]}
-            </h1>
+            <SectionHeading
+              size="page"
+              as="h1"
+              eyebrow={aboutPage.eyebrow[locale]}
+              title={aboutPage.title[locale]}
+            />
             <p className="mt-5 font-display text-2xl font-medium leading-snug text-petroleum sm:text-3xl">
               {aboutPage.lead[locale]}
             </p>

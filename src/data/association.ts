@@ -76,8 +76,4 @@ export const associationPage = {
     da: "Skriv om medlemskab",
     en: "Write about membership",
   } as Localized,
-  backLabel: {
-    da: "Tilbage til forsiden",
-    en: "Back to the homepage",
-  } as Localized,
 } as const;

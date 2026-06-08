@@ -142,8 +142,4 @@ export const artistsPage = {
     da: "Mød de første navne på årets festival. Flere kunstnere følger, når programmet tager form.",
     en: "Meet the first names on this year's festival. More artists will follow as the programme takes shape.",
   } as Localized,
-  backLabel: {
-    da: "Tilbage til forsiden",
-    en: "Back to the homepage",
-  } as Localized,
 } as const;

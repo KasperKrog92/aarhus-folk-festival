@@ -129,10 +129,6 @@ export const programPage = {
     da: "Fire dage med koncerter, bal, sessioner og workshops. Programmet opdateres løbende, efterhånden som flere navne falder på plads.",
     en: "Four days of concerts, balls, sessions and workshops. The programme is updated as more names are confirmed.",
   } as Localized,
-  backLabel: {
-    da: "Tilbage til forsiden",
-    en: "Back to the homepage",
-  } as Localized,
   filter: {
     /** Turns the favourites-only view on (shown while it is off). */
     showFavourites: { da: "Vis hjerte-events", en: "Show hearted events" } as Localized,

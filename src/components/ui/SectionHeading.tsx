@@ -9,14 +9,22 @@ type SectionHeadingProps = {
   align?: "left" | "center";
   /** Colour theme. `light` is for dark / petroleum backgrounds. */
   tone?: "dark" | "light";
+  /**
+   * Type scale. `"section"` (default) sizes for in-page `<h2>` sections;
+   * `"page"` is the larger heading used at the top of a standalone page and
+   * defaults `as` to `"h1"`.
+   */
+  size?: "section" | "page";
   className?: string;
-  /** Heading level for correct document outline (defaults to h2). */
+  /** Heading level for correct document outline (defaults to h2, h1 at page size). */
   as?: "h1" | "h2" | "h3";
 };
 
 /**
- * Reusable section header: pink eyebrow + display title + optional intro.
- * Keeps every section's typographic rhythm consistent.
+ * Reusable header: pink eyebrow + display title + optional intro. Keeps every
+ * heading's typographic rhythm consistent — the `"section"` size for in-page
+ * `<h2>` sections, the `"page"` size for the eyebrow/title/intro block at the
+ * top of a standalone page.
  */
 export function SectionHeading({
   eyebrow,
@@ -24,14 +32,18 @@ export function SectionHeading({
   intro,
   align = "left",
   tone = "dark",
+  size = "section",
   className,
-  as: Tag = "h2",
+  as,
 }: SectionHeadingProps) {
   const isLight = tone === "light";
+  const isPage = size === "page";
+  const Tag = as ?? (isPage ? "h1" : "h2");
   return (
     <div
       className={cn(
-        "flex flex-col gap-3",
+        "flex flex-col",
+        isPage ? "gap-0" : "gap-3",
         align === "center" && "items-center text-center",
         className,
       )}
@@ -39,7 +51,8 @@ export function SectionHeading({
       {eyebrow ? (
         <span
           className={cn(
-            "text-xs font-semibold uppercase tracking-[0.2em]",
+            "font-semibold uppercase",
+            isPage ? "text-sm tracking-[0.18em]" : "text-xs tracking-[0.2em]",
             isLight ? "text-pink-200" : "text-pink-600",
           )}
         >
@@ -48,7 +61,11 @@ export function SectionHeading({
       ) : null}
       <Tag
         className={cn(
-          "font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl",
+          "font-display font-semibold",
+          isPage
+            ? "text-4xl leading-tight sm:text-5xl"
+            : "text-3xl leading-[1.1] tracking-tight sm:text-4xl",
+          isPage && eyebrow && "mt-4",
           isLight ? "text-cream-50" : "text-content",
         )}
       >
@@ -57,7 +74,8 @@ export function SectionHeading({
       {intro ? (
         <p
           className={cn(
-            "max-w-2xl text-base leading-relaxed sm:text-lg",
+            "leading-relaxed",
+            isPage ? "mt-5 text-lg" : "max-w-2xl text-base sm:text-lg",
             align === "center" && "mx-auto",
             isLight ? "text-cream-100/85" : "text-content-soft",
           )}

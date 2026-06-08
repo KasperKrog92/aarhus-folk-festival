@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProgramSchedule } from "@/components/sections/ProgramSchedule";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { getProgramByDay, programPage } from "@/data/program";
+import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -18,22 +20,20 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ProgramPage() {
   const locale = await getLocale();
+  const t = getDictionary(locale);
   const days = getProgramByDay();
 
   return (
     <section className="py-16 sm:py-20">
       <Container>
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-pink-600">
-            {programPage.eyebrow[locale]}
-          </p>
-          <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-content sm:text-5xl">
-            {programPage.title[locale]}
-          </h1>
-          <p className="mt-5 text-lg leading-relaxed text-content-soft">
-            {programPage.intro[locale]}
-          </p>
-        </div>
+        <SectionHeading
+          size="page"
+          as="h1"
+          className="max-w-2xl"
+          eyebrow={programPage.eyebrow[locale]}
+          title={programPage.title[locale]}
+          intro={programPage.intro[locale]}
+        />
 
         <FolkStripe className="my-10" />
 
@@ -41,7 +41,7 @@ export default async function ProgramPage() {
 
         <div className="mt-12">
           <Button href="/" variant="outline">
-            {programPage.backLabel[locale]}
+            {t.common.backToHome}
           </Button>
         </div>
       </Container>
