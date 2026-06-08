@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { FavouriteButton } from "@/components/ui/FavouriteButton";
@@ -18,9 +19,13 @@ import { cn } from "@/lib/cn";
 export function Header() {
   const { locale } = useLocale();
   const t = useTranslations();
+  const pathname = usePathname();
   const ticketHref = site.ticketUrl[locale];
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hash, setHash] = useState("");
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   // Subtle shadow / stronger background once the page is scrolled.
   useEffect(() => {
@@ -30,19 +35,56 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll while the mobile menu is open.
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+
+      if (!(target instanceof Node)) return;
+      if (menuRef.current?.contains(target)) return;
+      if (menuButtonRef.current?.contains(target)) return;
+
+      setOpen(false);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
     };
   }, [open]);
+
+  useEffect(() => {
+    const updateHash = () => setHash(window.location.hash);
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, [pathname]);
+
+  const isActiveNavItem = (href: string) => {
+    const [path, anchor] = href.split("#");
+
+    if (anchor) {
+      return pathname === path && hash === `#${anchor}`;
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   return (
     <header className="sticky top-0 z-50">
       <div
         className={cn(
-          "bg-surface/90 backdrop-blur transition-shadow",
+          "relative z-10 bg-surface/90 backdrop-blur transition-shadow",
           scrolled && "shadow-[0_1px_0_rgba(42,34,29,0.08)]",
         )}
       >
@@ -74,15 +116,23 @@ export function Header() {
             aria-label={t.header.mainMenu}
             className="hidden items-center gap-7 lg:flex"
           >
-            {mainNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-semibold text-content/80 transition-colors hover:text-rust"
-              >
-                {item.label[locale]}
-              </Link>
-            ))}
+            {mainNav.map((item) => {
+              const active = isActiveNavItem(item.href);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "rounded-full px-3 py-2 text-sm font-semibold text-content/80 transition-colors hover:bg-content/[0.05] hover:text-rust",
+                    active && "bg-content/[0.06] text-pink-600",
+                  )}
+                >
+                  {item.label[locale]}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Desktop actions */}
@@ -114,6 +164,7 @@ export function Header() {
               {t.common.buyTicket}
             </Button>
             <button
+              ref={menuButtonRef}
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
@@ -129,51 +180,48 @@ export function Header() {
             </button>
           </div>
         </Container>
+
+        {/* Mobile menu */}
+        {open ? (
+          <div
+            ref={menuRef}
+            id="mobil-menu"
+            className="absolute right-3 top-full z-20 w-max max-w-[calc(100vw-1.5rem)] lg:hidden"
+            role="dialog"
+            aria-label={t.header.menu}
+          >
+            <div className="overflow-hidden rounded-b-2xl border border-line/10 bg-surface shadow-xl shadow-ink/10">
+              <div className="flex flex-col items-end px-5 py-5">
+                {mainNav.map((item) => {
+                  const active = isActiveNavItem(item.href);
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        "whitespace-nowrap rounded-xl px-2 py-2 text-right text-lg font-semibold text-content transition-colors hover:bg-content/[0.05]",
+                        active && "bg-content/[0.06] text-pink-600",
+                      )}
+                    >
+                      {item.label[locale]}
+                    </Link>
+                  );
+                })}
+                <div className="mt-3 flex w-full items-center justify-end gap-2 border-t border-line/10 px-1 pt-4">
+                  <LanguageToggle />
+                  <ThemeToggle />
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
 
       {/* Folk bunting band under the header */}
       <FolkBorder />
-
-      {/* Mobile menu */}
-      {open ? (
-        <div
-          id="mobil-menu"
-          className="lg:hidden"
-          role="dialog"
-          aria-modal="true"
-          aria-label={t.header.menu}
-        >
-          <div className="border-b border-line/10 bg-surface shadow-lg">
-            <Container className="flex flex-col gap-1 py-4">
-              {mainNav.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-3 text-lg font-semibold text-content transition-colors hover:bg-content/[0.05]"
-                >
-                  {item.label[locale]}
-                </Link>
-              ))}
-              <div className="mt-3 flex items-center justify-between px-1">
-                <div className="flex items-center gap-2">
-                  <LanguageToggle />
-                  <ThemeToggle />
-                </div>
-                <Button
-                  href={ticketHref}
-                  size="lg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                >
-                  {t.common.buyTicket}
-                </Button>
-              </div>
-            </Container>
-          </div>
-        </div>
-      ) : null}
     </header>
   );
 }
