@@ -36,6 +36,10 @@ const da = {
     headlineLine2: "samler Aarhus",
     seeProgram: "Se program",
     badgeLabel: "10 års jubilæum, Aarhus Folk Festival",
+    badgeNumber: "10",
+    badgeNumberSuffix: "",
+    badgeQualifier: "ÅRS",
+    badgeCaption: "JUBILÆUM",
   },
   program: {
     eyebrow: "Torsdag på festivalen",
@@ -139,6 +143,10 @@ const en: Dictionary = {
     headlineLine2: "brings Aarhus together",
     seeProgram: "See programme",
     badgeLabel: "10th anniversary, Aarhus Folk Festival",
+    badgeNumber: "10",
+    badgeNumberSuffix: "TH",
+    badgeQualifier: "",
+    badgeCaption: "ANNIVERSARY",
   },
   program: {
     eyebrow: "Thursday at the festival",

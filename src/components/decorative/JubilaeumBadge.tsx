@@ -2,18 +2,32 @@ import { cn } from "@/lib/cn";
 
 type JubilaeumBadgeProps = {
   className?: string;
-  /** Accessible label; localised by the caller. The visual lettering stays as the stamp's design. */
+  /** Accessible label; localised by the caller. */
   label?: string;
+  number?: string;
+  numberSuffix?: string;
+  qualifier?: string;
+  caption?: string;
 };
 
 /**
- * Round "10 års jubilæum" stamp with circular lettering, a nod to the
+ * Round anniversary stamp with circular lettering, a nod to the
  * festival's anniversary, styled like a hand-stamped seal.
  */
 export function JubilaeumBadge({
   className,
   label = "10 års jubilæum, Aarhus Folk Festival",
+  number = "10",
+  numberSuffix = "",
+  qualifier = "ÅRS",
+  caption = "JUBILÆUM",
 }: JubilaeumBadgeProps) {
+  const hasQualifier = qualifier.length > 0;
+  const hasNumberSuffix = numberSuffix.length > 0;
+  const captionIsLong = caption.length > 8;
+  const numberY = hasQualifier ? 96 : 106;
+  const captionY = hasQualifier ? 140 : 132;
+
   return (
     <svg
       viewBox="0 0 200 200"
@@ -86,38 +100,45 @@ export function JubilaeumBadge({
       {/* centre mark */}
       <text
         x="100"
-        y="96"
+        y={numberY}
         textAnchor="middle"
         fill="#f0bccb"
         fontSize="43"
         fontWeight="700"
         style={{ fontFamily: "var(--font-fraunces)" }}
       >
-        10
+        {number}
+        {hasNumberSuffix ? (
+          <tspan baselineShift="super" fontSize="17">
+            {numberSuffix}
+          </tspan>
+        ) : null}
       </text>
+      {hasQualifier ? (
+        <text
+          x="100"
+          y="122"
+          textAnchor="middle"
+          fill="currentColor"
+          fontSize="13"
+          fontWeight="600"
+          letterSpacing="5.5"
+          style={{ fontFamily: "var(--font-jakarta)" }}
+        >
+          {qualifier}
+        </text>
+      ) : null}
       <text
         x="100"
-        y="122"
-        textAnchor="middle"
-        fill="currentColor"
-        fontSize="13"
-        fontWeight="600"
-        letterSpacing="5.5"
-        style={{ fontFamily: "var(--font-jakarta)" }}
-      >
-        ÅRS
-      </text>
-      <text
-        x="100"
-        y="140"
+        y={captionY}
         textAnchor="middle"
         fill="#7bb4bb"
-        fontSize="8.5"
+        fontSize={captionIsLong ? "7.3" : "8.5"}
         fontWeight="600"
-        letterSpacing="2.4"
+        letterSpacing={captionIsLong ? "1.2" : "2.4"}
         style={{ fontFamily: "var(--font-jakarta)" }}
       >
-        JUBILÆUM
+        {caption}
       </text>
     </svg>
   );

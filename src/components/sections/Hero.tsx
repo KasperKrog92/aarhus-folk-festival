@@ -74,6 +74,10 @@ export async function Hero() {
         <div className="hidden justify-self-center lg:flex lg:justify-self-end">
           <JubilaeumBadge
             label={t.hero.badgeLabel}
+            number={t.hero.badgeNumber}
+            numberSuffix={t.hero.badgeNumberSuffix}
+            qualifier={t.hero.badgeQualifier}
+            caption={t.hero.badgeCaption}
             className="size-44 animate-float-slow drop-shadow-xl"
           />
         </div>

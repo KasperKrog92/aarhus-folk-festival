@@ -10,7 +10,6 @@ import {
 } from "@/components/icons";
 import type { Experience, ExperienceIcon } from "@/data/experiences";
 import type { Locale } from "@/i18n/config";
-import { getDictionary } from "@/i18n/dictionaries";
 
 const icons: Record<ExperienceIcon, React.ComponentType<{ className?: string }>> = {
   concert: IconConcert,
@@ -37,7 +36,6 @@ export function ExperienceCard({
   locale: Locale;
 }) {
   const Icon = icons[experience.icon];
-  const t = getDictionary(locale);
 
   return (
     <Link
@@ -60,10 +58,7 @@ export function ExperienceCard({
         {experience.description[locale]}
       </p>
 
-      <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-petroleum transition-colors group-hover:text-rust">
-        {t.common.readMore}
-        <IconArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-      </span>
+      <IconArrowRight className="mt-auto size-5 self-end text-teal transition-transform group-hover:translate-x-1" />
     </Link>
   );
 }

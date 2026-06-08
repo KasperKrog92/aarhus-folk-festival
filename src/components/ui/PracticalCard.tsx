@@ -43,7 +43,7 @@ export function PracticalCard({
       <p className="text-sm leading-relaxed text-content-soft">
         {item.description[locale]}
       </p>
-      <IconArrowRight className="mt-auto size-5 text-teal transition-transform group-hover:translate-x-1" />
+      <IconArrowRight className="mt-auto size-5 self-end text-teal transition-transform group-hover:translate-x-1" />
     </Link>
   );
 }

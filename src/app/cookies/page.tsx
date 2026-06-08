@@ -70,16 +70,14 @@ export default async function CookiesPage() {
                   key={item.id}
                   className="rounded-2xl border border-line/[0.08] bg-surface-raised p-5 shadow-sm"
                 >
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <h3 className="font-display text-xl font-semibold tracking-tight text-content">
-                        {item.name}
-                      </h3>
-                      <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-pink-600">
-                        {item.type[locale]}
-                      </p>
-                    </div>
-                    <p className="text-sm leading-relaxed text-content-soft sm:max-w-md sm:text-right">
+                  <div>
+                    <h3 className="font-display text-xl font-semibold tracking-tight text-content">
+                      {item.name}
+                    </h3>
+                    <p className="mt-1 text-sm font-semibold uppercase tracking-[0.14em] text-pink-600">
+                      {item.type[locale]}
+                    </p>
+                    <p className="mt-3 max-w-2xl text-sm leading-relaxed text-content-soft">
                       {item.purpose[locale]}
                     </p>
                   </div>
