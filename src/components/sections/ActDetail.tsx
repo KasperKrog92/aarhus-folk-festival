@@ -4,11 +4,16 @@ import { BackButton } from "@/components/ui/BackButton";
 import { Container } from "@/components/ui/Container";
 import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
-import { IconArrowRight, IconClock, IconPin } from "@/components/icons";
+import { IconArrowRight, IconCalendar, IconClock, IconPin } from "@/components/icons";
 import { scheduleCopy, type ActDetailShow, type EventTone } from "@/data/program";
 import { site } from "@/data/site";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
+import {
+  calendarDownloadName,
+  googleCalendarHref,
+  icsCalendarHref,
+} from "@/lib/calendar";
 
 /**
  * Detail page body shared by an artist and a workshop. The page resolves all
@@ -26,6 +31,7 @@ export function ActDetail({
   tone,
   category,
   shows,
+  href,
   backHref,
 }: {
   locale: Locale;
@@ -38,10 +44,14 @@ export function ActDetail({
   tone: EventTone;
   category: string;
   shows: ActDetailShow[];
+  /** The public detail page for this act/workshop. */
+  href: string;
   /** Where "Tilbage" / "Back" lands when there's no browser history to step back to. */
   backHref: string;
 }) {
   const t = getDictionary(locale);
+  const eventUrl = `${site.url}${href}`;
+  const calendarDetails = [tagline, ...bio, site.name, eventUrl].join("\n\n");
 
   return (
     <article className="py-12 sm:py-16">
@@ -118,33 +128,69 @@ export function ActDetail({
                 {category}
               </p>
               <ul className="mt-4 space-y-5">
-                {shows.map((show, index) => (
-                  <li
-                    key={index}
-                    className="space-y-3 [&+li]:border-t [&+li]:border-petroleum/10 [&+li]:pt-5"
-                  >
-                    <div className="flex items-start gap-3">
-                      <IconClock className="size-5 shrink-0 text-teal" aria-hidden />
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-content-muted">
-                          {scheduleCopy.when[locale]}
-                        </p>
-                        <p className="mt-0.5 text-sm font-medium text-content">
-                          {show.day} · {show.time}
-                        </p>
+                {shows.map((show, index) => {
+                  const calendarEvent = {
+                    title: name,
+                    startDateIso: show.dateIso,
+                    startTime: show.time,
+                    durationMinutes: show.durationMinutes,
+                    location: show.venue,
+                    details: calendarDetails,
+                    url: eventUrl,
+                    uid: `${href.replace(/[^a-z0-9]+/gi, "-")}-${index}@aarhusfolkfestival.dk`,
+                  };
+
+                  return (
+                    <li
+                      key={index}
+                      className="space-y-3 [&+li]:border-t [&+li]:border-petroleum/10 [&+li]:pt-5"
+                    >
+                      <div className="flex items-start gap-3">
+                        <IconClock className="size-5 shrink-0 text-teal" aria-hidden />
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-content-muted">
+                            {scheduleCopy.when[locale]}
+                          </p>
+                          <p className="mt-0.5 text-sm font-medium text-content">
+                            {show.day} · {show.time}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <IconPin className="size-5 shrink-0 text-teal" aria-hidden />
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-content-muted">
-                          {scheduleCopy.where[locale]}
-                        </p>
-                        <p className="mt-0.5 text-sm font-medium text-content">{show.venue}</p>
+                      <div className="flex items-start gap-3">
+                        <IconPin className="size-5 shrink-0 text-teal" aria-hidden />
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-content-muted">
+                            {scheduleCopy.where[locale]}
+                          </p>
+                          <p className="mt-0.5 text-sm font-medium text-content">{show.venue}</p>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                ))}
+                      <details className="group relative flex justify-center pt-1">
+                        <summary className="mx-auto inline-flex cursor-pointer list-none items-center justify-center gap-2 rounded-full border border-petroleum/15 bg-surface-sunken/45 px-3.5 py-2 text-sm font-semibold text-petroleum shadow-sm transition-colors hover:border-petroleum/25 hover:bg-surface-sunken/70 hover:text-rust focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-focus group-open:border-petroleum/25 group-open:bg-surface-sunken/70 [&::-webkit-details-marker]:hidden">
+                          <IconCalendar className="size-4" aria-hidden />
+                          {scheduleCopy.addToCalendar[locale]}
+                        </summary>
+                        <div className="absolute left-1/2 top-full z-20 mt-2 w-56 max-w-[calc(100vw-3rem)] -translate-x-1/2 rounded-xl border border-line/15 bg-surface-raised p-2 shadow-xl shadow-content/10">
+                          <a
+                            href={googleCalendarHref(calendarEvent)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block rounded-lg px-3 py-2 text-sm font-semibold text-content transition-colors hover:bg-content/[0.05] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+                          >
+                            {scheduleCopy.googleCalendar[locale]}
+                          </a>
+                          <a
+                            href={icsCalendarHref(calendarEvent)}
+                            download={calendarDownloadName(name)}
+                            className="block rounded-lg px-3 py-2 text-sm font-semibold text-content transition-colors hover:bg-content/[0.05] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+                          >
+                            {scheduleCopy.icsCalendar[locale]}
+                          </a>
+                        </div>
+                      </details>
+                    </li>
+                  );
+                })}
               </ul>
             </aside>
           </div>

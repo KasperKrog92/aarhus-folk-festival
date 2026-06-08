@@ -57,6 +57,7 @@ export default async function WorkshopPage({ params }: WorkshopPageProps) {
       tone={workshop.tone}
       category={workshop.category[locale]}
       shows={actDetailShows(workshop.shows, locale)}
+      href={`${workshopsPage.href}/${workshop.slug}`}
       backHref={workshopsPage.href}
     />
   );

@@ -56,6 +56,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
       tone={artist.tone}
       category={artist.category[locale]}
       shows={actDetailShows(artist.shows, locale)}
+      href={`${artistsPage.href}/${artist.slug}`}
       backHref={artistsPage.href}
     />
   );

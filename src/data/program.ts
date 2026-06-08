@@ -14,16 +14,38 @@ export type EventTone = "petroleum" | "pink" | "teal" | "aubergine";
 
 export type FestivalDay = {
   id: string;
+  /** Local festival date in ISO format, used for calendar links. */
+  dateIso: `${number}-${number}-${number}`;
   weekday: Localized;
   date: Localized;
 };
 
 /** The four festival days. Days without events simply don't render. */
 export const festivalDays: FestivalDay[] = [
-  { id: "thu", weekday: { da: "Torsdag", en: "Thursday" }, date: { da: "24. september", en: "24 September" } },
-  { id: "fri", weekday: { da: "Fredag", en: "Friday" }, date: { da: "25. september", en: "25 September" } },
-  { id: "sat", weekday: { da: "Lørdag", en: "Saturday" }, date: { da: "26. september", en: "26 September" } },
-  { id: "sun", weekday: { da: "Søndag", en: "Sunday" }, date: { da: "27. september", en: "27 September" } },
+  {
+    id: "thu",
+    dateIso: "2026-09-24",
+    weekday: { da: "Torsdag", en: "Thursday" },
+    date: { da: "24. september", en: "24 September" },
+  },
+  {
+    id: "fri",
+    dateIso: "2026-09-25",
+    weekday: { da: "Fredag", en: "Friday" },
+    date: { da: "25. september", en: "25 September" },
+  },
+  {
+    id: "sat",
+    dateIso: "2026-09-26",
+    weekday: { da: "Lørdag", en: "Saturday" },
+    date: { da: "26. september", en: "26 September" },
+  },
+  {
+    id: "sun",
+    dateIso: "2026-09-27",
+    weekday: { da: "Søndag", en: "Sunday" },
+    date: { da: "27. september", en: "27 September" },
+  },
 ];
 
 /** One appearance of an act: which day, at what time, where. */
@@ -31,13 +53,18 @@ export type Show = {
   dayId: string;
   /** 24-hour "HH.MM" — sortable as a string. */
   time: string;
+  /** Calendar event length. Defaults to 90 minutes when omitted. */
+  durationMinutes?: number;
   venue: Localized;
 };
 
 export type ActDetailShow = {
   /** Resolved "Weekday Date" label. */
   day: string;
+  /** Local ISO date for machine-readable calendar links. */
+  dateIso: string;
   time: string;
+  durationMinutes: number;
   venue: string;
 };
 
@@ -51,10 +78,13 @@ export type ProgramEvent = {
   category: Localized;
   venue: Localized;
   time: string;
+  durationMinutes: number;
   tone: EventTone;
   image?: string;
   imageAlt: Localized;
 };
+
+const defaultShowDurationMinutes = 90;
 
 export type ProgramDayGroup = {
   day: FestivalDay;
@@ -73,6 +103,7 @@ function allEvents(): ProgramEvent[] {
         category: artist.category,
         venue: show.venue,
         time: show.time,
+        durationMinutes: show.durationMinutes ?? defaultShowDurationMinutes,
         tone: artist.tone,
         image: artist.image,
         imageAlt: artist.imageAlt,
@@ -90,6 +121,7 @@ function allEvents(): ProgramEvent[] {
         category: workshop.category,
         venue: show.venue,
         time: show.time,
+        durationMinutes: show.durationMinutes ?? defaultShowDurationMinutes,
         tone: workshop.tone,
         image: workshop.image,
         imageAlt: workshop.imageAlt,
@@ -120,11 +152,17 @@ export function formatDay(dayId: string, locale: Locale): string {
   return day ? `${day.weekday[locale]} ${day.date[locale]}` : "";
 }
 
+function dateIsoForDay(dayId: string): string {
+  return festivalDays.find((day) => day.id === dayId)?.dateIso ?? "";
+}
+
 /** Resolves an act's show list for the shared detail page panel. */
 export function actDetailShows(shows: Show[], locale: Locale): ActDetailShow[] {
   return shows.map((show) => ({
     day: formatDay(show.dayId, locale),
+    dateIso: dateIsoForDay(show.dayId),
     time: show.time,
+    durationMinutes: show.durationMinutes ?? defaultShowDurationMinutes,
     venue: show.venue[locale],
   }));
 }
@@ -135,6 +173,9 @@ export const scheduleCopy = {
   when: { da: "Hvornår", en: "When" } as Localized,
   where: { da: "Spillested", en: "Venue" } as Localized,
   seeInProgramme: { da: "Se i programmet", en: "See in the programme" } as Localized,
+  addToCalendar: { da: "Føj til kalender", en: "Add to calendar" } as Localized,
+  googleCalendar: { da: "Google Kalender", en: "Google Calendar" } as Localized,
+  icsCalendar: { da: "Apple / Outlook (.ics)", en: "Apple / Outlook (.ics)" } as Localized,
 };
 
 export const programPage = {
