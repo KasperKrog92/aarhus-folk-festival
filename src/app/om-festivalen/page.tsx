@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -14,7 +15,8 @@ import {
   IconHeart,
   IconArrowRight,
 } from "@/components/icons";
-import { aboutPage, type AboutImageIcon } from "@/data/about";
+import { aboutPage, type AboutImage, type AboutImageIcon } from "@/data/about";
+import type { Locale } from "@/i18n/config";
 import { getLocale } from "@/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -25,6 +27,53 @@ const aboutIcons: Record<AboutImageIcon, React.ComponentType<{ className?: strin
   session: IconSession,
   pin: IconPin,
 };
+
+/** Shared caption chip, matching the placeholder + homepage about photo. */
+const captionClass =
+  "absolute bottom-3 left-3 rounded-full bg-black/25 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wider text-white/80 backdrop-blur-sm";
+
+/**
+ * Renders a real photo when the image has a `src`, otherwise the gradient
+ * placeholder. `className` carries the shared sizing/rounding/shadow so both
+ * branches look identical in layout.
+ */
+function AboutMedia({
+  image,
+  locale,
+  className,
+  sizes,
+}: {
+  image: AboutImage;
+  locale: Locale;
+  className: string;
+  sizes: string;
+}) {
+  if (!image.src) {
+    const Icon = aboutIcons[image.icon];
+    return (
+      <ImagePlaceholder
+        alt={image.alt[locale]}
+        tone={image.tone}
+        caption={image.caption[locale]}
+        icon={<Icon />}
+        className={className}
+      />
+    );
+  }
+
+  return (
+    <div className={`relative isolate overflow-hidden ${className}`}>
+      <Image
+        src={image.src}
+        alt={image.alt[locale]}
+        fill
+        sizes={sizes}
+        className="object-cover"
+      />
+      <span className={captionClass}>{image.caption[locale]}</span>
+    </div>
+  );
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -42,7 +91,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AboutPage() {
   const locale = await getLocale();
   const intro = aboutPage.introImage;
-  const IntroIcon = aboutIcons[intro.icon];
   const banner = aboutPage.banner;
 
   return (
@@ -69,11 +117,10 @@ export default async function AboutPage() {
           </div>
 
           <div className="relative">
-            <ImagePlaceholder
-              alt={intro.alt[locale]}
-              tone={intro.tone}
-              caption={intro.caption[locale]}
-              icon={<IntroIcon />}
+            <AboutMedia
+              image={intro}
+              locale={locale}
+              sizes="(min-width: 1024px) 40vw, 100vw"
               className="aspect-[4/5] w-full rounded-3xl shadow-xl"
             />
             {/* decorative hearts, echoing the homepage about section */}
@@ -91,10 +138,10 @@ export default async function AboutPage() {
       {/* Full-width atmospheric band, a quiet "step inside" moment. */}
       <section className="pb-4">
         <Container>
-          <ImagePlaceholder
-            alt={banner.alt[locale]}
-            tone={banner.tone}
-            caption={banner.caption[locale]}
+          <AboutMedia
+            image={banner}
+            locale={locale}
+            sizes="(min-width: 1200px) 1152px, 100vw"
             className="h-64 w-full rounded-3xl shadow-lg sm:h-80 lg:h-[26rem]"
           />
         </Container>
@@ -104,7 +151,6 @@ export default async function AboutPage() {
       <section className="py-12 sm:py-16">
         <Container className="flex flex-col gap-16 sm:gap-24">
           {aboutPage.sections.map((block, index) => {
-            const Icon = aboutIcons[block.image.icon];
             const reversed = index % 2 === 1;
 
             return (
@@ -124,11 +170,10 @@ export default async function AboutPage() {
                 </div>
 
                 <div className={reversed ? "lg:order-1" : undefined}>
-                  <ImagePlaceholder
-                    alt={block.image.alt[locale]}
-                    tone={block.image.tone}
-                    caption={block.image.caption[locale]}
-                    icon={<Icon />}
+                  <AboutMedia
+                    image={block.image}
+                    locale={locale}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
                     className="aspect-[5/4] w-full rounded-3xl shadow-lg"
                   />
                 </div>

@@ -88,5 +88,12 @@ Two gotchas the remap doesn't solve on its own:
 - Use JPEG/WebP/AVIF for photo-like assets. Keep PNG for transparency, logos, mockups, or graphic artwork.
 - Real photography is arriving incrementally. `EventCard`, `ActCard` and `ActDetail` render a
   real photo via `next/image` when an act/event has an `image` (e.g. `public/events/detlysebal.jpg`),
-  and fall back to `ImagePlaceholder` otherwise. Elsewhere, `ImagePlaceholder` still renders
-  on-brand gradient stand-ins; swap it for `next/image` as photos arrive (keep the descriptive `alt`).
+  and fall back to `ImagePlaceholder` otherwise. The about page (`/om-festivalen`) does the same:
+  each `src/data/about.ts` image carries an optional `src`, and the page's `AboutMedia` helper
+  renders the photo (with caption chip + responsive `sizes`) when set, else the gradient stand-in.
+  Elsewhere, `ImagePlaceholder` still renders on-brand gradient stand-ins; swap it for `next/image`
+  as photos arrive (keep the descriptive `alt`).
+- Optimise source photos before committing — full-camera-resolution JPEGs are too heavy to serve.
+  Downscale to a sensible max width (~1600–2400px for full-bleed, less for smaller slots) and
+  re-encode with mozjpeg ~q80 via `sharp` (rotate to bake in EXIF orientation, which also strips
+  metadata). `next/image` handles per-breakpoint resizing from there.

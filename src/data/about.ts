@@ -2,15 +2,18 @@
  * "Om festivalen", the dedicated about page (/om-festivalen).
  * Atmospheric, copy-led page about the festival's idea and community.
  * `image.icon` is a key resolved to an SVG component in the rendering layer,
- * so this stays a plain data file. Imagery is still ImagePlaceholder stand-ins
- * (`tone`) until real photography arrives.
+ * so this stays a plain data file. When an image has a `src` (a photo in
+ * `public/images/`) the page renders that photo; otherwise it falls back to an
+ * ImagePlaceholder stand-in tinted by `tone`, with `icon` as a watermark.
  */
 import type { Localized } from "@/i18n/config";
 
 export type AboutImageIcon = "dance" | "concert" | "session" | "pin";
 export type AboutImageTone = "petroleum" | "teal" | "pink" | "aubergine" | "evening";
 
-type AboutImage = {
+export type AboutImage = {
+  /** Path to a real photo under `public/`; omit to use the gradient placeholder. */
+  src?: string;
   alt: Localized;
   caption: Localized;
   tone: AboutImageTone;
@@ -61,6 +64,7 @@ export const aboutPage = {
     },
   ] as Localized[],
   introImage: {
+    src: "/images/faellesdans.jpg",
     alt: {
       da: "Dansere holder hinanden i hænderne på et gulv, mens musikere spiller op til fælles dans.",
       en: "Dancers holding hands on the floor while musicians play for a shared dance.",
@@ -73,6 +77,7 @@ export const aboutPage = {
     icon: "dance",
   } as AboutImage,
   banner: {
+    src: "/images/aarhus_dark.jpg",
     alt: {
       da: "Et stemningsfuldt spillested i varmt lys, hvor publikum og musikere er samlet om aftenens musik.",
       en: "An atmospheric venue in warm light where audience and musicians gather around the music of the evening.",
@@ -106,6 +111,7 @@ export const aboutPage = {
         },
       ],
       image: {
+        src: "/images/spontan_jam.jpg",
         alt: {
           da: "Musikere sidder tæt sammen i en åben jam med violin, guitar og fløjte.",
           en: "Musicians sitting close together in an open jam with fiddle, guitar and flute.",
@@ -135,6 +141,7 @@ export const aboutPage = {
         },
       ],
       image: {
+        src: "/images/rundt_byen.jpg",
         alt: {
           da: "Et intimt kirkerum oplyst af stearinlys, klar til en akustisk koncert.",
           en: "An intimate church room lit by candles, ready for an acoustic concert.",
