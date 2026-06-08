@@ -23,15 +23,18 @@ src/
                           #   (shared artist/workshop detail-page body) and
                           #   ProgramSchedule (the /program list + favourites filter)
     ui/                   # reusable primitives: Container, Button, SectionHeading, ActCard,
-                          #   EventCard, ExperienceCard, PracticalCard, FavouriteButton
+                          #   EventCard, CardShell/CardImage (shared card frame + 4:3 media),
+                          #   ExperienceCard, PracticalCard, EmailLink, FavouriteButton
     decorative/           # folk visual elements: FolkBorder (bunting), ScallopEdge,
-                          #   FolkStripe, JubilaeumBadge, ImagePlaceholder
+                          #   FolkStripe, JubilaeumBadge, HeartDivider, ImagePlaceholder
     icons.tsx             # all inline SVG icons (24×24, stroke=currentColor)
   data/                   # static content (site, navigation, artists, workshops, program,
                           #   experiences, practical, about, association, contact) - the "content source"
   i18n/                   # cookie-based DA/EN: config (Locale, Localized), dictionaries
                           #   (UI chrome), server.ts (getLocale), LocaleProvider (client)
   lib/cn.ts               # tiny className joiner (no clsx dependency)
+  lib/metadata.ts         # generateMetadata helpers: pageMetadata (localized title/
+                          #   description + canonical) and actMetadata (adds OpenGraph)
   lib/theme.ts            # framework-free theme config: Theme type, THEME_COOKIE, defaultTheme, isTheme()
   lib/theme-server.ts     # server-only getTheme(): reads aff_theme cookie, falls back to "light"
   lib/favourites.ts       # aff_favourites cookie: parse (SSR-safe) + client read/toggle
@@ -92,4 +95,7 @@ them, so an act that plays more than once is edited in one place.
 - The root `layout.tsx` sets the shared OpenGraph/Twitter card (image: `public/images/opengraph.png`),
   a `%s | Aarhus Folk Festival` title template, and the home canonical. Subpages just set their
   page `title`, `description`, and own `alternates.canonical` — they inherit the OG/Twitter card.
-- Adding a new public route? Give it a `canonical` in its `generateMetadata` and add it to `sitemap.ts`.
+  Build that object with `lib/metadata.ts`'s `pageMetadata({ title, description, href }, locale)`
+  (it takes the `Localized` fields and resolves them) rather than hand-rolling it; act detail pages
+  use `actMetadata()` instead, which also emits OpenGraph.
+- Adding a new public route? Give its `generateMetadata` a `canonical` via `pageMetadata` and add it to `sitemap.ts`.

@@ -6,12 +6,12 @@ server-first — so this is housekeeping, not a rewrite. Every item below collap
 copy-pasted markup or content into a single source of truth, in the spirit of the
 "edit in one place" rule the architecture doc already states for acts.
 
-> Status: in progress. Findings are from an audit on 2026-06-08. Each phase is
+> Status: complete. Findings are from an audit on 2026-06-08. Each phase is
 > independently shippable; the suggested order runs low-risk wins first, then the
 > larger structural dedupe. No behaviour or visual change is intended — these are
 > pure refactors, so verify with `pnpm build` + a visual pass after each phase.
 >
-> **Phases 1–2 done (2026-06-08).** Phase 3 remains. See per-item notes below.
+> **Phases 1–3 done (2026-06-08).** See per-item notes below.
 
 ## Guiding constraints
 
@@ -155,11 +155,13 @@ already active on port 3000, per the project guide.
 
 ---
 
-## Phase 3 — Component polish
+## Phase 3 — Component polish ✅ done (2026-06-08)
 
-Independent, smaller wins. Cherry-pick.
+Independent, smaller wins. All four implemented as pure refactors; `pnpm build`
+(incl. typecheck + static generation of all routes) passes. Browser verification
+was left to the owner per the project guide (dev server assumed running).
 
-### 3a. Card shell / image extraction
+### 3a. Card shell / image extraction ✅
 
 [ActCard](../../src/components/ui/ActCard.tsx) and
 [EventCard](../../src/components/ui/EventCard.tsx) share the same outer `<article>`
@@ -175,7 +177,16 @@ content (`EventCard`'s time badge + `FavouriteButton`) as children.
 [PracticalCard](../../src/components/ui/PracticalCard.tsx) share the icon-chip +
 title + description + arrow skeleton — same idea, lower priority.
 
-### 3b. `EmailLink` component
+**Done:** new `components/ui/CardShell.tsx` exports `CardShell` (the shared
+`<article>` frame, `group` set here) and `CardImage` (the 4:3 `<Image fill>` vs
+`ImagePlaceholder` branch, with a `sizes` prop and optional placeholder `icon`).
+`ActCard` and `EventCard` now compose both; `EventCard` keeps its time badge +
+`FavouriteButton` as siblings of `CardImage` inside the existing `relative` wrapper.
+Class output is identical. The lower-priority `ExperienceCard`/`PracticalCard`
+icon-chip merge was left alone — their borders, hover states, icon sizes and layout
+differ enough that a shared shell would add branching without real dedupe.
+
+### 3b. `EmailLink` component ✅
 
 mailto styling (`underline decoration-petroleum/30 underline-offset-4 …
 hover:text-rust hover:decoration-rust`) is duplicated in
@@ -187,20 +198,43 @@ shows this spot is actively drifting.
 **Do:** extract `EmailLink` (handles the `<wbr>` break-on-`@` + the shared
 styling) so both pages stay in sync.
 
-### 3c. `pageMetadata` helper
+**Done:** new `components/ui/EmailLink.tsx` owns the underline styling plus the
+`<wbr>`-after-`@` split; per-use type/spacing comes in via `className`, and `href`
+defaults to `mailto:${email}` (foreningen overrides it to its contact-page link).
+Both pages now render `<EmailLink>`; foreningen dropped its inline `emailName`/
+`emailDomain` split. kontakt's address gains the same `<wbr>` break opportunity —
+a DOM-only addition (invisible, no visual/copy change) that is the intended sync.
+
+### 3c. `pageMetadata` helper ✅
 
 Every page repeats `const locale = await getLocale(); return { title, description,
 alternates: { canonical } }`. A `pageMetadata({ title, description, href },
 locale)` helper trims ~5 lines per page and standardizes canonicals. (The act
 detail pages use the richer `actMetadata` from 2b instead.)
 
-### 3d. `HeartDivider` decorative
+**Done:** `pageMetadata({ title, description, href }, locale)` added to
+[lib/metadata.ts](../../src/lib/metadata.ts) next to `actMetadata`. It takes the
+`Localized` title/description objects and resolves them for `locale` (which is why
+it keeps the `locale` param, whereas `actMetadata` receives already-resolved
+strings and takes none), then returns title + description + `alternates.canonical`.
+All six standard pages (program, kunstnere, workshops, foreningen, kontakt,
+om-festivalen) call it; om-festivalen passes its `metaTitle`/`metaDescription`.
+architecture.md's SEO section now points new routes at the helper.
+
+### 3d. `HeartDivider` decorative ✅
 
 The `<span h-px> + IconHeart + <span h-px>` motif repeats in
 [ExperienceSection](../../src/components/sections/ExperienceSection.tsx) and the
 community block of [om-festivalen](../../src/app/om-festivalen/page.tsx), with
 light/dark colour variants. A small `HeartDivider` in `components/decorative/`
 with a `tone` prop fits the existing decorative set.
+
+**Done:** new `components/decorative/HeartDivider.tsx` renders the rule +
+`IconHeart` + rule motif with a `tone` prop (`dark` = pink, default; `light` =
+pink-200 for petroleum backgrounds) and a `className` escape hatch.
+`ExperienceSection` uses `<HeartDivider />`; om-festivalen's community block uses
+`<HeartDivider tone="light" className="mx-auto justify-center" />`. Same class set
+either way.
 
 ---
 
@@ -216,7 +250,7 @@ with a `tone` prop fits the existing decorative set.
 1. ~~**Phase 1 (1a + 1b)** — one small PR, low risk, immediate clarity.~~ ✅ done (2026-06-08).
 2. **Phase 2 (2a + 2b)** — the biggest structural dedupe; do as one PR since both
    rely on act normalization. Update architecture.md.
-3. **Phase 3** — polish, cherry-picked as time allows.
+3. ~~**Phase 3** — polish, cherry-picked as time allows.~~ ✅ done (2026-06-08); all four items shipped.
 
 After each phase: `pnpm build`, a visual pass in both locales, then check the docs
 map per the AGENTS.md commit checklist before pushing.

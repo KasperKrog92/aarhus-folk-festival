@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { ExperienceCard } from "@/components/ui/ExperienceCard";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
-import { IconHeart } from "@/components/icons";
+import { HeartDivider } from "@/components/decorative/HeartDivider";
 import { experiences } from "@/data/experiences";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
@@ -29,14 +29,7 @@ export async function ExperienceSection() {
           </h2>
 
           {/* little folk heart divider */}
-          <div
-            aria-hidden
-            className="flex items-center gap-2 text-pink"
-          >
-            <span className="h-px w-10 bg-pink/40" />
-            <IconHeart className="size-4 fill-current" />
-            <span className="h-px w-10 bg-pink/40" />
-          </div>
+          <HeartDivider />
 
           <p className="mt-1 max-w-xl text-base leading-relaxed text-content-soft sm:text-lg">
             {t.experiences.intro}

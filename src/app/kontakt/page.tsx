@@ -3,19 +3,24 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
+import { EmailLink } from "@/components/ui/EmailLink";
 import { IconMail } from "@/components/icons";
 import { contactPage } from "@/data/contact";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
+import { pageMetadata } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
 
-  return {
-    title: contactPage.title[locale],
-    description: contactPage.intro[locale],
-    alternates: { canonical: contactPage.href },
-  };
+  return pageMetadata(
+    {
+      title: contactPage.title,
+      description: contactPage.intro,
+      href: contactPage.href,
+    },
+    locale,
+  );
 }
 
 export default async function ContactPage() {
@@ -48,12 +53,10 @@ export default async function ContactPage() {
                 <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-pink-600">
                   {channel.label[locale]}
                 </p>
-                <a
-                  href={`mailto:${channel.email}`}
-                  className="mt-2 font-display text-xl font-semibold text-content underline decoration-petroleum/30 underline-offset-4 transition-colors hover:text-rust hover:decoration-rust"
-                >
-                  {channel.email}
-                </a>
+                <EmailLink
+                  email={channel.email}
+                  className="mt-2 font-display text-xl font-semibold text-content"
+                />
                 <p className="mt-2 text-sm leading-relaxed text-content-soft">
                   {channel.description[locale]}
                 </p>

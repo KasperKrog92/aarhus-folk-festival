@@ -3,18 +3,23 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
+import { EmailLink } from "@/components/ui/EmailLink";
 import { associationPage } from "@/data/association";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
+import { pageMetadata } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
 
-  return {
-    title: associationPage.title[locale],
-    description: associationPage.intro[locale],
-    alternates: { canonical: associationPage.href },
-  };
+  return pageMetadata(
+    {
+      title: associationPage.title,
+      description: associationPage.intro,
+      href: associationPage.href,
+    },
+    locale,
+  );
 }
 
 export default async function AssociationPage() {
@@ -48,9 +53,6 @@ export default async function AssociationPage() {
                 const value =
                   typeof item.value === "string" ? item.value : item.value[locale];
                 const isEmail = item.id === "email" && value.includes("@");
-                const [emailName, emailDomain] = isEmail
-                  ? value.split("@")
-                  : ["", ""];
 
                 return (
                   <li
@@ -61,13 +63,11 @@ export default async function AssociationPage() {
                       {item.label[locale]}
                     </p>
                     {isEmail ? (
-                      <a
+                      <EmailLink
+                        email={value}
                         href={associationPage.contactHref}
-                        className="mt-2 block font-sans text-base font-semibold leading-snug text-content underline decoration-petroleum/30 underline-offset-4 transition-colors hover:text-rust hover:decoration-rust sm:text-sm md:text-base"
-                      >
-                        {emailName}
-                        <wbr />@{emailDomain}
-                      </a>
+                        className="mt-2 block font-sans text-base font-semibold leading-snug text-content sm:text-sm md:text-base"
+                      />
                     ) : (
                       <p className="mt-2 font-display text-xl font-semibold text-content">
                         {value}

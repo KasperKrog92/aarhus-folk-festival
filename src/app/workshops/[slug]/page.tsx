@@ -27,15 +27,12 @@ export async function generateMetadata({
   const locale = await getLocale();
   const name = workshop.name[locale];
 
-  return actMetadata(
-    {
-      name,
-      tagline: workshop.tagline[locale],
-      image: workshop.image,
-      href: `${workshopsPage.href}/${workshop.slug}`,
-    },
-    locale,
-  );
+  return actMetadata({
+    name,
+    tagline: workshop.tagline[locale],
+    image: workshop.image,
+    href: `${workshopsPage.href}/${workshop.slug}`,
+  });
 }
 
 export default async function WorkshopPage({ params }: WorkshopPageProps) {

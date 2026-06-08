@@ -3,15 +3,19 @@ import { ActListing } from "@/components/sections/ActListing";
 import { artists, artistsPage } from "@/data/artists";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
+import { pageMetadata } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
 
-  return {
-    title: artistsPage.title[locale],
-    description: artistsPage.intro[locale],
-    alternates: { canonical: artistsPage.href },
-  };
+  return pageMetadata(
+    {
+      title: artistsPage.title,
+      description: artistsPage.intro,
+      href: artistsPage.href,
+    },
+    locale,
+  );
 }
 
 export default async function ArtistsPage() {

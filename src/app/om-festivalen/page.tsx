@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
+import { HeartDivider } from "@/components/decorative/HeartDivider";
 import { ScallopEdge } from "@/components/decorative/ScallopEdge";
 import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
 import {
@@ -15,6 +16,7 @@ import {
 } from "@/components/icons";
 import { aboutPage, type AboutImageIcon } from "@/data/about";
 import { getLocale } from "@/i18n/server";
+import { pageMetadata } from "@/lib/metadata";
 
 /** Icon keys in the data map to inline SVG components here (data stays plain). */
 const aboutIcons: Record<AboutImageIcon, React.ComponentType<{ className?: string }>> = {
@@ -27,11 +29,14 @@ const aboutIcons: Record<AboutImageIcon, React.ComponentType<{ className?: strin
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
 
-  return {
-    title: aboutPage.metaTitle[locale],
-    description: aboutPage.metaDescription[locale],
-    alternates: { canonical: aboutPage.href },
-  };
+  return pageMetadata(
+    {
+      title: aboutPage.metaTitle,
+      description: aboutPage.metaDescription,
+      href: aboutPage.href,
+    },
+    locale,
+  );
 }
 
 export default async function AboutPage() {
@@ -146,14 +151,7 @@ export default async function AboutPage() {
         />
         <Container>
             <div className="mx-auto max-w-2xl text-center">
-              <div
-                aria-hidden
-                className="mx-auto flex items-center justify-center gap-2 text-pink-200"
-              >
-                <span className="h-px w-10 bg-pink-200/40" />
-                <IconHeart className="size-4 fill-current" />
-                <span className="h-px w-10 bg-pink-200/40" />
-              </div>
+              <HeartDivider tone="light" className="mx-auto justify-center" />
 
               <h2
                 id="faellesskab-overskrift"

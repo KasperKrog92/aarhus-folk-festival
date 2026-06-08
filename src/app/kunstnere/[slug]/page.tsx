@@ -26,15 +26,12 @@ export async function generateMetadata({
 
   const locale = await getLocale();
 
-  return actMetadata(
-    {
-      name: artist.name,
-      tagline: artist.tagline[locale],
-      image: artist.image,
-      href: `${artistsPage.href}/${artist.slug}`,
-    },
-    locale,
-  );
+  return actMetadata({
+    name: artist.name,
+    tagline: artist.tagline[locale],
+    image: artist.image,
+    href: `${artistsPage.href}/${artist.slug}`,
+  });
 }
 
 export default async function ArtistPage({ params }: ArtistPageProps) {

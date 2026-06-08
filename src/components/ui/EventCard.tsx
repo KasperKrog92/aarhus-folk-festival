@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
+import { CardImage, CardShell } from "@/components/ui/CardShell";
 import { FavouriteButton } from "@/components/ui/FavouriteButton";
 import {
   IconConcert,
@@ -31,26 +30,15 @@ export function EventCard({
   const title = event.title[locale];
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line/[0.07] bg-surface-raised shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+    <CardShell>
       <div className="relative">
-        {event.image ? (
-          <div className="relative aspect-[4/3] w-full overflow-hidden">
-            <Image
-              src={event.image}
-              alt={event.imageAlt[locale]}
-              fill
-              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-            />
-          </div>
-        ) : (
-          <ImagePlaceholder
-            alt={event.imageAlt[locale]}
-            tone={event.tone}
-            icon={categoryIcon[event.category.da]}
-            className="aspect-[4/3] w-full"
-          />
-        )}
+        <CardImage
+          image={event.image}
+          alt={event.imageAlt[locale]}
+          tone={event.tone}
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+          icon={categoryIcon[event.category.da]}
+        />
 
         {/* time badge */}
         <span className="absolute left-3 top-3 rounded-full bg-pink-600 px-3 py-1 text-sm font-bold text-white shadow-sm">
@@ -79,6 +67,6 @@ export function EventCard({
           {event.venue[locale]}
         </p>
       </div>
-    </article>
+    </CardShell>
   );
 }

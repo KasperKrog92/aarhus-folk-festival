@@ -7,15 +7,19 @@ import { FolkStripe } from "@/components/decorative/FolkStripe";
 import { getProgramByDay, programPage } from "@/data/program";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
+import { pageMetadata } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
 
-  return {
-    title: programPage.title[locale],
-    description: programPage.intro[locale],
-    alternates: { canonical: programPage.href },
-  };
+  return pageMetadata(
+    {
+      title: programPage.title,
+      description: programPage.intro,
+      href: programPage.href,
+    },
+    locale,
+  );
 }
 
 export default async function ProgramPage() {

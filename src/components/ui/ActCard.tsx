@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
+import { CardImage, CardShell } from "@/components/ui/CardShell";
 import { IconArrowRight } from "@/components/icons";
 import type { EventTone } from "@/data/program";
 
@@ -31,20 +30,13 @@ export function ActCard({
   cta,
 }: ActCardProps) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line/[0.07] bg-surface-raised shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
-      {image ? (
-        <div className="relative aspect-[4/3] w-full overflow-hidden">
-          <Image
-            src={image}
-            alt={imageAlt}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          />
-        </div>
-      ) : (
-        <ImagePlaceholder alt={imageAlt} tone={tone} className="aspect-[4/3] w-full" />
-      )}
+    <CardShell>
+      <CardImage
+        image={image}
+        alt={imageAlt}
+        tone={tone}
+        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+      />
 
       <div className="flex flex-1 flex-col gap-1.5 p-5">
         <span className="text-xs font-semibold uppercase tracking-[0.16em] text-pink-600">
@@ -61,6 +53,6 @@ export function ActCard({
           <IconArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
         </span>
       </div>
-    </article>
+    </CardShell>
   );
 }
