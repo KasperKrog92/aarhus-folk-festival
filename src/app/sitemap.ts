@@ -8,68 +8,64 @@ import { contactPage } from "@/data/contact";
 import { cookiesPage } from "@/data/cookies";
 import { site } from "@/data/site";
 
-/** Generates /sitemap.xml for the public routes. */
+/**
+ * Generates /sitemap.xml for the public routes.
+ *
+ * `lastModified` is intentionally omitted: content has no edit timestamp, and
+ * stamping every route with the build time (the old behaviour) made the field
+ * meaningless — all equal, changing on every deploy — which is a worse signal
+ * than none. `changeFrequency`/`priority` still convey intent. Add a real
+ * per-route `lastModified` if/when content gains an edited-on date.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
-
   return [
     {
       url: site.url,
-      lastModified,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${site.url}${programPage.href}`,
-      lastModified,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${site.url}${artistsPage.href}`,
-      lastModified,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     ...artists.map((artist) => ({
       url: `${site.url}${artistsPage.href}/${artist.slug}`,
-      lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
     {
       url: `${site.url}${workshopsPage.href}`,
-      lastModified,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     ...workshops.map((workshop) => ({
       url: `${site.url}${workshopsPage.href}/${workshop.slug}`,
-      lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
     {
       url: `${site.url}${aboutPage.href}`,
-      lastModified,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${site.url}${associationPage.href}`,
-      lastModified,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${site.url}${contactPage.href}`,
-      lastModified,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${site.url}${cookiesPage.href}`,
-      lastModified,
       changeFrequency: "yearly",
       priority: 0.4,
     },

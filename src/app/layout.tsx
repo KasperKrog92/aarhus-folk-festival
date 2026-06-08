@@ -10,6 +10,8 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { UpdatePrompt } from "@/components/pwa/UpdatePrompt";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { getTheme } from "@/lib/theme-server";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { siteIdentitySchema } from "@/lib/structured-data";
 import { site } from "@/data/site";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -99,6 +101,7 @@ export default async function RootLayout({
       className={`${jakarta.variable} ${fraunces.variable} h-full antialiased${theme === "dark" ? " dark" : ""}`}
     >
       <body className="flex min-h-full flex-col bg-surface text-content">
+        <JsonLd data={siteIdentitySchema(locale)} />
         <LocaleProvider initialLocale={locale}>
           <ThemeProvider initialTheme={theme}>
             <a

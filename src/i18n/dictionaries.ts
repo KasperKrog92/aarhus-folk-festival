@@ -18,6 +18,9 @@ const da = {
     offlineTitle: "Du er offline",
     offlineBody:
       "Forbindelsen er væk lige nu. Prøv igen, når du har netværk — eller gå til programmet, hvis du allerede har besøgt det.",
+    notFoundTitle: "Siden blev ikke fundet",
+    notFoundBody:
+      "Vi kunne ikke finde den side, du leder efter. Den er måske flyttet, eller linket er forældet.",
   },
   breadcrumb: {
     label: "Brødkrumme",
@@ -131,6 +134,9 @@ const en: Dictionary = {
     offlineTitle: "You are offline",
     offlineBody:
       "The connection is down right now. Try again when you are back online — or open the programme if you have visited it before.",
+    notFoundTitle: "Page not found",
+    notFoundBody:
+      "We couldn't find the page you're looking for. It may have moved, or the link is out of date.",
   },
   breadcrumb: {
     label: "Breadcrumb",

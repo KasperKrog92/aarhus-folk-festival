@@ -30,14 +30,22 @@ export function actMetadata({
   name,
   tagline,
   image,
+  imageAlt,
   href,
 }: {
   name: string;
   tagline: string;
   image?: string;
+  /** Describes {@link image} for the social-card preview. */
+  imageAlt?: string;
   href: string;
 }): Metadata {
   const description = `${name} — ${tagline}`;
+
+  // The act photo is the per-page preview; `alt` is the one field crawlers can
+  // always use. Dimensions vary per photo and aren't tracked in the data, so we
+  // omit width/height rather than ship inaccurate values.
+  const images = image ? [{ url: image, alt: imageAlt ?? name }] : undefined;
 
   return {
     title: name,
@@ -47,7 +55,7 @@ export function actMetadata({
       title: `${name} | ${site.name}`,
       description,
       url: href,
-      ...(image ? { images: [{ url: image }] } : {}),
+      ...(images ? { images } : {}),
     },
   };
 }

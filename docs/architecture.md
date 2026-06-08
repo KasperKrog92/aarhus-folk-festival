@@ -32,6 +32,7 @@ src/
                           #   ExperienceCard, PracticalCard, EmailLink, FavouriteButton
     decorative/           # folk visual elements: FolkBorder (bunting), ScallopEdge,
                           #   FolkStripe, JubilaeumBadge, HeartDivider, ImagePlaceholder
+    seo/                  # JsonLd: server component that serialises schema.org graphs
     icons.tsx             # all inline SVG icons (24×24, stroke=currentColor)
   data/                   # static content (site, navigation, artists, workshops, program,
                           #   experiences, practical, about, association, contact) - the "content source"
@@ -41,6 +42,8 @@ src/
   lib/calendar.ts         # static Google Calendar + .ics link generation for programme shows
   lib/metadata.ts         # generateMetadata helpers: pageMetadata (localized title/
                           #   description + canonical) and actMetadata (adds OpenGraph)
+  lib/structured-data.ts  # schema.org JSON-LD builders (Organization/WebSite/Festival/
+                          #   MusicEvent/Event/BreadcrumbList), derived from src/data/
   lib/theme.ts            # framework-free theme config: Theme type, THEME_COOKIE, defaultTheme, isTheme()
   lib/theme-server.ts     # server-only getTheme(): reads aff_theme cookie, falls back to "light"
   lib/favourites.ts       # aff_favourites localStorage key: parse (SSR-safe) + client read/toggle
@@ -127,6 +130,30 @@ them, so an act that plays more than once is edited in one place.
   (it takes the `Localized` fields and resolves them) rather than hand-rolling it; act detail pages
   use `actMetadata()` instead, which also emits OpenGraph.
 - Adding a new public route? Give its `generateMetadata` a `canonical` via `pageMetadata` and add it to `sitemap.ts`.
+- **Structured data (JSON-LD).** `lib/structured-data.ts` holds typed builders that
+  return plain schema.org objects; `components/seo/JsonLd.tsx` (a server component)
+  serialises them into `<script type="application/ld+json">` (no client JS). Graphs are
+  derived from `src/data/`, never duplicated, and stable `@id`s
+  (`{site.url}/#organization`, `/#website`, `/#festival`) let them cross-reference.
+  Rendered: `siteIdentitySchema` (`Organization` + `WebSite`) once in `app/layout.tsx`;
+  `festivalSchema` (the festival as a `Festival` event) on the homepage (`app/page.tsx`);
+  per-show `actEventsSchema` + a `breadcrumbSchema` on each act detail page
+  (`MusicEvent` + `MusicGroup` for artists, `Event` for workshops, one object per `show`,
+  pointing back to the festival via `superEvent`). ISO-8601 `startDate`/`endDate` come from
+  `lib/calendar.ts`'s `showDateTimeIso` (shares the calendar links' local-datetime parsing
+  and the `Europe/Copenhagen` offset). To extend: add a builder there and render it via
+  `JsonLd`. Constraints: no fabricated data (no `price`, city-level `Place` only until real
+  venue addresses land); copy follows `getLocale()`, structural values stay plain. Validate
+  changes with Google's Rich Results Test.
+- The official social URLs live once in `site.social` (`data/site.ts`) — used by both the
+  footer and the JSON-LD `Organization` `sameAs`.
+- `sitemap.ts` omits `lastModified` on purpose: content has no edit timestamp, and stamping
+  every route with the build time was a misleading signal. Add a real per-route date only
+  when content gains an edited-on field.
+- `app/not-found.tsx` is the branded, locale-aware 404 (real HTTP 404 status, `noindex`);
+  the favicon resolves via `app/icon.png` / `app/apple-icon.png` (no explicit `icons.icon`
+  needed). EN copy stays unindexed by design (cookie-based locale, one URL per page); the
+  bilingual-indexing decision is DA-only — see the SEO plan's Phase 0.
 - `/cookies` is an informational page for the current first-party storage setup.
   The site has no analytics, marketing pixels, third-party embeds or consent
   banner. If non-essential cookies or similar technologies are added, revisit the

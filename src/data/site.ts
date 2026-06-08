@@ -35,4 +35,12 @@ export const site = {
     en: "https://place2book.com/en/sw2/sales/9j1ap558p1",
   } as Localized,
   programUrl: "/program",
+  /**
+   * Official social profiles. Single source of truth for the footer links and
+   * the `sameAs` field in the Organization JSON-LD (`lib/structured-data.ts`).
+   */
+  social: {
+    facebook: "https://www.facebook.com/aarhusfolkfestival",
+    instagram: "https://www.instagram.com/aarhusfolkfestival/",
+  },
 } as const;

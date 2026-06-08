@@ -43,7 +43,7 @@ Severity: **P1** = do first (real ranking/indexing impact), **P2** = worthwhile,
 | 1 | **P1** | Structured data | No JSON-LD anywhere (`grep` for `application/ld+json` returns nothing). No `Event`, `MusicEvent`, `Organization`, `WebSite`, or `BreadcrumbList`. The richest opportunity for a festival site — event rich results, knowledge-panel eligibility, breadcrumb display in SERPs. |
 | 2 | ~~**P1**~~ **Resolved** | Canonical host | `site.url = "https://folk.gamestormers.dk"` ([src/data/site.ts:31](../../src/data/site.ts)) is a temporary host that feeds `metadataBase`, every `canonical`, `robots.ts`, and `sitemap.ts`. **Resolved:** the host is `noindex`ed via `next.config.ts` `noindexHosts` (Phase 1), so it can't accrue index signals before the move; repoint `site.url` at the real domain on launch and drop it from `noindexHosts`. |
 | 3 | **P1** | Crawlability | Footer `footerNav` has `/#presse`, `/#sponsorer`, `/#arkiv` ([src/data/navigation.ts:20-22](../../src/data/navigation.ts)); these sections don't exist. `mainNav` "Praktisk info" points at `/#praktisk` (a homepage anchor, not a route). Dead/ambiguous internal links waste crawl budget and hurt UX. |
-| 4 | **P2** | i18n / hreflang | Locale is a cookie with **one URL per page** ([src/i18n/server.ts](../../src/i18n/server.ts)). A cookie-less crawler always gets Danish, so EN content is never indexed and `hreflang` is not applicable. Documented tradeoff — but worth an explicit decision now that SEO is in focus. |
+| 4 | ~~**P2**~~ **Decided** | i18n / hreflang | Locale is a cookie with **one URL per page** ([src/i18n/server.ts](../../src/i18n/server.ts)). A cookie-less crawler always gets Danish, so EN content is never indexed and `hreflang` is not applicable. **Decided: DA-only indexing stands** (owner chose not to pursue `/en/` locale routes); see Phase 0. |
 | 5 | **P2** | Social cards | `actMetadata()` OG images ship a bare `url` with no `width`/`height`/`alt` ([src/lib/metadata.ts:50](../../src/lib/metadata.ts)). Twitter card has no `site`/`creator`. Root OG image is a single shared graphic (fine, but no per-act preview beyond the photo). |
 | 6 | **P2** | Sitemap freshness | `sitemap.ts` stamps **every** route with `new Date()` at build time, so `lastModified` is meaningless (all equal, changes every build). Better to derive per-route dates or use a stable content date. |
 | 7 | **P2** | Performance / CWV | `public/images/opengraph.png` is heavier than a social card needs (also flagged in roadmap Phase 5). LCP image (hero) is handled well already (`fetchPriority="high"`, `sizes`). Confirm no CLS from `next/image fill` usages. |
@@ -60,12 +60,11 @@ Severity: **P1** = do first (real ranking/indexing impact), **P2** = worthwhile,
 - **Canonical domain (finding 2) — decided.** `folk.gamestormers.dk` is a
   temporary host; it is `noindex`ed now (Phase 1) and `site.url` gets repointed at
   the real domain on launch. No further decision needed.
-- **Bilingual indexing (finding 4) — open.** Accept DA-only indexing (simplest,
-  matches the cookie model), or commit to locale-prefixed routes (`/en/...`) to
-  make EN indexable with proper `hreflang`. The latter is a larger architectural
-  change and is **out of scope for this plan unless explicitly chosen** — captured
-  in "Deferred" below. This is surfaced to the owner rather than decided
-  unilaterally.
+- **Bilingual indexing (finding 4) — decided: DA-only.** The owner chose to keep
+  DA-only indexing (simplest, matches the cookie model). Locale-prefixed routes
+  (`/en/...`) + `hreflang` are **not pursued**; they remain captured in "Deferred"
+  below should that change. Nothing further to do here — the cookie-based locale
+  model stands and JSON-LD copy follows the served locale.
 
 ### Phase 1 — Canonical host & crawl hygiene (P1, small)
 
@@ -205,8 +204,19 @@ Overlaps roadmap Phase 5; SEO-relevant slice only:
 3. **Phase 3** — social-card polish (P2).
 4. **Phase 4** — sitemap freshness + 404 (P2).
 5. **Phase 5** — OG image + CWV pass (P2/P3).
-6. **Phase 0** — the remaining open decision is bilingual indexing (DA-only vs
-   locale routes); the canonical-domain question is already decided.
+6. **Phase 0** — both decisions are now settled: canonical domain (staging
+   `noindex`ed, repoint on launch) and bilingual indexing (**DA-only**).
+
+**Implementation status (2026-06-08):** Phases 1–5 are implemented. Phase 1
+dead-link cleanup done (footer `/#presse|sponsorer|arkiv` removed; `/#praktisk`
+verified to render). Phase 2 JSON-LD shipped (`lib/structured-data.ts` +
+`components/seo/JsonLd.tsx`; Organization/WebSite sitewide, Festival on home,
+per-show MusicEvent/Event + BreadcrumbList on detail pages). Phase 3 added `alt`
+to act OG images (width/height omitted — per-photo dims aren't in the data, no
+Twitter handle exists so `site`/`creator` skipped). Phase 4 dropped the
+build-time `lastModified` from the sitemap and added a branded `not-found.tsx`.
+Phase 5 shrank `opengraph.png` (411 KB → 182 KB, visually identical). A
+Lighthouse/PSI baseline (Phase 5.3) is still open.
 
 ## Deferred / out of scope
 

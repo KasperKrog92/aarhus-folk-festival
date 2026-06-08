@@ -14,10 +14,11 @@ export const mainNav: NavItem[] = [
   { label: { da: "Om festivalen", en: "About" }, href: "/om-festivalen" },
 ];
 
+// "Presse" / "Sponsorer" / "Arkiv" were removed: they pointed at homepage
+// anchors that don't exist, so they were dead links that wasted crawl budget.
+// Re-add them here (as real routes) once those content areas are built.
 export const footerNav: NavItem[] = [
   { label: { da: "Kontakt", en: "Contact" }, href: "/kontakt" },
+  { label: { da: "Foreningen", en: "The association" }, href: "/foreningen" },
   { label: { da: "Cookies", en: "Cookies" }, href: "/cookies" },
-  { label: { da: "Presse", en: "Press" }, href: "/#presse" },
-  { label: { da: "Sponsorer", en: "Sponsors" }, href: "/#sponsorer" },
-  { label: { da: "Arkiv", en: "Archive" }, href: "/#arkiv" },
 ];

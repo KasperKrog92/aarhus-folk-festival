@@ -8,16 +8,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
 
 const socials = [
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/aarhusfolkfestival",
-    Icon: IconFacebook,
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/aarhusfolkfestival/",
-    Icon: IconInstagram,
-  },
+  { label: "Facebook", href: site.social.facebook, Icon: IconFacebook },
+  { label: "Instagram", href: site.social.instagram, Icon: IconInstagram },
 ];
 
 export async function Footer() {
