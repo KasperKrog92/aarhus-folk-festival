@@ -14,37 +14,14 @@ export function FolkStripe({ className }: FolkStripeProps) {
     <div
       aria-hidden
       className={cn("h-6 w-full overflow-hidden rounded-full", className)}
-    >
-      <svg
-        className="h-full w-full"
-        viewBox="0 0 40 16"
-        preserveAspectRatio="xMidYMid slice"
-        role="presentation"
-      >
-        <defs>
-          <pattern
-            id="folk-weave"
-            width="40"
-            height="16"
-            patternUnits="userSpaceOnUse"
-          >
-            <rect width="40" height="16" fill="#134e57" />
-            {/* diamonds */}
-            <path d="M10 2 L14 8 L10 14 L6 8 Z" fill="#d76d8a" />
-            <path d="M30 2 L34 8 L30 14 L26 8 Z" fill="#f0bccb" />
-            {/* crosses */}
-            <path
-              d="M19 5 h2 v2 h2 v2 h-2 v2 h-2 v-2 h-2 v-2 h2 z"
-              fill="#e1cbac"
-            />
-            <path
-              d="M-1 5 h2 v2 h2 v2 h-2 v2 h-2 v-2 h-2 v-2 h2 z"
-              fill="#e1cbac"
-            />
-          </pattern>
-        </defs>
-        <rect width="40" height="16" fill="url(#folk-weave)" />
-      </svg>
-    </div>
+      style={{
+        backgroundColor: "#134e57",
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='16' viewBox='0 0 80 16'%3E%3Crect width='80' height='16' fill='%23134e57'/%3E%3Crect width='8' height='16' fill='%23e1cbac'/%3E%3Crect x='72' width='8' height='16' fill='%23e1cbac'/%3E%3Cpath d='M20 2 L28 8 L20 14 L12 8 Z' fill='%23d76d8a'/%3E%3Cpath d='M60 2 L68 8 L60 14 L52 8 Z' fill='%23f0bccb'/%3E%3Cpath d='M38 5 h4 v2 h2 v2 h-2 v2 h-4 v-2 h-2 v-2 h2 z' fill='%23e1cbac'/%3E%3C/svg%3E\")",
+        backgroundPosition: "center",
+        backgroundRepeat: "repeat-x",
+        backgroundSize: "80px 16px",
+      }}
+    />
   );
 }
