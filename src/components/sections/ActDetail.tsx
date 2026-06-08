@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button, buttonClasses } from "@/components/ui/Button";
 import { BackButton } from "@/components/ui/BackButton";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Container } from "@/components/ui/Container";
 import { ImagePlaceholder } from "@/components/decorative/ImagePlaceholder";
 import { FolkStripe } from "@/components/decorative/FolkStripe";
@@ -33,6 +34,7 @@ export function ActDetail({
   shows,
   href,
   backHref,
+  breadcrumbParentLabel,
 }: {
   locale: Locale;
   eyebrow: string;
@@ -48,6 +50,7 @@ export function ActDetail({
   href: string;
   /** Where "Tilbage" / "Back" lands when there's no browser history to step back to. */
   backHref: string;
+  breadcrumbParentLabel: string;
 }) {
   const t = getDictionary(locale);
   const eventUrl = `${site.url}${href}`;
@@ -57,6 +60,16 @@ export function ActDetail({
     <article className="py-12 sm:py-16">
       <Container>
         <div className="mx-auto max-w-4xl">
+          <Breadcrumbs
+            label={t.breadcrumb.label}
+            className="mb-5"
+            items={[
+              { href: "/", label: t.breadcrumb.home },
+              { href: backHref, label: breadcrumbParentLabel },
+              { label: name },
+            ]}
+          />
+
           <BackButton
             fallbackHref={backHref}
             className="group inline-flex items-center gap-1.5 text-sm font-semibold text-petroleum transition-colors hover:text-rust"

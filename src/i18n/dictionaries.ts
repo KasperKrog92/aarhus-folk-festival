@@ -19,6 +19,12 @@ const da = {
     offlineBody:
       "Forbindelsen er væk lige nu. Prøv igen, når du har netværk — eller gå til programmet, hvis du allerede har besøgt det.",
   },
+  breadcrumb: {
+    label: "Brødkrumme",
+    home: "Forside",
+    artists: "Kunstnere",
+    workshops: "Workshops",
+  },
   header: {
     home: "til forsiden", // composed as "{name}, {home}"
     mainMenu: "Hovedmenu",
@@ -125,6 +131,12 @@ const en: Dictionary = {
     offlineTitle: "You are offline",
     offlineBody:
       "The connection is down right now. Try again when you are back online — or open the programme if you have visited it before.",
+  },
+  breadcrumb: {
+    label: "Breadcrumb",
+    home: "Home",
+    artists: "Artists",
+    workshops: "Workshops",
   },
   header: {
     home: "to the homepage",

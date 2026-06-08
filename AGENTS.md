@@ -20,6 +20,7 @@ Read the file that matches the task; don't read all of them by default.
 | the voice/wording rules for the copy itself (DA + EN) | [docs/content-and-tone.md](docs/content-and-tone.md) |
 | colours, fonts, decorative motifs, layout styling, logos, images | [docs/design-system.md](docs/design-system.md) |
 | the service worker, manifest, offline / install (PWA), the `--webpack` build | [docs/architecture.md](docs/architecture.md) + [docs/plans/pwa.md](docs/plans/pwa.md) |
+| optimisation priorities, feature sequencing, future programme/practical-info work | [docs/plans/website-roadmap.md](docs/plans/website-roadmap.md) |
 
 If a change introduces a new area that none of these files cover well, and you
 judge it worth documenting for future agents, create a new `docs/<topic>.md` and

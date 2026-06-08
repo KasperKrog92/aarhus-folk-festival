@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ActDetail } from "@/components/sections/ActDetail";
 import { actDetailShows } from "@/data/program";
 import { getWorkshop, workshops, workshopsPage } from "@/data/workshops";
+import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
 import { actMetadata } from "@/lib/metadata";
 
@@ -44,6 +45,7 @@ export default async function WorkshopPage({ params }: WorkshopPageProps) {
   }
 
   const locale = await getLocale();
+  const t = getDictionary(locale);
 
   return (
     <ActDetail
@@ -59,6 +61,7 @@ export default async function WorkshopPage({ params }: WorkshopPageProps) {
       shows={actDetailShows(workshop.shows, locale)}
       href={`${workshopsPage.href}/${workshop.slug}`}
       backHref={workshopsPage.href}
+      breadcrumbParentLabel={t.breadcrumb.workshops}
     />
   );
 }

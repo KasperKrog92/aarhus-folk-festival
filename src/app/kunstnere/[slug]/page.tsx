@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ActDetail } from "@/components/sections/ActDetail";
 import { artists, artistsPage, getArtist } from "@/data/artists";
 import { actDetailShows } from "@/data/program";
+import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
 import { actMetadata } from "@/lib/metadata";
 
@@ -43,6 +44,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   }
 
   const locale = await getLocale();
+  const t = getDictionary(locale);
 
   return (
     <ActDetail
@@ -58,6 +60,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
       shows={actDetailShows(artist.shows, locale)}
       href={`${artistsPage.href}/${artist.slug}`}
       backHref={artistsPage.href}
+      breadcrumbParentLabel={t.breadcrumb.artists}
     />
   );
 }

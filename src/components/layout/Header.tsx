@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -24,6 +24,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hash, setHash] = useState("");
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -70,7 +71,7 @@ export function Header() {
     return () => window.removeEventListener("hashchange", updateHash);
   }, [pathname]);
 
-  const isActiveNavItem = (href: string) => {
+  const isCurrentNavLocation = useCallback((href: string) => {
     const [path, anchor] = href.split("#");
 
     if (anchor) {
@@ -78,7 +79,34 @@ export function Header() {
     }
 
     return pathname === href || pathname.startsWith(`${href}/`);
+  }, [hash, pathname]);
+
+  const isActiveNavItem = (href: string) =>
+    pendingHref === href || isCurrentNavLocation(href);
+
+  const ariaCurrentForNavItem = (href: string) => {
+    if (!isActiveNavItem(href)) return undefined;
+
+    return href.includes("#") ? "location" : "page";
   };
+
+  const handleNavClick = (href: string) => {
+    if (href.includes("#")) {
+      setPendingHref(href);
+    }
+  };
+
+  useEffect(() => {
+    if (!pendingHref) return;
+
+    if (isCurrentNavLocation(pendingHref)) {
+      const timeout = window.setTimeout(() => setPendingHref(null), 250);
+      return () => window.clearTimeout(timeout);
+    }
+
+    const timeout = window.setTimeout(() => setPendingHref(null), 1500);
+    return () => window.clearTimeout(timeout);
+  }, [isCurrentNavLocation, pendingHref]);
 
   return (
     <header className="sticky top-0 z-50">
@@ -123,7 +151,8 @@ export function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  aria-current={active ? "page" : undefined}
+                  aria-current={ariaCurrentForNavItem(item.href)}
+                  onClick={() => handleNavClick(item.href)}
                   className={cn(
                     "rounded-full px-3 py-2 text-sm font-semibold text-content/80 transition-colors hover:bg-content/[0.05] hover:text-rust",
                     active && "bg-content/[0.06] text-pink-600",
@@ -199,8 +228,11 @@ export function Header() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      aria-current={active ? "page" : undefined}
-                      onClick={() => setOpen(false)}
+                      aria-current={ariaCurrentForNavItem(item.href)}
+                      onClick={() => {
+                        handleNavClick(item.href);
+                        setOpen(false);
+                      }}
                       className={cn(
                         "whitespace-nowrap rounded-xl px-2 py-2 text-right text-lg font-semibold text-content transition-colors hover:bg-content/[0.05]",
                         active && "bg-content/[0.06] text-pink-600",
