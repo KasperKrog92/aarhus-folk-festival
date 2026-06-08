@@ -5,6 +5,7 @@ import { programPage } from "@/data/program";
 import { aboutPage } from "@/data/about";
 import { associationPage } from "@/data/association";
 import { contactPage } from "@/data/contact";
+import { cookiesPage } from "@/data/cookies";
 import { site } from "@/data/site";
 
 /** Generates /sitemap.xml for the public routes. */
@@ -65,6 +66,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "monthly",
       priority: 0.6,
+    },
+    {
+      url: `${site.url}${cookiesPage.href}`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.4,
     },
   ];
 }

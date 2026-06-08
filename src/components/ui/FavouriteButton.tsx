@@ -21,7 +21,7 @@ import { cn } from "@/lib/cn";
  * burst is rendered through a portal so a card's `overflow-hidden` never clips
  * the hearts, and the whole flourish is skipped when the visitor prefers
  * reduced motion. The toggle itself is a visual demo, like the rest of the
- * site (no network, no persistence).
+ * site (no network; event favourites persist locally in the browser).
  */
 
 type FloatingHeart = {
@@ -53,8 +53,7 @@ export function FavouriteButton({
   className?: string;
   iconClassName?: string;
   /**
-   * When set, the favourite is persisted to the `aff_favourites` cookie under
-   * this event id (for the future "Show favourited" programme filter). Without
+   * When set, the favourite is persisted locally under this event id. Without
    * it the toggle is ephemeral, e.g. the header's "save the date" heart.
    */
   eventId?: string;
@@ -65,9 +64,9 @@ export function FavouriteButton({
   const [hearts, setHearts] = useState<FloatingHeart[]>([]);
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
 
-  // Persisted favourites live in the cookie, read here as an external store.
+  // Persisted favourites live in browser storage, read here as an external store.
   // The server snapshot is always `false`, and the client reconciles to the
-  // real cookie value after hydration, so there's no hydration mismatch.
+  // real stored value after hydration, so there's no hydration mismatch.
   // Buttons without an `eventId` (e.g. the header's "save the date") stay local.
   const persistedLiked = useSyncExternalStore(
     subscribeFavourites,
@@ -90,7 +89,7 @@ export function FavouriteButton({
   }
 
   function handleClick() {
-    // Persist to the cookie when this button represents an event (the external
+    // Persist locally when this button represents an event (the external
     // store then re-renders us); otherwise the toggle is purely local.
     const nextLiked = eventId ? toggleFavourite(eventId) : !localLiked;
     if (!eventId) setLocalLiked(nextLiked);

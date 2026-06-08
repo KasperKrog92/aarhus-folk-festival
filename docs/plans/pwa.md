@@ -2,8 +2,8 @@
 
 A plan for making Aarhus Folk Festival installable on phones and resilient when
 venue Wi‑Fi is spotty. Written to fit the existing conventions: Next.js 16 App
-Router, static content in `src/data/`, cookie-based locale/theme/favourites,
-server components by default, bilingual UI copy in `dictionaries.ts`.
+Router, static content in `src/data/`, cookie-based locale/theme, localStorage
+favourites, server components by default, bilingual UI copy in `dictionaries.ts`.
 
 > **Status: Layers 1 & 2 shipped** in commit `571fe3a` — install metadata
 > (manifest + icons), and a production-only Serwist service worker with an
@@ -83,9 +83,10 @@ The rest of Layer 3 was intentionally **not** built:
   and a programmatic `fetch` is not navigation-mode so it would not populate that
   nav cache anyway. Next's `<Link prefetch>` plus NetworkFirst caching on first
   navigation already cover repeat/offline reads.
-- **Favourites & theme offline need no code** — both are client cookies
-  (`aff_favourites`, `aff_theme`) that keep working once the programme HTML/JS is
-  cached. Verify in airplane mode rather than by code change.
+- **Favourites & theme offline need no code** — favourites use the client
+  `aff_favourites` localStorage key and theme uses the `aff_theme` cookie. Both keep
+  working once the programme HTML/JS is cached. Verify in airplane mode rather than
+  by code change.
 
 Still open: Layer 3 cache warming (deliberately skipped above) and Layer 4 (web
 push). Phase 4 documentation is done — `architecture.md` now has a PWA /
@@ -143,7 +144,7 @@ same Webpack requirement in Next.js 16.
 
 ### Cookie-driven SSR (locale, theme)
 
-Every page read cookies (`aff_locale`, `aff_theme`, `aff_favourites`) on the
+Every page reads the locale/theme cookies (`aff_locale`, `aff_theme`) on the
 server. Cached HTML is **per-user-state**, not a single canonical document.
 
 Implications for the service worker:
@@ -402,7 +403,7 @@ After Layer 2 works:
    `/kunstnere`, `/workshops` via `workbox` / Serwist `addRoute` or a client
    `useEffect` that `fetch`es key routes once (optional; precache list may be
    enough).
-2. **Favourites offline** — `aff_favourites` is already a client cookie;
+2. **Favourites offline** — `aff_favourites` is a client localStorage key;
    `ProgramSchedule` + `lib/favourites.ts` keep working offline if programme
    HTML/JS is cached. Manually test “Vis hjerte-events” in airplane mode.
 3. **Theme offline** — `aff_theme` + `ThemeProvider` are client-side; no SW

@@ -3,7 +3,8 @@
 A public-facing website concept for **Aarhus Folk Festival** (24.-27. september 2026).
 Replaces the outdated existing site (https://www.aarhusfolkfestival.dk/) with a warm,
 modern Nordic folk aesthetic. A growing set of static pages: a polished homepage plus
-programme, artists and workshops pages (with detail subpages), and association + contact.
+programme, artists and workshops pages (with detail subpages), association + contact,
+and cookies/privacy information.
 
 This file holds what every agent should know on every task. Deeper detail lives in
 `docs/` — read the relevant file when a task touches that area (see the map below).
@@ -87,13 +88,16 @@ agent-relevant guidance belongs in the docs.
   intentionally replaced with a warm "Om festivalen" / community section. Do not add volunteer
   signup or management.
 - **No CMS / backend.** Content is static arrays in `src/data/`. The newsletter form is a
-  visual demo only (`preventDefault`, no network). Two bits of client-only persistence:
-  `FavouriteButton` remembers favourited events in the `aff_favourites` cookie (see
-  `src/lib/favourites.ts`); `ThemeToggle` remembers the visitor's light/dark preference in
-  the `aff_theme` cookie (see `src/lib/theme.ts` + `src/lib/theme-server.ts`). No
-  server, no account, no network. A Serwist service worker (production builds only)
-  caches assets + the programme for offline reading and an offline fallback page —
-  still client-side caching, not a backend (see [docs/architecture.md](docs/architecture.md)).
+  visual demo only (`preventDefault`, no network). Client-only persistence stays functional
+  and first-party: `FavouriteButton` remembers favourited events in the `aff_favourites`
+  localStorage key (see `src/lib/favourites.ts`, which migrates the old cookie);
+  `ThemeToggle` remembers the visitor's light/dark preference in the `aff_theme` cookie
+  (see `src/lib/theme.ts` + `src/lib/theme-server.ts`). No server, no account, no network.
+  A Serwist service worker (production builds only) caches assets + the programme for
+  offline reading and an offline fallback page — still client-side caching, not a backend
+  (see [docs/architecture.md](docs/architecture.md)). The site currently has no analytics,
+  marketing pixels, third-party embeds or cookie consent banner; update `/cookies` and the
+  consent approach before adding non-essential cookies or similar technologies.
 - **Mobile-first, accessible, semantic.** Keep landmark elements, real heading order, focus
   styles, and descriptive `alt`/`aria-label`. `<html lang>` follows the active locale.
 - **Bilingual UI copy (DA default / EN).** Danish is the default and source of truth; every

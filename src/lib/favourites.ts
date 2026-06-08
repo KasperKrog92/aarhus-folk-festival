@@ -1,20 +1,20 @@
 /**
- * Favourited events, stored in a cookie that the programme's "Vis hjerte-events"
- * filter reads (see `components/sections/ProgramSchedule.tsx`). Framework-free and
- * SSR-safe: `parseFavourites` is pure (use it server-side with `cookies()` from
- * `next/headers`), while the read/write helpers touch `document` and no-op during
- * server rendering.
+ * Favourited events, stored in localStorage so they stay on the visitor's device
+ * without being sent with every request. Framework-free and SSR-safe:
+ * `parseFavourites` is pure, while the read/write helpers touch browser APIs and
+ * no-op during server rendering.
  *
- * The cookie holds a comma-separated list of event ids (see `src/data/events.ts`).
+ * The stored value is a comma-separated list of event ids (see `src/data/events.ts`).
  * Those ids are kebab-case slugs, so they never contain a comma.
  */
 
-/** Cookie that stores the visitor's favourited event ids. */
-export const FAVOURITES_COOKIE = "aff_favourites";
+/** localStorage key that stores the visitor's favourited event ids. */
+export const FAVOURITES_STORAGE_KEY = "aff_favourites";
 
-const ONE_YEAR = 31536000;
+const LEGACY_FAVOURITES_COOKIE = "aff_favourites";
+let memoryFavourites: string | null = null;
 
-// Treat the cookie as a tiny external store so components can read it with
+// Treat browser storage as a tiny external store so components can read it with
 // `useSyncExternalStore` and stay in sync when any favourite changes.
 const listeners = new Set<() => void>();
 
@@ -26,29 +26,46 @@ export function subscribeFavourites(listener: () => void): () => void {
   };
 }
 
-/** Parse a raw cookie value into event ids. Pure; safe on server or client. */
+/** Parse a raw stored value into event ids. Pure; safe on server or client. */
 export function parseFavourites(raw: string | undefined): string[] {
   if (!raw) return [];
-  return decodeURIComponent(raw)
+  const decoded = safelyDecode(raw);
+  return decoded
     .split(",")
     .map((id) => id.trim())
     .filter(Boolean);
 }
 
-/** Read the favourited event ids from the browser cookie (client only). */
+/** Read the favourited event ids from browser storage (client only). */
 export function readFavourites(): string[] {
-  if (typeof document === "undefined") return [];
-  const entry = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${FAVOURITES_COOKIE}=`));
-  return parseFavourites(entry?.slice(FAVOURITES_COOKIE.length + 1));
+  if (typeof window === "undefined") return [];
+
+  const stored = readStoredFavourites();
+  if (stored !== null) {
+    expireLegacyFavouritesCookie();
+    return parseFavourites(stored);
+  }
+
+  const legacy = readLegacyFavouritesCookie();
+  if (legacy.length > 0) {
+    writeFavourites(legacy);
+    expireLegacyFavouritesCookie();
+  }
+  return legacy;
 }
 
-/** Persist the favourited event ids to the browser cookie (client only). */
+/** Persist the favourited event ids to browser storage (client only). */
 function writeFavourites(ids: string[]): void {
-  if (typeof document === "undefined") return;
-  const value = encodeURIComponent(ids.join(","));
-  document.cookie = `${FAVOURITES_COOKIE}=${value};path=/;max-age=${ONE_YEAR};samesite=lax`;
+  if (typeof window === "undefined") return;
+  try {
+    const value = ids.join(",");
+    window.localStorage.setItem(FAVOURITES_STORAGE_KEY, value);
+    memoryFavourites = value;
+  } catch {
+    // Browser storage can be disabled; keep the current tab working anyway.
+    memoryFavourites = ids.join(",");
+  }
+  expireLegacyFavouritesCookie();
 }
 
 /** True when the given event is currently favourited (client only). */
@@ -66,4 +83,33 @@ export function toggleFavourite(id: string): boolean {
   writeFavourites(has ? ids.filter((existing) => existing !== id) : [...ids, id]);
   for (const listener of listeners) listener();
   return !has;
+}
+
+function readLegacyFavouritesCookie(): string[] {
+  if (typeof document === "undefined") return [];
+  const entry = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${LEGACY_FAVOURITES_COOKIE}=`));
+  return parseFavourites(entry?.slice(LEGACY_FAVOURITES_COOKIE.length + 1));
+}
+
+function expireLegacyFavouritesCookie(): void {
+  if (typeof document === "undefined") return;
+  document.cookie = `${LEGACY_FAVOURITES_COOKIE}=;path=/;max-age=0;samesite=lax`;
+}
+
+function readStoredFavourites(): string | null {
+  try {
+    return window.localStorage.getItem(FAVOURITES_STORAGE_KEY);
+  } catch {
+    return memoryFavourites;
+  }
+}
+
+function safelyDecode(value: string): string {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }

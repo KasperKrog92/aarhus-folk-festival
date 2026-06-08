@@ -45,7 +45,7 @@ export function EventCard({
           {event.time}
         </span>
 
-        {/* save / favourite, remembered in the aff_favourites cookie */}
+        {/* save / favourite, remembered locally in the browser */}
         <FavouriteButton
           eventId={event.id}
           label={`${t.eventCard.save} ${title}`}

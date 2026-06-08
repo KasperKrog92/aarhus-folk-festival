@@ -11,8 +11,8 @@ import type { Locale } from "@/i18n/config";
 /**
  * The day-grouped programme plus a "Vis hjerte-events" toggle that narrows it to
  * the events the visitor has favourited. Client-side because the favourites live
- * in the `aff_favourites` cookie (see `src/lib/favourites.ts`): we read them as an
- * external store so the list re-filters the moment a heart is toggled anywhere.
+ * in browser storage (see `src/lib/favourites.ts`): we read them as an external
+ * store so the list re-filters the moment a heart is toggled anywhere.
  *
  * The schedule data is computed on the server and passed in as plain props, so
  * this stays a thin interactive shell over `getProgramByDay()`.
@@ -26,9 +26,9 @@ export function ProgramSchedule({
 }) {
   const [onlyFavourites, setOnlyFavourites] = useState(false);
 
-  // A stable string snapshot of the cookie, so useSyncExternalStore doesn't see a
-  // fresh array reference every render. Server (and first client) snapshot is empty,
-  // so the full programme renders identically on both sides — no hydration mismatch.
+  // A stable string snapshot of storage, so useSyncExternalStore doesn't see a fresh
+  // array reference every render. Server (and first client) snapshot is empty, so
+  // the full programme renders identically on both sides — no hydration mismatch.
   const favouritesKey = useSyncExternalStore(
     subscribeFavourites,
     () => readFavourites().join(","),
