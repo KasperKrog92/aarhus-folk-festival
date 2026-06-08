@@ -91,6 +91,13 @@ const da = {
     reload: "Genindlæs",
     dismiss: "Luk",
   },
+  install: {
+    title: "Få festivalen ved hånden",
+    body: "Læg Aarhus Folk Festival på din hjemmeskærm, så programmet altid er et tryk væk.",
+    action: "Installer",
+    dismiss: "Ikke nu",
+    iosBody: "Tryk på Del-knappen og vælg Føj til hjemmeskærm.",
+  },
   hero_alt: {
     background:
       "Festivalgæster danser til levende folkemusik i varmt lys, mens en violinist og en harmonikaspiller spiller",
@@ -182,6 +189,13 @@ const en: Dictionary = {
     available: "A new version is available",
     reload: "Reload",
     dismiss: "Dismiss",
+  },
+  install: {
+    title: "Keep the festival close",
+    body: "Add Aarhus Folk Festival to your home screen so the programme is always a tap away.",
+    action: "Install",
+    dismiss: "Not now",
+    iosBody: "Tap the Share button, then choose Add to Home Screen.",
   },
   hero_alt: {
     background:

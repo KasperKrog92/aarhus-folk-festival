@@ -45,7 +45,8 @@ src/
   components/theme/       # ThemeProvider (client, holds theme state + setTheme)
                           #   ThemeToggle (sun/moon button, placed in Header)
   components/pwa/         # UpdatePrompt (client snackbar: offers to reload when a
-                          #   new service worker is waiting)
+                          #   new service worker is waiting); InstallPrompt
+                          #   (mobile-only add-to-home-screen banner)
   sw.ts                   # Serwist service worker source (compiled to public/sw.js on prod build)
 ```
 
@@ -130,6 +131,16 @@ rationale and the remaining roadmap (cache warming and web push are not built).
   for the waiting worker, and on "reload" posts the `SKIP_WAITING` message
   Serwist handles, then reloads on `controllerchange`. `clientsClaim` still lets
   the worker control the page on first install (and fire that `controllerchange`).
+- **Install prompt is mobile-only, with two modes.** `components/pwa/InstallPrompt.tsx`
+  shows a warm add-to-home-screen card. On **Chromium** it stashes the
+  `beforeinstallprompt` event and offers an install button that replays it; this
+  card is `sm:hidden`, so desktop keeps the browser's address-bar install icon. On
+  **iOS Safari** (no `beforeinstallprompt`) it instead shows a Share → "Add to Home
+  Screen" hint (no button — iOS has no programmatic trigger; that card isn't
+  viewport-gated since the detection already implies a touch device). A
+  `localStorage` flag (`aff_install_dismissed`) stops either card nagging after
+  dismiss/install, and already-installed (standalone) visitors never see it.
+  Copy: `install.*` keys; the Share glyph is `IconShare`.
 - **Both build and dev pass an explicit bundler flag.** `pnpm build` →
   `next build --webpack` (Serwist's SW bundling needs Webpack); `pnpm dev` →
   `next dev --turbopack` (Turbopack, SW disabled). The flags are not optional:

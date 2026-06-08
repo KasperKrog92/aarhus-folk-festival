@@ -8,10 +8,10 @@ server components by default, bilingual UI copy in `dictionaries.ts`.
 > **Status: Layers 1 & 2 shipped** in commit `571fe3a` — install metadata
 > (manifest + icons), and a production-only Serwist service worker with an
 > offline fallback route. Phase 4 docs (architecture, design-system, AGENTS) are
-> now updated to match. **Layer 3's update snackbar is now built** (see Progress);
-> the rest of Layer 3 (cache warming, optional install prompt) and Layer 4 (web
-> push) remain unimplemented. See **Progress (as built)** for deltas from this
-> plan, and **Open decisions** for how each was resolved.
+> now updated to match. **Layer 3's update snackbar and a mobile-only install
+> prompt are now built** (see Progress); the rest of Layer 3 (cache warming) and
+> Layer 4 (web push) remain unimplemented. See **Progress (as built)** for deltas
+> from this plan, and **Open decisions** for how each was resolved.
 
 ## Progress (as built)
 
@@ -61,6 +61,20 @@ The update prompt landed after `571fe3a`:
 - **No dev impact.** The SW is disabled in dev, so `serviceWorker.ready` never
   resolves and the snackbar renders nothing.
 
+- **Mobile-only install prompt (built), two modes.**
+  [src/components/pwa/InstallPrompt.tsx](../../src/components/pwa/InstallPrompt.tsx)
+  shows a warm add-to-home-screen card with the app icon. On **Chromium** it
+  stashes `beforeinstallprompt` and offers an install button (reusing
+  `buttonClasses`); that card is `sm:hidden` so desktop keeps the browser's
+  address-bar install icon. On **iOS Safari** (which has no `beforeinstallprompt`)
+  it shows a Share → "Add to Home Screen" hint instead, with the `IconShare` glyph
+  and no button (iOS has no programmatic install trigger); that card is not
+  viewport-gated because the iOS-Safari detection already implies a touch device.
+  A `localStorage` flag `aff_install_dismissed` stops either card nagging after
+  dismiss or install (it also listens for `appinstalled`), and already-installed
+  (standalone) visitors never see it. New `install.*` dictionary keys (incl.
+  `iosBody`).
+
 The rest of Layer 3 was intentionally **not** built:
 
 - **Cache warming was skipped.** Pages read the locale/theme cookies on the
@@ -72,8 +86,6 @@ The rest of Layer 3 was intentionally **not** built:
 - **Favourites & theme offline need no code** — both are client cookies
   (`aff_favourites`, `aff_theme`) that keep working once the programme HTML/JS is
   cached. Verify in airplane mode rather than by code change.
-- **InstallPrompt** stays deferred per open decision #5 (rely on the browser's
-  native install affordance).
 
 Still open: Layer 3 cache warming (deliberately skipped above) and Layer 4 (web
 push). Phase 4 documentation is done — `architecture.md` now has a PWA /
@@ -427,9 +439,10 @@ Next.js documents this flow in the [PWA guide](https://nextjs.org/docs/app/guide
    `--webpack`. Owner offline test on `/program` + a detail page still
    outstanding.
 3. 🟡 **Cache tuning.** Update snackbar shipped (`UpdatePrompt` + `skipWaiting:
-   false`); cache warming intentionally skipped (cookie-dynamic pages) and
-   `InstallPrompt` deferred. Owner: re-run Lighthouse PWA + an offline manual
-   pass, and confirm a fresh deploy surfaces the "new version" snackbar.
+   false`) and a mobile-only `InstallPrompt`; cache warming intentionally skipped
+   (cookie-dynamic pages). Owner: re-run Lighthouse PWA + an offline manual pass,
+   confirm a fresh deploy surfaces the "new version" snackbar, and check the
+   install banner appears on an Android phone (not desktop).
 4. ✅ **Docs + AGENTS map.** — architecture (PWA / service-worker section),
    design-system (icon set), AGENTS.md (`--webpack` build note, persistence note,
    docs-map row) all updated.
@@ -456,7 +469,7 @@ visual QA — ask the owner to test install + offline on a phone after each phas
 | `src/sw.ts` | 3 (`skipWaiting: false` for the update prompt) |
 | `src/components/pwa/UpdatePrompt.tsx` | 3 (update snackbar — built) |
 | `src/app/layout.tsx` | 3 (render `<UpdatePrompt />`) |
-| `src/components/pwa/InstallPrompt.tsx` | 3 (optional — deferred) |
+| `src/components/pwa/InstallPrompt.tsx` | 3 (mobile-only install banner — built) |
 | `docs/architecture.md` | 4 |
 | `docs/design-system.md` | 4 (icon assets) |
 | `AGENTS.md` | 4 |
@@ -477,6 +490,8 @@ No changes to `src/data/` content files unless adding PWA-specific copy there
 - [ ] Ticket external link still opens browser / fails gracefully offline
 - [ ] New deploy: returning visitors get updated SW within reasonable time
 - [ ] New deploy: the "new version available" snackbar appears and "reload" loads it
+- [ ] Install banner shows on an Android phone (installable), hidden on desktop view
+- [ ] iOS Safari shows the Share → "Add to Home Screen" hint (and not in standalone)
 - [ ] Lighthouse: PWA category passes install + offline (post Layer 2)
 
 Local SW testing needs HTTPS or `localhost`. Use `pnpm build --webpack && pnpm start`, not `pnpm dev`.
@@ -504,8 +519,10 @@ All Layer 1–2 decisions were settled when `571fe3a` shipped:
 3. **Manifest `description` / `lang`:** ✅ `description: site.tagline.da`,
    `lang: "da"` — single DA default, not localized per cookie.
 4. **Serwist vs manual SW:** ✅ **Serwist** (`@serwist/next` + `serwist`).
-5. **Custom install prompt:** ✅ Shipped **without** — relying on the browser
-   default. `InstallPrompt` remains a Layer 3 option.
+5. **Custom install prompt:** ✅ Now **built** as a **mobile-only** banner
+   (`InstallPrompt`, `sm:hidden`). Layers 1–2 shipped without it (browser default);
+   it was added in Layer 3. Desktop view still relies on the browser's address-bar
+   install icon.
 6. **Web push:** ⬜ Deferred (Layer 4) — no product request for schedule alerts.
 7. **Precache scope:** ✅ Relies on Serwist’s `__SW_MANIFEST` (build output) plus
    `additionalPrecacheEntries` for `/~offline`; runtime `CacheFirst` covers

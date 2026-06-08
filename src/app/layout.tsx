@@ -8,6 +8,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getLocale } from "@/i18n/server";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { UpdatePrompt } from "@/components/pwa/UpdatePrompt";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { getTheme } from "@/lib/theme-server";
 import { site } from "@/data/site";
 
@@ -111,6 +112,7 @@ export default async function RootLayout({
               {children}
             </main>
             <Footer />
+            <InstallPrompt />
             <UpdatePrompt />
           </ThemeProvider>
         </LocaleProvider>

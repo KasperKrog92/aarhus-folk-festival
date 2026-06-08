@@ -195,6 +195,17 @@ export function IconClose(props: IconProps) {
   );
 }
 
+export function IconShare(props: IconProps) {
+  // iOS-style share glyph: a tray with an arrow lifting out of it.
+  return (
+    <Svg {...props}>
+      <path d="M12 15V4" />
+      <path d="m8 8 4-4 4 4" />
+      <path d="M8 11H7a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1" />
+    </Svg>
+  );
+}
+
 export function IconMail(props: IconProps) {
   return (
     <Svg {...props}>
