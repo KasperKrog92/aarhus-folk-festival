@@ -80,7 +80,7 @@ export async function Hero() {
       </Container>
 
       <ScallopEdge
-        colorClassName="text-cream"
+        colorClassName="text-surface"
         className="absolute bottom-0 left-0"
       />
     </section>
