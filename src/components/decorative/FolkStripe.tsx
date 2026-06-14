@@ -98,17 +98,21 @@ function moveForSymbol(el: Element): Move | null {
  * folk-coloured sparks also sprays out of the top and bottom at the pointer, for
  * a celebratory feel. All motion is driven through the Web Animations API (not
  * CSS `:hover`) so each animation always finishes even after the pointer leaves.
- * Touch has no hover, so a tap bursts the whole tapped tile left→right. Purely
- * cosmetic: the strip stays `aria-hidden` with no focusable controls, and
- * everything is skipped under `prefers-reduced-motion: reduce`. The static
- * background-image version is preserved in
+ * Touch has no hover, so a tap bursts the whole tapped tile left→right, while
+ * sliding across the stripe triggers each newly crossed tile. Purely cosmetic:
+ * the strip stays `aria-hidden` with no focusable controls, and everything is
+ * skipped under `prefers-reduced-motion: reduce`. The static background-image
+ * version is preserved in
  * `docs/reports/folk-stripe-static-reference.md`.
  */
 export function FolkStripe({ className }: FolkStripeProps) {
+  const stripeRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useRef(false);
   // Symbols currently mid-animation, so jitter or a held pointer can't restack.
   const animating = useRef(new WeakSet<Element>());
+  const activeTouchPointer = useRef<number | null>(null);
+  const lastTouchedTile = useRef<Element | null>(null);
 
   useEffect(() => {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -196,6 +200,31 @@ export function FolkStripe({ className }: FolkStripeProps) {
     return overlay ? clientX - overlay.getBoundingClientRect().left : 0;
   }
 
+  function playTile(tile: Element) {
+    Array.from(tile.children).forEach((symbol, i) => {
+      const move = moveForSymbol(symbol);
+      if (move) play(symbol, move, i * 80);
+    });
+  }
+
+  /**
+   * Touch pointers are implicitly captured by the element pressed first, so
+   * `event.target` does not follow the finger. Resolve the current horizontal
+   * coordinate instead, which also tolerates a little vertical finger drift.
+   */
+  function tileAtX(clientX: number): Element | null {
+    const stripe = stripeRef.current;
+    if (!stripe) return null;
+    const stripeRect = stripe.getBoundingClientRect();
+    if (clientX < stripeRect.left || clientX > stripeRect.right) return null;
+    return (
+      Array.from(stripe.querySelectorAll(".folk-tile")).find((tile) => {
+        const tileRect = tile.getBoundingClientRect();
+        return clientX >= tileRect.left && clientX <= tileRect.right;
+      }) ?? null
+    );
+  }
+
   // Mouse/pen hover: animate the hovered symbol, let a neighbour catch it, and
   // spray a small celebratory burst — gated so each symbol only fires once per
   // animation cycle (a fast sweep won't flood).
@@ -214,25 +243,55 @@ export function FolkStripe({ className }: FolkStripeProps) {
   }
 
   // Press (mouse, pen or touch): a fuller celebration burst at the pointer, plus
-  // a pop of the pressed tile's symbols. Touch has no hover, so this is its only
-  // trigger; for mouse/pen it escalates a click into a little party.
+  // a pop of the pressed tile's symbols. Touch continues tracking after this so
+  // sliding back and forth can animate each newly crossed tile.
   function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
     if (reducedMotion.current) return;
     spray(overlayX(event.clientX), 14);
-    const tile = (event.target as Element).closest(".folk-tile");
+    const tile =
+      (event.target as Element).closest(".folk-tile") ?? tileAtX(event.clientX);
     if (!tile) return;
-    Array.from(tile.children).forEach((symbol, i) => {
-      const move = moveForSymbol(symbol);
-      if (move) play(symbol, move, i * 80);
-    });
+    playTile(tile);
+    if (event.pointerType === "touch") {
+      activeTouchPointer.current = event.pointerId;
+      lastTouchedTile.current = tile;
+    }
+  }
+
+  function handlePointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    if (
+      event.pointerType !== "touch" ||
+      event.pointerId !== activeTouchPointer.current ||
+      reducedMotion.current
+    ) {
+      return;
+    }
+
+    const tile = tileAtX(event.clientX);
+    if (tile === lastTouchedTile.current) return;
+    lastTouchedTile.current = tile;
+    if (!tile) return;
+
+    playTile(tile);
+    spray(overlayX(event.clientX), 5);
+  }
+
+  function stopTouchTracking(event: React.PointerEvent<HTMLDivElement>) {
+    if (event.pointerId !== activeTouchPointer.current) return;
+    activeTouchPointer.current = null;
+    lastTouchedTile.current = null;
   }
 
   return (
     <div aria-hidden className={cn("relative", className)}>
       <div
+        ref={stripeRef}
         onPointerOver={handlePointerOver}
         onPointerDown={handlePointerDown}
-        className="flex h-6 w-full items-center justify-center overflow-hidden rounded-full bg-petroleum"
+        onPointerMove={handlePointerMove}
+        onPointerUp={stopTouchTracking}
+        onPointerCancel={stopTouchTracking}
+        className="flex h-6 w-full touch-pan-y select-none items-center justify-center overflow-hidden rounded-full bg-petroleum"
       >
         {Array.from({ length: TILE_COUNT }, (_, i) => (
           <svg

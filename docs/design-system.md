@@ -43,7 +43,9 @@ Fonts: `font-display` (Fraunces) for headings, `font-sans` (Jakarta) for everyth
 
 Decorative folk motifs are **CSS/SVG only** (no image assets): triangle bunting bands,
 scalloped edges, woven textile stripes, a circular anniversary stamp. Reuse the components
-in `components/decorative/` rather than re-rolling patterns.
+in `components/decorative/` rather than re-rolling patterns. `FolkStripe` supports pointer
+hover/press and touch sliding across its tiles; preserve vertical page scrolling and the
+`prefers-reduced-motion` opt-out when changing its interaction.
 
 ## Dark mode mechanism
 
